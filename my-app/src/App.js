@@ -17,15 +17,20 @@ function App() {
 
   const handleInputChange = (event, i, j) => {
     const value = event.target.value;
-
-    // Create a new grid with the updated value
-    const newGrid = grid.map((row, rowIndex) => 
-      row.map((cell, cellIndex) => 
-        rowIndex === i && cellIndex === j ? value : cell
-      )
-    );
-
-    setGrid(newGrid);
+    // Check if the input is a valid number or an empty string
+    if (value === '' || (/^\d+$/.test(value) && value >= 0 && value <= 9)) {
+      const numValue = value === '' ? 0 : parseInt(value, 10); // Convert input to number or reset to 0 if empty
+  
+      // Create a new grid with the updated value
+      const newGrid = grid.map((row, rowIndex) =>
+        row.map((cell, cellIndex) =>
+          rowIndex === i && cellIndex === j ? numValue : cell
+        )
+      );
+  
+      setGrid(newGrid);
+    }
+    // If the input is not valid (letters or invalid characters), do nothing
   };
   const isValidSudoku = () => {
     for (let i = 0; i < 9; i++) {
