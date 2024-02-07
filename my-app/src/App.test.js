@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import SudokuView from './SudokuView';
 
 test('renders learn react link', () => {
-  render(<App />);
+  render(<SudokuView />);
   const linkElement = screen.getByText(/learn react/i);
   expect(linkElement).toBeInTheDocument();
 });

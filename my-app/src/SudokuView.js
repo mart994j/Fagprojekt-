@@ -1,7 +1,11 @@
+//npm start
+
 import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+
+
+function SudokuView() {
   // Initialize a 9x9 grid with some predefined numbers
   const [grid, setGrid] = useState([
     [5, 3, 0, 0, 7, 0, 0, 0, 0],
@@ -57,7 +61,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="SodukoView">
       <table className="center">
         <tbody>
           {grid.map((row, i) => (
@@ -80,4 +84,4 @@ function App() {
   );
 }
 
-export default App;
+export default SudokuView;
