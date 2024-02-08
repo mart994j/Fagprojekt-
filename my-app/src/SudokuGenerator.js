@@ -1,10 +1,11 @@
 export class SudokuGenerator {
+    //Generer et nyt sudoku bræt
     static generateBoard() {
       let board = Array.from({length: 9}, () => Array(9).fill(0));
       this.fillBoard(board);
       return board;
     }
-  
+    //Fyld brættet med tal
     static fillBoard(board) {
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -26,7 +27,7 @@ export class SudokuGenerator {
       }
       return true;
     }
-  
+    //Check om tal er gyldigt
     static isValidPlacement(board, row, col, num) {
       for (let i = 0; i < 9; i++) {
         const m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
@@ -37,7 +38,7 @@ export class SudokuGenerator {
       }
       return true;
     }
-  
+    //Fjern tal fra brættet, så der kun er et bestemt antal huller, sættes i sudokuView.js
     static removeNumbers(board, holes) {
       let attempts = holes;
       while (attempts > 0) {
