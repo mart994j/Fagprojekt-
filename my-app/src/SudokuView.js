@@ -1,23 +1,14 @@
 //npm start
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 
 
 function SudokuView() {
   // Initialize a 9x9 grid with some predefined numbers
-  const [grid, setGrid] = useState([
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9]
-  ]);
+  const [grid, setGrid] = useState([]);
+
 
   const handleInputChange = (event, i, j) => {
     const value = event.target.value;
@@ -65,6 +56,12 @@ function SudokuView() {
     alert(isValidSudoku()); // Display the validation message in an alert
   };
 
+  useEffect(() => {
+    // Generate a new board when the component mounts
+    const newBoard = generateBoard();
+    setGrid(newBoard);
+  }, []);
+
   return (
     <div className="SodukoView">
       <table className="center">
@@ -87,6 +84,66 @@ function SudokuView() {
       <button onClick={checkSudoku}>Check Sudoku</button>
     </div>
   );
+
+
+  function generateBoard() {
+    let board = Array.from({length: 9}, () => Array(9).fill(0));
+  
+    const fillBoard = (board) => {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (board[i][j] === 0) {
+            const numbers = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
+            for (let num of numbers) {
+              if (isValid(board, i, j, num)) {
+                board[i][j] = num;
+                if (fillBoard(board)) {
+                  return true;
+                } else {
+                  board[i][j] = 0; // undo & try again
+                }
+              }
+            }
+            return false; // trigger backtracking from previous cell
+          }
+        }
+      }
+      return true; // sudoku solved
+    };
+  
+    const isValid = (board, row, col, num) => {
+      for (let i = 0; i < 9; i++) {
+        const m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
+        const n = 3 * Math.floor(col / 3) + i % 3;
+        if (board[row][i] === num || board[i][col] === num || board[m][n] === num) {
+          return false; // not valid
+        }
+      }
+      return true; // valid
+    };
+  
+    // Fill the board completely first
+    fillBoard(board);
+  
+    // Create holes in the board based on difficulty
+    const removeNumbers = (board, holes) => {
+      let attempts = holes;
+      while (attempts > 0) {
+        let row = Math.floor(Math.random() * 9);
+        let col = Math.floor(Math.random() * 9);
+        if (board[row][col] !== 0) {
+          board[row][col] = 0;
+          attempts--;
+        }
+      }
+    };
+  
+    // Example: Remove 40 numbers for a medium difficulty puzzle
+    removeNumbers(board, 10);
+  
+    return board;
+  }
+  
 }
 
 export default SudokuView;
