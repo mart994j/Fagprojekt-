@@ -34,6 +34,7 @@ function SudokuView() {
     for (let i = 0; i < 9; i++) {
       const row = new Set();
       const col = new Set();
+      //box er en 3x3 matrix
       const box = new Set();
 
       for (let j = 0; j < 9; j++) {

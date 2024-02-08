@@ -8,6 +8,7 @@ app.use(cors());
 
 // Opdateret til at bruge SudokuGenerator til at generere brættet
 app.get('/generate', (req, res) => {
+  console.log('Generate endpoint was called');
   const board = SudokuGenerator.generateBoard();
   SudokuGenerator.removeNumbers(board, 10); // Du kan justere antallet af huller efter behov
   res.json({ board });
