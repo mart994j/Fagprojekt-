@@ -38,6 +38,9 @@ class SudokuGenerator {
       }
       return true;
     }
+
+
+
     //Fjern tal fra brættet, så der kun er et bestemt antal huller, sættes i sudokuView.js
     static removeNumbers(board, holes) {
       let attempts = holes;
