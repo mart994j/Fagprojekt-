@@ -37,7 +37,7 @@ function SudokuView() {
   
       setGrid(newGrid);
     }
-    // if the input is not a number between 1 and 9, do nothing
+    //hvis input ikke er gyldigt, gør intet og returner tilbage til inputfeltet og 
   };
   
 

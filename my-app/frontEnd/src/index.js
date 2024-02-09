@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import SudokuView from './SudokuView';
+import App from './App'; // Ændr dette til at importere App i stedet for SudokuView direkte
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <SudokuView />
+    <App /> {/* Brug App komponenten her, som indeholder din routing */}
   </React.StrictMode>
 );
 
