@@ -5,33 +5,41 @@ function SudokuView() {
   const [grid, setGrid] = useState([]);
   const [validity, setValidity] = useState(Array(9).fill().map(() => Array(9).fill(true)));
 
+  //sætter editableCells til at være et tomt array
+  const [editableCells, setEditableCells] = useState([]);
 
   useEffect(() => {
-    // Hent et nyt Sudoku bræt fra backenden
     fetch('http://localhost:3000/generate')
       .then(response => response.json())
-      .then(data => setGrid(data.board))
+      .then(data => {
+        setGrid(data.board);
+        // Initialize editableCells based on whether the cell value is 0
+        const editable = data.board.map(row => row.map(value => value === 0));
+        setEditableCells(editable);
+      })
       .catch(error => console.error('Error fetching data: ', error));
   }, []);
 
   const handleInputChange = (event, i, j) => {
+    if (!editableCells[i][j]) {
+      // hvis cellen ikke er redigerbar, gør intet
+      return;
+    }
     const value = event.target.value;
-    // check om input er et tal mellem 1 og 9
     if (value === '' || (/^\d+$/.test(value) && value >= 1 && value <= 9)) {
-      const numValue = value === '' ? 0 : parseInt(value, 10); // konverter til tal
-
-      // lav en ny kopi af grid og opdater værdien på den valgte celle
+      const numValue = value === '' ? 0 : parseInt(value, 10); // convert to number
+  
       const newGrid = grid.map((row, rowIndex) =>
         row.map((cell, cellIndex) =>
           rowIndex === i && cellIndex === j ? numValue : cell
         )
       );
-
+  
       setGrid(newGrid);
-      
     }
-    //hvis input ikke er et tal mellem 1 og 9, så gør ingenting
+    // if the input is not a number between 1 and 9, do nothing
   };
+  
 
   const isValidSudoku = () => {
     let newValidity = Array(9).fill().map(() => Array(9).fill(true)); 
@@ -101,19 +109,6 @@ function SudokuView() {
   const checkSudoku = () => {
     alert(isValidSudoku()); //vis alert med resultat
   };
-
-  useEffect(() => {
-    // Perform actions that depend on the updated validity state here
-    console.log('Validity state updated', validity);
-  
-    // Example: Check if the entire grid is valid and do something
-    const isEntireGridValid = validity.every(row => row.every(cell => cell));
-    if (isEntireGridValid) {
-      console.log('The entire grid is valid!');
-      // Perform additional actions here
-    }
-  }, [validity]); 
-
   
 
   return (
