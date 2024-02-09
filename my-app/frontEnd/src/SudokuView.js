@@ -124,6 +124,7 @@ function SudokuView() {
                     className={!validity[i][j] ? 'invalid-input' : ''}
                     value={value === 0 ? '' : value}
                     onChange={(event) => handleInputChange(event, i, j)}
+                    readOnly={!editableCells[i][j]} // Gør inputfeltet ikke-redigerbart, hvis cellen ikke er redigerbar
                   />
                 </td>
               ))}
