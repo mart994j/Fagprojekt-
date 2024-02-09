@@ -97,7 +97,10 @@ input {
 
 .invalid {
   background-color: rgba(255, 0, 0, 0.3); /* Light red background */
-  
+}
+
+.invalid-input{
+  background-color:rgba(255, 0, 0, 0.004);
 }
 
 

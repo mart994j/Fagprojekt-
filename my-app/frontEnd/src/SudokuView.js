@@ -126,6 +126,7 @@ function SudokuView() {
                 <td key={j} className={!validity[i][j] ? 'invalid' : ''}>
                   <input
                     type="text"
+                    className={!validity[i][j] ? 'invalid-input' : ''}
                     value={value === 0 ? '' : value}
                     onChange={(event) => handleInputChange(event, i, j)}
                   />
