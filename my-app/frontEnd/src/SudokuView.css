@@ -86,7 +86,17 @@ input {
   height: 100%;
   border: none;
   text-align: center;
+  outline: none;
+  font-size: 20px;
 }
+
+.user-input {
+  color: blue;
+}
+
+
+
+
 
 .button-blue {
   background-color: #007bff; 
