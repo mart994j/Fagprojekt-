@@ -68,10 +68,10 @@ function SudokuView() {
             <tr key={i}>
               {row.map((value, j) => (
                 <td key={j}>
-                  <input 
-                    type="text" 
-                    value={value === 0 ? '' : value} 
-                    onChange={(event) => handleInputChange(event, i, j)} 
+                  <input
+                    type="text"
+                    value={value === 0 ? '' : value}
+                    onChange={(event) => handleInputChange(event, i, j)}
                   />
                 </td>
               ))}
@@ -79,7 +79,15 @@ function SudokuView() {
           ))}
         </tbody>
       </table>
-      <button onClick={checkSudoku}>Check Sudoku</button>
+
+      <button
+        className="button-blue"
+        onClick={checkSudoku}>
+          
+          Check Sudoku
+        
+        </button>
+
     </div>
   );
 }
