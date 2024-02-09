@@ -11,6 +11,8 @@ function SudokuView() {
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [editableCells, setEditableCells] = useState([]);
   const [userEdits, setUserEdits] = useState(Array(9).fill().map(() => Array(9).fill(false)));
+  const [timer, setTimer] = useState(0);
+  const [isTimerActive, setIsTimerActive] = useState(false);
 
 
   useEffect(() => {
@@ -18,13 +20,21 @@ function SudokuView() {
       .then(response => response.json())
       .then(data => {
         setGrid(data.board);
-        // Initialize editableCells based on whether the cell value is 0
         const editable = data.board.map(row => row.map(value => value === 0));
         setEditableCells(editable);
         setIsDataLoaded(true);
+        setIsTimerActive(true); // Start timeren, når data er indlæst
       })
       .catch(error => console.error('Error fetching data: ', error));
-  }, []);
+
+    const interval = setInterval(() => {
+      if (isTimerActive) {
+        setTimer(prevTimer => prevTimer + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval); // Ryd op, når komponenten unmounts
+  }, [isTimerActive]);
 
 
 
@@ -56,25 +66,29 @@ function SudokuView() {
   };
 
   const checkSudoku = useCallback(() => {
-    if (!isDataLoaded) return; // Ensure grid is loaded before checking
+    if (!isDataLoaded) return;
     const { isValid, newValidity } = isValidSudoku(grid);
     setValidity(newValidity);
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
       alert("Congratulations! You've solved the Sudoku!");
+      setIsTimerActive(false); // Stop timeren, når Sudoku er løst
     }
   }, [grid, isDataLoaded]);
 
-  useEffect(() => {
-    if (isDataLoaded) {
-      checkSudoku();
-    }
-  }, [grid, isDataLoaded, checkSudoku]);
+    // Opretter en useEffect til at stoppe timeren, når spillet er løst
+    useEffect(() => {
+      if (isDataLoaded) {
+        checkSudoku();
+      }
+    }, [grid, isDataLoaded, checkSudoku]);
+
   
 
 
   return (
     <div className="SudokuView">
+      <div>Timer: {timer} sekunder</div>
       <table className="center">
         <tbody>
           {grid.map((row, i) => (
