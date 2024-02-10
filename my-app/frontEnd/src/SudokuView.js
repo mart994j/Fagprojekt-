@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './SudokuView.css';
 import { isValidSudoku } from './sudokuUtils';
-import { fetchNewBoard } from './fetchNewBoard'; // Antag at denne import er korrekt og stien matcher
+import { fetchNewBoard } from './fetchNewBoard';
 
 function SudokuView() {
   const [grid, setGrid] = useState([]);
@@ -12,7 +12,7 @@ function SudokuView() {
   const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
 
-  // Indlæser et nyt Sudoku-board ved mount
+  // Henter et nyt board fra serveren 
   useEffect(() => {
     fetchNewBoard({
       setGrid,
@@ -25,7 +25,7 @@ function SudokuView() {
     });
   }, []);
 
-  // Timer logik
+  // Timer logik 
   useEffect(() => {
     let interval = null;
     if (isTimerActive) {
@@ -37,12 +37,14 @@ function SudokuView() {
     }
     return () => clearInterval(interval);
   }, [isTimerActive]);
-
+  
+  // Håndterer input fra brugeren
   const handleInputChange = useCallback((event, i, j) => {
     if (!editableCells[i][j]) {
       return;
     }
     const value = event.target.value;
+    // Tjekker om input er gyldigt 
     if (value === '' || (/^\d+$/.test(value) && value >= 1 && value <= 9)) {
       const numValue = value === '' ? 0 : parseInt(value, 10);
       const newGrid = grid.map((row, rowIndex) =>
@@ -61,11 +63,12 @@ function SudokuView() {
     if (!isDataLoaded) return;
     const { isValid, newValidity } = isValidSudoku(grid);
     setValidity(newValidity);
+    // Tjekker om brættet er fuldt udfyldt og gyldigt
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
       alert("Congratulations! You've solved the Sudoku!");
       setIsTimerActive(false); // Stopper timeren
-      // Genindlæser et nyt board efter løsning
+      // Henter et nyt board fra serveren
       fetchNewBoard({
         setGrid,
         setEditableCells,
