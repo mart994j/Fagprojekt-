@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback,useContext } from 'react';
 import './SudokuView.css';
 import { isValidSudoku } from './sudokuUtils';
 import { fetchNewBoard } from './fetchNewBoard';
+import UserContext from './UserContext';
 
 function SudokuView() {
   const [grid, setGrid] = useState([]);
@@ -11,6 +12,7 @@ function SudokuView() {
   const [userEdits, setUserEdits] = useState(Array(9).fill().map(() => Array(9).fill(false)));
   const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
+  const { username } = useContext(UserContext);
 
   // Henter et nyt board fra serveren 
   useEffect(() => {
@@ -66,8 +68,10 @@ function SudokuView() {
     // Tjekker om brættet er fuldt udfyldt og gyldigt
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
-      alert(`Congratulations! You've solved the Sudoku with the time ${timer} seconds!`);
-      setIsTimerActive(false); // Stopper timeren
+      alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
+      setIsTimerActive(false);
+      submitScore(username, timer);
+
       // Henter et nyt board fra serveren
       fetchNewBoard({
         setGrid,
@@ -79,13 +83,31 @@ function SudokuView() {
         setIsTimerActive
       });
     }
-  }, [grid, isDataLoaded, timer]);
+  }, [grid, isDataLoaded, timer, username]);
 
   useEffect(() => {
     if (isDataLoaded) {
       checkSudoku();
     }
   }, [grid, isDataLoaded, checkSudoku]);
+
+
+  function submitScore(username, time) {
+    console.log({ username, time }); // Add this line to debug
+    fetch('http://localhost:3000/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        time,
+      }),
+    })
+    .then(response => response.json())
+    .then(data => console.log('Score submitted:', data))
+    .catch(error => console.error('Error submitting score:', error));
+  }
 
   return (
     <div className="SudokuView">

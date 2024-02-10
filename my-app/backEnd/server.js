@@ -5,26 +5,28 @@ const app = express();
 const port = 3000;
 
 app.use(cors());
-app.use(express.json()); // Til at parse JSON bodies
-const leaderboard = []; // Simpel in-memory "database" for leaderboard
+app.use(express.json());
+const leaderboard = [];
 
 app.get('/generate', (req, res) => {
-  //console.log('Generate endpoint was called');
   const board = SudokuGenerator.generateBoard();
-  SudokuGenerator.removeNumbers(board, 10); // Juster antallet af huller efter behov
+  SudokuGenerator.removeNumbers(board, 1);
   res.json({ board });
 });
 
-// Endpoint til at modtage brugernavne og score/tid (for demonstration gemmes kun brugernavn)
 app.post('/submit', (req, res) => {
-  const { username } = req.body;
-  if (!username) {
-    return res.status(400).json({ message: 'Username is required' });
+  const { username, time } = req.body;
+  if (!username || time == null) {
+    return res.status(400).json({ message: 'Username and time are required' });
   }
-  // Tilføj brugernavn til "leaderboard". I praksis vil du inkludere score/tid eller anden relevant data.
-  leaderboard.push({ username });
+  leaderboard.push({ username, time });
+  leaderboard.sort((a, b) => a.time - b.time);
   console.log('Updated leaderboard:', leaderboard);
-  res.json({ message: 'Username added to leaderboard', leaderboard });
+  res.json({ message: 'time and username submitted successfully', leaderboard });
+});
+
+app.get('/leaderboard', (req, res) => {
+  res.json(leaderboard);
 });
 
 app.listen(port, '0.0.0.0', () => {
