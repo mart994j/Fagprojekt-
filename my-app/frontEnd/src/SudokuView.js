@@ -66,7 +66,7 @@ function SudokuView() {
     // Tjekker om brættet er fuldt udfyldt og gyldigt
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
-      alert("Congratulations! You've solved the Sudoku!");
+      alert(`Congratulations! You've solved the Sudoku with the time ${timer} seconds!`);
       setIsTimerActive(false); // Stopper timeren
       // Henter et nyt board fra serveren
       fetchNewBoard({
@@ -79,7 +79,7 @@ function SudokuView() {
         setIsTimerActive
       });
     }
-  }, [grid, isDataLoaded]);
+  }, [grid, isDataLoaded, timer]);
 
   useEffect(() => {
     if (isDataLoaded) {
