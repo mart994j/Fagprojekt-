@@ -3,6 +3,8 @@ import './SudokuView.css';
 import { isValidSudoku } from './sudokuUtils';
 import { fetchNewBoard } from './fetchNewBoard';
 import UserContext from './UserContext';
+import { useNavigate } from 'react-router-dom';
+
 
 function SudokuView() {
   const [grid, setGrid] = useState([]);
@@ -13,6 +15,7 @@ function SudokuView() {
   const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const { username } = useContext(UserContext);
+  const navigate = useNavigate();
 
   // Henter et nyt board fra serveren 
   useEffect(() => {
@@ -71,19 +74,10 @@ function SudokuView() {
       alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
       setIsTimerActive(false);
       submitScore(username, timer);
+      navigate('/'); 
 
-      // Henter et nyt board fra serveren
-      fetchNewBoard({
-        setGrid,
-        setEditableCells,
-        setUserEdits,
-        setValidity,
-        setIsDataLoaded,
-        setTimer,
-        setIsTimerActive
-      });
     }
-  }, [grid, isDataLoaded, timer, username]);
+  }, [grid, isDataLoaded, timer, username,navigate]);
 
   useEffect(() => {
     if (isDataLoaded) {

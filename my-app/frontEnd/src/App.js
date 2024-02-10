@@ -15,7 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MenuScreen />} />
           <Route path="/sudoku" element={<SudokuView />} />
-          <Route path="/leaderboard" element={<LeaderBoardView />} />
+          <Route path="/leaderboard" element={<LeaderBoardView/>} />
         </Routes>
       </Router>    
     

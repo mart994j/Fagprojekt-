@@ -22,9 +22,10 @@ function LeaderBoardView() {
       justifyContent: 'center', 
       alignItems: 'center', 
       height: '100vh',
-      backgroundColor: '#e6f7ff',
+      backgroundColor: '#2f0f57',
+      color: '#fff',
     }}>
-      <h1 style={{ marginBottom: '20px', fontSize: '60px', color: 'black' }}>Leaderboard</h1>
+      <h1 style={{ marginBottom: '20px', fontSize: '60px', color: 'white' }}>Leaderboard</h1>
       <ul>
         {leaderboard.map((entry, index) => (
           <li key={index}>{entry.username} - {entry.time}s</li>
