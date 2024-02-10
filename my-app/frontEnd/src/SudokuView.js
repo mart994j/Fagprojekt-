@@ -2,9 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import './SudokuView.css';
 import { isValidSudoku } from './sudokuUtils';
 
-
-
-
 function SudokuView() {
   const [grid, setGrid] = useState([]);
   const [validity, setValidity] = useState(Array(9).fill().map(() => Array(9).fill(true)));
@@ -13,7 +10,6 @@ function SudokuView() {
   const [userEdits, setUserEdits] = useState(Array(9).fill().map(() => Array(9).fill(false)));
   const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
-
 
   useEffect(() => {
     fetch('http://localhost:3000/generate')
@@ -26,43 +22,36 @@ function SudokuView() {
         setIsTimerActive(true); // Start timeren, når data er indlæst
       })
       .catch(error => console.error('Error fetching data: ', error));
+  }, []);
 
-    const interval = setInterval(() => {
-      if (isTimerActive) {
+  useEffect(() => {
+    let interval = null;
+    if (isTimerActive) {
+      interval = setInterval(() => {
         setTimer(prevTimer => prevTimer + 1);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval); // Ryd op, når komponenten unmounts
+      }, 1000);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
   }, [isTimerActive]);
-
-
-
 
   const handleInputChange = (event, i, j) => {
     if (!editableCells[i][j]) {
-      // hvis cellen ikke er redigerbar, gør intet
       return;
     }
     const value = event.target.value;
     if (value === '' || (/^\d+$/.test(value) && value >= 1 && value <= 9)) {
-      const numValue = value === '' ? 0 : parseInt(value, 10); // convert to number
-  
+      const numValue = value === '' ? 0 : parseInt(value, 10);
       const newGrid = grid.map((row, rowIndex) =>
-        row.map((cell, cellIndex) =>
-          rowIndex === i && cellIndex === j ? numValue : cell
-        )
+        row.map((cell, cellIndex) => rowIndex === i && cellIndex === j ? numValue : cell)
       );
-  
       setGrid(newGrid);
 
-       // Mark the cell as edited by the user
-       const newUserEdits = [...userEdits];
-       newUserEdits[i][j] = true; // Mark as edited
-       setUserEdits(newUserEdits);
-   
+      const newUserEdits = [...userEdits];
+      newUserEdits[i][j] = true;
+      setUserEdits(newUserEdits);
     }
-    //hvis input ikke er gyldigt, gør intet og returner tilbage til inputfeltet og 
   };
 
   const checkSudoku = useCallback(() => {
@@ -76,15 +65,11 @@ function SudokuView() {
     }
   }, [grid, isDataLoaded]);
 
-    // Opretter en useEffect til at stoppe timeren, når spillet er løst
-    useEffect(() => {
-      if (isDataLoaded) {
-        checkSudoku();
-      }
-    }, [grid, isDataLoaded, checkSudoku]);
-
-  
-
+  useEffect(() => {
+    if (isDataLoaded) {
+      checkSudoku();
+    }
+  }, [grid, isDataLoaded, checkSudoku]);
 
   return (
     <div className="SudokuView">
@@ -100,7 +85,7 @@ function SudokuView() {
                     className={`${!validity[i][j] ? 'invalid-input' : ''} ${userEdits[i][j] ? 'user-input' : ''}`}
                     value={value === 0 ? '' : value}
                     onChange={(event) => handleInputChange(event, i, j)}
-                    readOnly={!editableCells[i][j]} // Gør inputfeltet ikke-redigerbart, hvis cellen ikke er redigerbar
+                    readOnly={!editableCells[i][j]}
                   />
                 </td>
               ))}
@@ -111,6 +96,5 @@ function SudokuView() {
     </div>
   );
 }
-
 
 export default SudokuView;
