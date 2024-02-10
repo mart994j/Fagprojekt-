@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './SudokuView.css';
 import { isValidSudoku } from './sudokuUtils';
+import { fetchNewBoard } from './fetchNewBoard'; // Antag at denne import er korrekt og stien matcher
 
 function SudokuView() {
   const [grid, setGrid] = useState([]);
@@ -11,19 +12,20 @@ function SudokuView() {
   const [timer, setTimer] = useState(0);
   const [isTimerActive, setIsTimerActive] = useState(false);
 
+  // Indlæser et nyt Sudoku-board ved mount
   useEffect(() => {
-    fetch('http://localhost:3000/generate')
-      .then(response => response.json())
-      .then(data => {
-        setGrid(data.board);
-        const editable = data.board.map(row => row.map(value => value === 0));
-        setEditableCells(editable);
-        setIsDataLoaded(true);
-        setIsTimerActive(true); // Start timeren, når data er indlæst
-      })
-      .catch(error => console.error('Error fetching data: ', error));
+    fetchNewBoard({
+      setGrid,
+      setEditableCells,
+      setUserEdits,
+      setValidity,
+      setIsDataLoaded,
+      setTimer,
+      setIsTimerActive
+    });
   }, []);
 
+  // Timer logik
   useEffect(() => {
     let interval = null;
     if (isTimerActive) {
@@ -36,7 +38,7 @@ function SudokuView() {
     return () => clearInterval(interval);
   }, [isTimerActive]);
 
-  const handleInputChange = (event, i, j) => {
+  const handleInputChange = useCallback((event, i, j) => {
     if (!editableCells[i][j]) {
       return;
     }
@@ -52,8 +54,9 @@ function SudokuView() {
       newUserEdits[i][j] = true;
       setUserEdits(newUserEdits);
     }
-  };
+  }, [editableCells, grid, userEdits]);
 
+  // Tjekker om Sudoku er løst
   const checkSudoku = useCallback(() => {
     if (!isDataLoaded) return;
     const { isValid, newValidity } = isValidSudoku(grid);
@@ -61,7 +64,17 @@ function SudokuView() {
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
       alert("Congratulations! You've solved the Sudoku!");
-      setIsTimerActive(false); // Stop timeren, når Sudoku er løst
+      setIsTimerActive(false); // Stopper timeren
+      // Genindlæser et nyt board efter løsning
+      fetchNewBoard({
+        setGrid,
+        setEditableCells,
+        setUserEdits,
+        setValidity,
+        setIsDataLoaded,
+        setTimer,
+        setIsTimerActive
+      });
     }
   }, [grid, isDataLoaded]);
 
