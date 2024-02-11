@@ -6,12 +6,13 @@ import { useLocation } from 'react-router-dom';
 
 function Geomap() {
   const location = useLocation();
-  const center = { lat:  55.719437, lng: 13.197304 };
-  const userLocation = location.state || center; // Brug lokation fra state, eller brug standardværdien
+  const userLocation = location.state; // Brug lokation fra state, eller brug standardværdien
 
   return (
     <div className="geomap-screen">
-      <MapContainer center={[userLocation.lat, userLocation.lng]} zoom={15} style={{ height: "100%", width: "100%" }}>
+      <h1>Geomap</h1>
+      <p>Her kan du se hvor du har løst dine sudokuer henne!</p>
+      <MapContainer center={[userLocation.lat, userLocation.lng]} zoom={15} style={{ height: "60%", width: "80%" }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; OpenStreetMap contributors'
