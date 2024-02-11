@@ -23,14 +23,17 @@ function MenuScreen() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        navigate('/geoMap', { state: { lat: latitude, lng: longitude } }); // Brugerens lokation
+        navigate('/geomap', { state: { lat: latitude, lng: longitude } });
       },
-      () => {
-        const copenhagen = { lat: 55.6761, lng: 12.5683 }; // Standardkoordinater for København
-        navigate('/geoMap', { state: copenhagen }); // Standardlokation
+      (error) => {
+        console.error("Geolocation error:", error);
+        const defaultLat = 55.6761; // Example: Copenhagen's latitude
+        const defaultLng = 12.5683; // Example: Copenhagen's longitude
+        navigate('/geomap', { state: { lat: defaultLat, lng: defaultLng } });
       }
     );
   };
+  
   
 
   return (

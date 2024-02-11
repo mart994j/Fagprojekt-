@@ -15,15 +15,16 @@ app.get('/generate', (req, res) => {
 });
 
 app.post('/submit', (req, res) => {
-  const { username, time } = req.body;
-  if (!username || time == null) {
-    return res.status(400).json({ message: 'Username and time are required' });
+  const { username, time, location } = req.body; // Modtag lokationsdata
+  if (!username || time == null || !location) { // Tjek også for lokationsdata
+    return res.status(400).json({ message: 'Username, time, and location are required' });
   }
-  leaderboard.push({ username, time });
+  leaderboard.push({ username, time, location }); // Gem lokationsdata sammen med de andre oplysninger
   leaderboard.sort((a, b) => a.time - b.time);
   console.log('Updated leaderboard:', leaderboard);
-  res.json({ message: 'time and username submitted successfully', leaderboard });
+  res.json({ message: 'Username, time, and location submitted successfully', leaderboard });
 });
+
 
 app.get('/leaderboard', (req, res) => {
   res.json(leaderboard);
