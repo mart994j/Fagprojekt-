@@ -20,8 +20,11 @@ function MenuScreen() {
   };
 
   const handleGeoMap = () => {
-    navigate('/geoMap');
-  }
+    navigator.geolocation.getCurrentPosition((position) => {
+      const { latitude, longitude } = position.coords;
+      navigate('/geoMap', { state: { lat: latitude, lng: longitude } }); // Send lokation som state til /geoMap ruten
+    });
+  };
 
   return (
     <div className="menu-screen"> 
