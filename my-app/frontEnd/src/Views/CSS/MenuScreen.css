@@ -55,4 +55,14 @@
   .menu-screen button[type="button"]:hover {
     background-color: #218838;
   }
+
+  .menu-screen .geomap-button[type = "button"]{
+    margin-top: 20px;
+    background-color: #a72828;
+    color: white;
+  }
+  .menu-screen .geomap-button[type = "button"]:hover{
+    background-color: #8a2121;
+  }
+
   

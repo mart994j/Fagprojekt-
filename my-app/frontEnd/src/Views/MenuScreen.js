@@ -37,7 +37,7 @@ function MenuScreen() {
         <button type="submit">Start Spil</button>
       </form>
       <button onClick={handleLeaderBoard} type="button">Leaderboard</button>
-      <button onClick={handleGeoMap} type="button">Geomap</button>
+      <button onClick={handleGeoMap} type="button" className="geomap-button">Geomap</button>
     </div>
   );
 }
