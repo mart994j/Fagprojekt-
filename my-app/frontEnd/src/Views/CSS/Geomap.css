@@ -1,0 +1,14 @@
+.geomap-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #2f0f57;
+    color: #ffffff;
+  }
+
+  .geomap-screen h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+  }

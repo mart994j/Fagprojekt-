@@ -19,6 +19,10 @@ function MenuScreen() {
     navigate('/leaderboard');
   };
 
+  const handleGeoMap = () => {
+    navigate('/geoMap');
+  }
+
   return (
     <div className="menu-screen"> 
       <h1>Velkommen til Sudoku!</h1>
@@ -33,6 +37,7 @@ function MenuScreen() {
         <button type="submit">Start Spil</button>
       </form>
       <button onClick={handleLeaderBoard} type="button">Leaderboard</button>
+      <button onClick={handleGeoMap} type="button">Geomap</button>
     </div>
   );
 }
