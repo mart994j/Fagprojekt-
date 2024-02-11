@@ -136,7 +136,8 @@ function SudokuView() {
 
   return (
     <div className="SudokuView">
-      <div>Timer: {timer} sekunder</div>
+      <h1>Sudoku</h1>
+      <div className="timer">Timer: {timer} sekunder</div>
       <table className="center">
         <tbody>
           {grid.map((row, i) => (

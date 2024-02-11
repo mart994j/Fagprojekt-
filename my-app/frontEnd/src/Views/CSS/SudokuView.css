@@ -1,5 +1,6 @@
 
 .SudokuView {
+  background-color: #2f0f57; /* Mørk farve til baggrunden */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,11 +8,23 @@
   height: 100vh; 
 }
 
+/* Dette vil gøre alle h1 tags i SudokuView hvide */
+.SudokuView h1 {
+  color: white;
+}
+.timer {
+  color: white;
+}
 
+
+/* Dette vil sikre, at selve spillebrættet har en hvid baggrund */
 .center {
+  background-color: #ffffff; /* Hvid baggrund til Sudoku brættet */
   margin: 20px;
   height: 500px;
   width: 500px;
+  padding: 10px; /* Tilføjer lidt plads omkring brættet */
+  box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Valgfri: Tilføjer skygge for dybde */
 }
 
 .App-logo {
