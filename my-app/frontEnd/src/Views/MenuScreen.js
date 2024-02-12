@@ -13,13 +13,17 @@ function MenuScreen() {
   const handleStartGame = (event) => {
     event.preventDefault();
     setUsername(localUsername);
-    if (k >= 2 && n >= 4 && n % k === 0) {
+    if (k >= 2 && n === 3 && k === 3) {
+      console.log('Success:', localUsername, k, n);
+      navigate('/sudoku', { state: { k, n } }); // Pass k and n as part of the state
+    } else if (k >= 2 && n >= 4 && n % k === 0) {
       console.log('Success:', localUsername, k, n);
       navigate('/sudoku', { state: { k, n } }); // Pass k and n as part of the state
     } else {
       alert('Ugyldige værdier for k eller n. Vælg venligst igen.');
       return;
     }
+    
     
   };
 

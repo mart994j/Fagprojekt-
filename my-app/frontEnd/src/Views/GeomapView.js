@@ -25,7 +25,7 @@ function Geomap() {
       })
       .catch(error => console.error("Failed to load leaderboard data:", error));
   }, []);
-
+  console.log(locationState);
   const center = locationState || { lat: 55.6761, lng: 12.5683 }; // Brug lokation fra state eller en standardværdi
 
   return (

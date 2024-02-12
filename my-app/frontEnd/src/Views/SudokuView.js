@@ -6,7 +6,7 @@ import UserContext from '../UserContext';
 import { useNavigate } from 'react-router-dom';
 
 
-function SudokuView(probs) {
+function SudokuView() {
   const [grid, setGrid] = useState([]);
   const [validity, setValidity] = useState(Array(9).fill().map(() => Array(9).fill(true)));
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -174,4 +174,4 @@ useEffect(() => {
   );
 }
 
-export default React.memo(SudokuView);
+export default SudokuView;
