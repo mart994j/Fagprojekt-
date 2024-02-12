@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback,useContext } from 'react';
+import React, { useState, useEffect, useCallback,useContext,useRef } from 'react';
 import './CSS/SudokuView.css';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
@@ -6,14 +6,15 @@ import UserContext from '../UserContext';
 import { useNavigate } from 'react-router-dom';
 
 
-function SudokuView() {
+function SudokuView(probs) {
+  console.log('SudokuView render');
   const [grid, setGrid] = useState([]);
   const [validity, setValidity] = useState(Array(9).fill().map(() => Array(9).fill(true)));
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [editableCells, setEditableCells] = useState([]);
   const [userEdits, setUserEdits] = useState(Array(9).fill().map(() => Array(9).fill(false)));
   const [timer, setTimer] = useState(0);
-  const [isTimerActive, setIsTimerActive] = useState(false);
+  const isTimerActiveRef = useRef(false);
   const { username } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -26,22 +27,28 @@ function SudokuView() {
       setValidity,
       setIsDataLoaded,
       setTimer,
-      setIsTimerActive
+      setIsTimerActive: isTimerActiveRef.current ? () => {} : startTimer,
     });
   }, []);
 
   // Timer logik 
-  useEffect(() => {
-    let interval = null;
-    if (isTimerActive) {
-      interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer + 1);
+  const startTimer = () => {
+    if (!isTimerActiveRef.current) {
+      isTimerActiveRef.current = true;
+      const interval = setInterval(() => {
+        if (isTimerActiveRef.current) {
+          setTimer((prevTimer) => prevTimer + 1);
+        } else {
+          clearInterval(interval);
+        }
       }, 1000);
-    } else {
-      clearInterval(interval);
     }
-    return () => clearInterval(interval);
-  }, [isTimerActive]);
+  };
+
+  // Stop timer-funktion
+  const stopTimer = () => {
+    isTimerActiveRef.current = false;
+  };
   
   // Håndterer input fra brugeren
   const handleInputChange = useCallback((event, i, j) => {
@@ -60,6 +67,7 @@ function SudokuView() {
       const newUserEdits = [...userEdits];
       newUserEdits[i][j] = true;
       setUserEdits(newUserEdits);
+      stopTimer();
     }
   }, [editableCells, grid, userEdits]);
 
@@ -81,7 +89,29 @@ function SudokuView() {
       callback(null, null); // Håndter unsupported browser
     }
   }
-  
+  const submitScore = useCallback((username, time) => {
+    getUserLocation((latitude, longitude) => {
+      const location = { lat: latitude, lng: longitude };
+      console.log({ username, time, location }); // Debugging
+      fetch('http://localhost:3000/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          time,
+          location,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Score submitted:', data);
+        // Opdater UI eller state her baseret på svaret, hvis nødvendigt
+      })
+      .catch(error => console.error('Error submitting score:', error));
+    });
+  }, []);
 
 
 
@@ -95,12 +125,12 @@ function SudokuView() {
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
       alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
-      setIsTimerActive(false);
+      stopTimer();
       submitScore(username, timer);
       navigate('/'); 
 
     }
-  }, [grid, isDataLoaded, timer, username,navigate]);
+  }, [grid, isDataLoaded, timer, username,navigate,submitScore]);
 
   useEffect(() => {
     if (isDataLoaded) {
@@ -109,28 +139,12 @@ function SudokuView() {
   }, [grid, isDataLoaded, checkSudoku]);
 
 
-  const submitScore = useCallback((username, time) => {
-  getUserLocation((latitude, longitude) => {
-    const location = { lat: latitude, lng: longitude };
-    console.log({ username, time, location }); // Debugging
-    fetch('http://localhost:3000/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username,
-        time,
-        location,
-      }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Score submitted:', data);
-      // Opdater UI eller state her baseret på svaret, hvis nødvendigt
-    })
-    .catch(error => console.error('Error submitting score:', error));
-  });
+
+
+useEffect(() => {
+  return () => {
+    isTimerActiveRef.current = false; // Sørg for at timeren stopper, når komponenten unmounts
+  };
 }, []);
   
 
@@ -161,4 +175,4 @@ function SudokuView() {
   );
 }
 
-export default SudokuView;
+export default React.memo(SudokuView);
