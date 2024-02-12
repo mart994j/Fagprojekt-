@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 function SudokuView(probs) {
-  console.log('SudokuView render');
   const [grid, setGrid] = useState([]);
   const [validity, setValidity] = useState(Array(9).fill().map(() => Array(9).fill(true)));
   const [isDataLoaded, setIsDataLoaded] = useState(false);
