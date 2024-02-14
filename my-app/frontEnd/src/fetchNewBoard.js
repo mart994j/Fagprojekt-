@@ -1,5 +1,7 @@
+let isFetching = false;
+
 export const fetchNewBoard = ({
-  n, // Tilføj n som en parameter
+  n, // Adding n as a parameter
   setGrid,
   setEditableCells,
   setUserEdits,
@@ -8,16 +10,20 @@ export const fetchNewBoard = ({
   setTimer,
   setIsTimerActive
 }) => {
-  // Opdater URL'en til at inkludere størrelsen n som en query parameter
+  // Early return if already fetching
+  if (isFetching) return;
+  isFetching = true;
+
+  // Update the URL to include the size n as a query parameter
   fetch(`http://localhost:3000/generate?size=${n}`)
     .then(response => response.json())
     .then(data => {
-      // Sætter grid baseret på den hentede data
+      // Set grid based on fetched data
       setGrid(data.board);
-      // Beregner hvilke celler der er redigerbare (hvor værdien er 0)
+      // Calculate which cells are editable (where value is 0)
       const editable = data.board.map(row => row.map(value => value === 0));
       setEditableCells(editable);
-      // Opdaterer userEdits og validity baseret på den dynamiske størrelse af n
+      // Update userEdits and validity based on the dynamic size of n
       setUserEdits(Array(n).fill().map(() => Array(n).fill(false)));
       setValidity(Array(n).fill().map(() => Array(n).fill(true)));
       setIsDataLoaded(true);
@@ -26,6 +32,10 @@ export const fetchNewBoard = ({
     })
     .catch(error => {
       console.error('Error fetching data: ', error);
-      setIsDataLoaded(false); // Tilføj dette for at håndtere fejltilstand korrekt
+      setIsDataLoaded(false); // Handle error state correctly
+    })
+    .finally(() => {
+      // Reset isFetching to allow new fetches
+      isFetching = false;
     });
 };

@@ -16,12 +16,12 @@ app.get('/generate', (req, res) => {
   if (![9, 16, 25].includes(size)) { // Eksempel på validering for almindelige Sudoku størrelser
     return res.status(400).json({ message: 'Invalid board size' });
   }
-
+  console.log('Generating board of size', size);
   // Antager at SudokuGenerator.generateBoard kan acceptere en størrelse parameter
   const board = SudokuGenerator.generateBoard(size);
   // Tilpas fjernelse af tal baseret på størrelsen, om nødvendigt
   SudokuGenerator.removeNumbers(board, 1); // Denne linje skal måske tilpasses
-
+  console.log('Generated board:', board);
   res.json({ board });
 });
 
