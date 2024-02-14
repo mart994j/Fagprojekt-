@@ -60,12 +60,6 @@
   }
 }
 
-input {
-  width: 20px;
-  height: 20px;
-  text-align: center;
-}
-
 input[readOnly] {
   outline: none; /* Removes the outline */
   background-color: #f0f0f000; /* Optional: changes background color to distinguish non-editable cells */
@@ -77,41 +71,29 @@ table {
 }
 
 td {
-  padding: 5px;
   border: 1px solid #ddd;
   width: 20px;
   height: 20px;
   text-align: center;
+  position: relative;
+  box-sizing: border-box;
 }
 
 input {
+  padding: 0;
   width: 100%;
   height: 100%;
   border: none;
   text-align: center;
   outline: none;
   font-size: 20px;
+
 }
 
 .user-input {
   color: blue;
 }
 
-
-
-
-
-.button-blue {
-  background-color: #007bff; 
-  color: white;
-  font-size: 16px; 
-  padding: 10px 20px; 
-  border: none;
-  border-radius: 5px; 
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease; 
-}
 
 .invalid {
   background-color: rgba(255, 0, 0, 0.3); /* Light red background */
@@ -121,6 +103,18 @@ input {
   background-color:rgba(255, 0, 0, 0.004);
 }
 
+.notes {
+ 
+  color: #666; 
+ 
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2; /* Below the input field */
+  padding: 5px; /* Add padding to prevent text from touching borders */
+  box-sizing: border-box; 
+}
+
 .right-border {
   border-right: 2px solid black;
 }
@@ -128,6 +122,13 @@ input {
 .bottom-border {
   border-bottom: 2px solid black;
 }
+
+
+
+
+
+
+
 
 
 
