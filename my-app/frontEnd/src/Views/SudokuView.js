@@ -65,7 +65,7 @@ function SudokuView() {
     }
     const value = event.target.value;
     // Tjekker om input er gyldigt 
-    if (value === '' || (/^\d+$/.test(value) && value >= 1 && value <= 9)) {
+    if (value === '' || (/^\d+$/.test(value) && value >= 1 && value <= n)) {
       const numValue = value === '' ? 0 : parseInt(value, 10);
       const newGrid = grid.map((row, rowIndex) =>
         row.map((cell, cellIndex) => rowIndex === i && cellIndex === j ? numValue : cell)
@@ -77,7 +77,7 @@ function SudokuView() {
       setUserEdits(newUserEdits);
       stopTimer();
     }
-  }, [editableCells, grid, userEdits]);
+  }, [editableCells, grid, userEdits,n]);
 
 
   function getUserLocation(callback) {
