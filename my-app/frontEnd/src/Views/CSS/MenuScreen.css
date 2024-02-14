@@ -91,7 +91,7 @@
     display: grid;
     gap: 2px; /* Adjust the gap between regions */
     margin-top: 20px;
-    background-color: #000000;
+    background-color: #514949;
     overflow: auto; /* Enable overflow handling */
     justify-content: center;
     max-width: 80vw; /* Maximum width for the preview container */

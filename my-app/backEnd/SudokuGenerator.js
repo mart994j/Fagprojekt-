@@ -1,60 +1,58 @@
 class SudokuGenerator {
-    //Generer et nyt sudoku bræt
-    static generateBoard() {
-      let board = Array.from({length: 9}, () => Array(9).fill(0));
-      this.fillBoard(board);
-      return board;
-    }
+  // Generer et nyt sudoku bræt med variabel størrelse
+  static generateBoard(size=9) {
+    let board = Array.from({ length: size }, () => Array(size).fill(0));
+    this.fillBoard(board, size);
+    return board;
+  }
     //Fyld brættet med tal
-    static fillBoard(board) {
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-          if (board[i][j] === 0) {
-            const numbers = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
-            for (let num of numbers) {
-              if (this.isValidPlacement(board, i, j, num)) {
-                board[i][j] = num;
-                if (this.fillBoard(board)) {
-                  return true;
-                } else {
-                  board[i][j] = 0;
-                }
+  static fillBoard(board, size) {
+    for (let i = 0; i < size; i++) {
+      for (let j = 0; j < size; j++) {
+        if (board[i][j] === 0) {
+          const numbers = Array.from({ length: size }, (_, index) => index + 1).sort(() => Math.random() - 0.5);
+          for (let num of numbers) {
+            if (this.isValidPlacement(board, i, j, num, size)) {
+              board[i][j] = num;
+              if (this.fillBoard(board, size)) {
+                return true;
+              } else {
+                board[i][j] = 0;
               }
             }
-            return false;
           }
-        }
-      }
-      return true;
-    }
-    //Check om tal er gyldigt
-    static isValidPlacement(board, row, col, num) {
-      for (let i = 0; i < 9; i++) {
-        const m = 3 * Math.floor(row / 3) + Math.floor(i / 3);
-        const n = 3 * Math.floor(col / 3) + i % 3;
-        if (board[row][i] === num || board[i][col] === num || board[m][n] === num) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-
-
-    //Fjern tal fra brættet, så der kun er et bestemt antal huller, sættes i sudokuView.js
-    static removeNumbers(board, holes) {
-      let attempts = holes;
-      while (attempts > 0) {
-        let row = Math.floor(Math.random() * 9);
-        let col = Math.floor(Math.random() * 9);
-        if (board[row][col] !== 0) {
-          board[row][col] = 0;
-          attempts--;
+          return false; // Ingen gyldig nummer fundet, backtrack
         }
       }
     }
-    
+    return true; // Hele brættet er fyldt
   }
+  // Check om tal er gyldigt, tilpasset til variabel størrelse
+  static isValidPlacement(board, row, col, num, size) {
+    const boxSize = Math.sqrt(size);
+    for (let i = 0; i < size; i++) {
+      const m = boxSize * Math.floor(row / boxSize) + Math.floor(i / boxSize);
+      const n = boxSize * Math.floor(col / boxSize) + i % boxSize;
+      if (board[row][i] === num || board[i][col] === num || board[m][n] === num) {
+        return false;
+      }
+    }
+    return true;
+  }
+  // Fjern tal fra brættet, tilpasset til variabel størrelse
+  static removeNumbers(board, holes) {
+    let attempts = holes;
+    const size = board.length;
+    while (attempts > 0) {
+      let row = Math.floor(Math.random() * size);
+      let col = Math.floor(Math.random() * size);
+      if (board[row][col] !== 0) {
+        board[row][col] = 0;
+        attempts--;
+      }
+    }
+  }
+}
   module.exports = { SudokuGenerator };
 
   

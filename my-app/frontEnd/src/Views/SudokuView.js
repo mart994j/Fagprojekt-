@@ -3,23 +3,32 @@ import './CSS/SudokuView.css';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
 import UserContext from '../UserContext';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 function SudokuView() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  const [n, setN] = useState(9); // Initialiserer n med en standardværdi eller fallback værdi
   const [grid, setGrid] = useState([]);
-  const [validity, setValidity] = useState(Array(9).fill().map(() => Array(9).fill(true)));
+
+  const [validity, setValidity] = useState(Array(n).fill().map(() => Array(n).fill(true)));
+  const [userEdits, setUserEdits] = useState(Array(n).fill().map(() => Array(n).fill(false)));
+
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [editableCells, setEditableCells] = useState([]);
-  const [userEdits, setUserEdits] = useState(Array(9).fill().map(() => Array(9).fill(false)));
   const [timer, setTimer] = useState(0);
   const isTimerActiveRef = useRef(false);
   const { username } = useContext(UserContext);
-  const navigate = useNavigate();
+
 
   // Henter et nyt board fra serveren 
   useEffect(() => {
+    const n = location.state?.n ? location.state.n : 9; // Fallback til 9 som standard størrelse
+    setN(n);
     fetchNewBoard({
+      n,
       setGrid,
       setEditableCells,
       setUserEdits,
@@ -28,7 +37,7 @@ function SudokuView() {
       setTimer,
       setIsTimerActive: isTimerActiveRef.current ? () => {} : startTimer,
     });
-  }, []);
+  }, [location.state?.n]);
 
   // Timer logik 
   const startTimer = () => {

@@ -7,24 +7,20 @@ function MenuScreen() {
   let navigate = useNavigate();
   const { setUsername } = useUser();
   const [localUsername, setLocalUsername] = useState('');
-  const [k, setK] = useState(3);
-  const [n, setN] = useState(3);
+  const [n, setN] = useState(9);
+  const k = Math.sqrt(n);
 
   const handleStartGame = (event) => {
     event.preventDefault();
     setUsername(localUsername);
-    if (k >= 2 && n === 3 && k === 3) {
+    // Tjekker om n er et perfekt kvadrat og k er et heltal
+    if (Number.isInteger(k) && n > 0) {
       console.log('Success:', localUsername, k, n);
-      navigate('/sudoku', { state: { k, n } }); // Pass k and n as part of the state
-    } else if (k >= 2 && n >= 4 && n % k === 0) {
-      console.log('Success:', localUsername, k, n);
-      navigate('/sudoku', { state: { k, n } }); // Pass k and n as part of the state
+      navigate('/sudoku', { state: { n } });
     } else {
-      alert('Ugyldige værdier for k eller n. Vælg venligst igen.');
+      alert('Ugyldig værdi for n. n skal være et perfekt kvadrat (f.eks., 9, 16, 25).');
       return;
     }
-    
-    
   };
 
   const handleLeaderBoard = () => {
@@ -46,22 +42,37 @@ function MenuScreen() {
     );
   };
   
-  const BoardPreview = ({ k, n }) => {
-    const gridSize = n * n; // Total grid size corrected
-    const regionSize = k * k; // Each region's size
+  const BoardPreview = ({ n }) => {
+    const regionSize = Math.sqrt(n);
+    // Juster stilen for at sikre ensartede grænser mellem regionerne
     return (
-      <div className="board-preview" style={{ gridTemplateColumns: `repeat(${n}, 1fr)`, gridTemplateRows: `repeat(${n}, 1fr)` }}>
-        {[...Array(gridSize)].map((_, gridIdx) => (
-          <div key={gridIdx} className="preview-region" style={{ gridTemplateColumns: `repeat(${k}, 1fr)`, gridTemplateRows: `repeat(${k}, 1fr)` }}>
-            {[...Array(regionSize)].map((_, regionIdx) => (
-              <div key={regionIdx} className="preview-cell"></div>
-            ))}
-          </div>
-        ))}
+      <div className="board-preview" style={{ gridTemplateColumns: `repeat(${n}, 1fr)`, gridTemplateRows: `repeat(${n}, 1fr)`, maxWidth: '90vw', maxHeight: '90vh' }}>
+        {[...Array(n * n)].map((_, idx) => {
+          // Beregner hvilken region hver celle tilhører
+          const row = Math.floor(idx / n);
+          const col = idx % n;
+          // Bestemmer om cellen er på en ydre grænse af en region
+          const isOuterBorderRow = (row + 1) % regionSize === 0 && row !== n - 1;
+          const isOuterBorderCol = (col + 1) % regionSize === 0 && col !== n - 1;
+
+          // Skifter baggrundsfarve for bedre at vise regioner
+          const backgroundColor = ((Math.floor(row / regionSize) + Math.floor(col / regionSize)) % 2 === 0) ? '#baaaaa' : '#ffffff';
+          return (
+            <div
+              key={idx}
+              className="preview-cell"
+              style={{
+                backgroundColor,
+                borderBottom: isOuterBorderRow ? '2px solid #000000' : '1px solid #000000', // Tykkere kant kun ved ydre grænser
+                borderRight: isOuterBorderCol ? '2px solid #000000' : '1px solid #000000', // Standard kant for indre celler
+              }}
+            ></div>
+          );
+        })}
       </div>
     );
   };
-  
+
   
 
   return (
@@ -81,30 +92,19 @@ function MenuScreen() {
       <button onClick={handleLeaderBoard} type="button">Leaderboard</button>
       <button onClick={handleGeoMap} type="button" className="geomap-button">Geomap</button>
 
-       {/* Sudoku board size preview */}
-       <BoardPreview k={k} n={n} />
+      {/* Sudoku board size preview */}
+      <BoardPreview k={k} n={n} />
 
       <div className="kn-inputs">
         <input
           type="number"
-          value={k}
-          onChange={(e) => setK(Number(e.target.value))}
-          placeholder="Vælg k (region størrelse)"
-          required
-        />
-        <input
-          type="number"
           value={n}
           onChange={(e) => setN(Number(e.target.value))}
-          placeholder="Vælg n (celle størrelse)"
+          placeholder="Vælg n (bræt størrelse)"
           required
         />
       </div>
-
-
-
     </div>
-    
   );
 }
 
