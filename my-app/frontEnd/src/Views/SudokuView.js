@@ -155,32 +155,49 @@ useEffect(() => {
   };
 }, []);
   
+// Calculate the square root of n to determine subgrid size
+const subGridSize = Math.sqrt(n);
+const baseSize = 500; // Base size for the Sudoku board
+const cellSize = baseSize / n;
+const fontSize = Math.max(12, cellSize / 3); // Adjust this formula as needed
 
-  return (
-    <div className="SudokuView">
-      <h1>Sudoku</h1>
-      <div className="timer">Timer: {timer} sekunder</div>
-      <table className="center">
-        <tbody>
-          {grid.map((row, i) => (
-            <tr key={i}>
-              {row.map((value, j) => (
-                <td key={j} className={!validity[i][j] ? 'invalid' : ''}>
-                  <input
-                    type="text"
-                    className={`${!validity[i][j] ? 'invalid-input' : ''} ${userEdits[i][j] ? 'user-input' : ''}`}
-                    value={value === 0 ? '' : value}
-                    onChange={(event) => handleInputChange(event, i, j)}
-                    readOnly={!editableCells[i][j]}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+// Modify the return statement in your SudokuView component
+return (
+  <div className="SudokuView">
+    <h1>Sudoku</h1>
+    <div className="timer">Timer: {timer} sekunder</div>
+    <table className="center" style={{ width: baseSize + 'px', height: baseSize + 'px' }}>
+      <tbody>
+        {grid.map((row, i) => (
+          <tr key={i}>
+            {row.map((value, j) => (
+              <td
+                key={j}
+                className={
+                  `${!validity[i][j] ? 'invalid' : ''} ` +
+                  `${(j + 1) % subGridSize === 0 && j + 1 !== n ? 'right-border' : ''} ` +
+                  `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}`
+                }
+                style={{ width: cellSize + 'px', height: cellSize + 'px' }}
+
+              >
+                <input
+                  type="text"
+                  className={`${!validity[i][j] ? 'invalid-input' : ''} ${userEdits[i][j] ? 'user-input' : ''}`}
+                  value={value === 0 ? '' : value}
+                  onChange={(event) => handleInputChange(event, i, j)}
+                  readOnly={!editableCells[i][j]}
+                  style={{ fontSize: fontSize + 'px' }}
+                />
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
+
 }
 
 export default SudokuView;
