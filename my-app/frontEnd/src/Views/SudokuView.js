@@ -29,7 +29,7 @@ function SudokuView() {
     // Initialize or re-initialize notes when n changes
     setNotes(Array(n).fill().map(() => Array(n).fill([])));
   }, [n]); // Dependency on n
-
+//hej
   // Henter et nyt board fra serveren 
   useEffect(() => {
     const n = location.state?.n ? location.state.n : 9; // Fallback til 9 som standard størrelse
