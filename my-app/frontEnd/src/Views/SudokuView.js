@@ -105,8 +105,6 @@ function SudokuView() {
           updatedNotes[i][j] = [];
         }
 
-
-
         setGrid(newGrid);
         setNotes(updatedNotes); // Update notes state to reflect changes
 
@@ -200,7 +198,7 @@ function SudokuView() {
   const subGridSize = Math.sqrt(n);
   const baseSize = 500; // Base size for the Sudoku board
   const cellSize = baseSize / n;
-  const fontSize = Math.max(12, cellSize / 3); // Adjust this formula as needed
+  const fontSize = Math.max(12, cellSize / 3);
 
   // Modify the return statement in your SudokuView component
   return (
