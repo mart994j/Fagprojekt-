@@ -1,33 +1,49 @@
 class SudokuGenerator {
-  // Generer et nyt sudoku bræt med variabel størrelse
-  static generateBoard(size=9) {
+  // Generate a new Sudoku board of variable size
+  static generateBoard(size = 9) {
+
+    // Check if the size is valid
     let board = Array.from({ length: size }, () => Array(size).fill(0));
-    this.fillBoard(board, size);
-    return board;
+    //en kandidat er et tal der kan stå i en celle
+    let candidates = Array.from({ length: size }, () =>
+      //array.from laver et array med en længde og en funktion der udfylder arrayet
+      Array.from({ length: size }, () => new Set(Array.from({ length: size }, (_, index) => index + 1)))
+    );
+    if (this.fillBoard(board, size, candidates)) {
+      return board;
+    }
   }
-    //Fyld brættet med tal
-  static fillBoard(board, size) {
-    for (let i = 0; i < size; i++) {
-      for (let j = 0; j < size; j++) {
-        if (board[i][j] === 0) {
-          const numbers = Array.from({ length: size }, (_, index) => index + 1).sort(() => Math.random() - 0.5);
-          for (let num of numbers) {
-            if (this.isValidPlacement(board, i, j, num, size)) {
-              board[i][j] = num;
-              if (this.fillBoard(board, size)) {
-                return true;
-              } else {
-                board[i][j] = 0;
-              }
-            }
-          }
-          return false; // Ingen gyldig nummer fundet, backtrack
+ 
+  //fill fylder boardet med tal sådan at den ikke skal bruge backtracking
+  static fillBoard(board, size, candidates) {
+    //find den celle med færrest kandidater
+    let [row, col] = this.findCellWithFewestCandidates(board, candidates, size);
+    //hvis der ikke er nogen celler med kandidater, er brættet fyldt
+    if (row === -1) {
+      return true; // Board is filled
+    }
+    //lav en liste over kandidaterne
+    let possibleNumbers = Array.from(candidates[row][col]);
+    for (let num of possibleNumbers) {
+      if (this.isValidPlacement(board, row, col, num, size)) {
+        //hvis nummeret kan stå i cellen, så sæt det i cellen
+        board[row][col] = num;
+        //opdater kandidaterne hvis nummeret er sat i cellen
+        const changes = this.updateCandidates(candidates, row, col, num, size, true); // Pass true to track changes
+        if (this.fillBoard(board, size, candidates)) {
+          //hvis brættet er fyldt, returner true
+          return true;
         }
+        //hvis brættet ikke er fyldt, så fjern nummeret fra cellen og opdater kandidaterne
+        this.revertCandidatesChanges(candidates, changes); 
+        
+        board[row][col] = 0;
       }
     }
-    return true; // Hele brættet er fyldt
+    return false; // Trigger backtrack
   }
-  // Check om tal er gyldigt, tilpasset til variabel størrelse
+
+  // Check if a number is validly placed
   static isValidPlacement(board, row, col, num, size) {
     const boxSize = Math.sqrt(size);
     for (let i = 0; i < size; i++) {
@@ -39,7 +55,8 @@ class SudokuGenerator {
     }
     return true;
   }
-  // Fjern tal fra brættet, tilpasset til variabel størrelse
+
+  // Remove numbers from the board to create puzzles
   static removeNumbers(board, holes) {
     let attempts = holes;
     const size = board.length;
@@ -52,7 +69,53 @@ class SudokuGenerator {
       }
     }
   }
-}
-  module.exports = { SudokuGenerator };
+  //funktionen tager et array af kandidater og et array af ændringer
+  static revertCandidatesChanges(candidates, changes) {
+    //for hver ændring i ændringerne så tilføj nummeret til cellen
+    changes.forEach(change => {
+      const [row, col, num] = change;
+      candidates[row][col].add(num);
+    });
+  }
 
-  
+  //find den celle med færrest kandidater
+  static findCellWithFewestCandidates(board, candidates, size) {
+    let minCandidates = size + 1;
+    let cell = [-1, -1];
+    //for hver celle i brættet så find den celle med færrest kandidater
+    for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+        if (board[row][col] === 0 && candidates[row][col].size < minCandidates) {
+          //hvis der er en celle med færre kandidater end den nuværende celle, så sæt minCandidates til antallet af kandidater i cellen og sæt cell til cellen
+          minCandidates = candidates[row][col].size;
+          cell = [row, col];
+        }
+      }
+    }
+    return cell;
+  }
+
+  //opdater kandidaterne så nummeret ikke kan stå i cellen
+  static updateCandidates(candidates, row, col, num, size, trackChanges = false) {
+    let changes = [];
+    const boxSize = Math.sqrt(size);
+    for (let i = 0; i < size; i++) {
+      // Row and Column
+      if (candidates[row][i].delete(num)) changes.push([row, i, num]);
+      if (candidates[i][col].delete(num)) changes.push([i, col, num]);
+      //hvis der er ændringer i kandidaterne så tilføj ændringerne til changes
+
+      // Box
+      let boxRow = Math.floor(row / boxSize) * boxSize + Math.floor(i / boxSize);
+      let boxCol = Math.floor(col / boxSize) * boxSize + (i % boxSize);
+      if (boxRow < size && boxCol < size && candidates[boxRow][boxCol].delete(num)) {
+        //hvis nummeret kan fjernes fra kandidaterne så tilføj ændringen til changes
+        changes.push([boxRow, boxCol, num]);
+      }
+    }
+    return trackChanges ? changes : null;
+    //hvis trackChanges er true så returner changes ellers returner null
+  }
+}
+
+module.exports = { SudokuGenerator };
