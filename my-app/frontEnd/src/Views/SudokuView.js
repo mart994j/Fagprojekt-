@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import './CSS/SudokuView.css';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
+import { FaPencilAlt, FaEraser, FaCheck, FaTimes } from 'react-icons/fa';
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -22,14 +23,15 @@ function SudokuView() {
   const isTimerActiveRef = useRef(false);
   const { username } = useContext(UserContext);
   const [isNotesMode, setIsNotesMode] = useState(false);
-  const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([]))); // Initialize with empty arrays for notes
+  const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
+  const [isClear, setIsClear] = useState(false);
 
 
   useEffect(() => {
     // Initialize or re-initialize notes when n changes
     setNotes(Array(n).fill().map(() => Array(n).fill([])));
   }, [n]); // Dependency on n
-//hej
+  //hej
   // Henter et nyt board fra serveren 
   useEffect(() => {
     const n = location.state?.n ? location.state.n : 9; // Fallback til 9 som standard størrelse
@@ -70,6 +72,7 @@ function SudokuView() {
     if (!editableCells[i][j]) {
       return;
     }
+
     const value = event.target.value;
 
     if (isNotesMode) {
@@ -102,6 +105,8 @@ function SudokuView() {
           updatedNotes[i][j] = [];
         }
 
+
+
         setGrid(newGrid);
         setNotes(updatedNotes); // Update notes state to reflect changes
 
@@ -110,8 +115,10 @@ function SudokuView() {
         setUserEdits(newUserEdits);
       }
     }
-    stopTimer();
+    
   }, [editableCells, grid, userEdits, notes, n, isNotesMode]);
+
+
 
 
   function getUserLocation(callback) {
@@ -200,40 +207,55 @@ function SudokuView() {
     <div className="SudokuView">
       <h1>Sudoku</h1>
       <div className="timer">Timer: {timer} sekunder</div>
-      <button onClick={() => setIsNotesMode(!isNotesMode)}>
-        {isNotesMode ? 'Disable Notes Mode' : 'Enable Notes Mode'}
-      </button>
-      <table className="center" style={{ width: baseSize + 'px', height: baseSize + 'px' }}>
-        <tbody>
-          {grid.map((row, i) => (
-            <tr key={i}>
-              {row.map((value, j) => (
-                <td
-                  key={j}
-                  className={
-                    `${!validity[i][j] ? 'invalid' : ''} ` +
-                    `${(j + 1) % subGridSize === 0 && j + 1 !== n ? 'right-border' : ''} ` +
-                    `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}`
-                  }
-                  style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
-                >
-                  {notes[i][j].length > 0 ? (
-                    <div className="notes" style={{ fontSize: '10px' }}>{notes[i][j].join(', ')}</div>
-                  ) : null}
-                  <input
-                    type="text"
-                    className={`${!validity[i][j] ? 'invalid-input' : ''} ${userEdits[i][j] ? 'user-input' : ''}`}
-                    value={value === 0 ? '' : value}
-                    onChange={(event) => handleInputChange(event, i, j)}
-                    readOnly={!editableCells[i][j]}
-                    style={{ fontSize: `${fontSize}px`, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
-                  />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '65px' }}>
+        <table className="center" style={{ width: baseSize + 'px', height: baseSize + 'px' }}>
+          <tbody>
+            {grid.map((row, i) => (
+              <tr key={i}>
+                {row.map((value, j) => (
+                  <td
+                    key={j}
+                    className={
+                      `${!validity[i][j] ? 'invalid' : ''} ` +
+                      `${(j + 1) % subGridSize === 0 && j + 1 !== n ? 'right-border' : ''} ` +
+                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}`
+                    }
+                    style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
+                  >
+                    {notes[i][j].length > 0 ? (
+                      <div className="notes" style={{ fontSize: '10px' }}>{notes[i][j].join(', ')}</div>
+                    ) : null}
+                    <input
+                      type="text"
+                      className={`${!validity[i][j] ? 'invalid-input' : ''} ${userEdits[i][j] ? 'user-input' : ''}`}
+                      value={value === 0 ? '' : value}
+                      onChange={(event) => handleInputChange(event, i, j)}
+                      readOnly={!editableCells[i][j]}
+                      style={{ fontSize: `${fontSize}px`, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '65%' }}>
+          <button onClick={() => setIsNotesMode(!isNotesMode)} style={{ padding: '5px', display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'none', background: 'none', color: 'white' }}>
+            <FaPencilAlt size="24px" />
+            <span>
+              {isNotesMode ? (
+                <>Notes: <span style={{ position: 'relative', top: '2px' }}><FaCheck size="10px" /></span></>
+              ) : (
+                <>Notes: <span style={{ position: 'relative', top: '2px' }}><FaTimes size="10px" /></span></>
+              )}
+            </span>
+          </button>
+          <button onClick={() => setIsClear(!isClear)} style={{ padding: '5px', display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'none', background: 'none', color: 'white' }}>
+            <FaEraser size="24px" />
+            <span>{'Clear Field'}</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 
