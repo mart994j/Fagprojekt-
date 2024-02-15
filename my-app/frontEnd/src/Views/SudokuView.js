@@ -24,7 +24,7 @@ function SudokuView() {
   const { username } = useContext(UserContext);
   const [isNotesMode, setIsNotesMode] = useState(false);
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
-  const [isClear, setIsClear] = useState(false);
+  const [lastClickedCell, setLastClickedCell] = useState(null);
 
 
   useEffect(() => {
@@ -72,7 +72,7 @@ function SudokuView() {
     if (!editableCells[i][j]) {
       return;
     }
-
+    setLastClickedCell([i,j]);
     const value = event.target.value;
 
     if (isNotesMode) {
@@ -115,6 +115,22 @@ function SudokuView() {
     }
     
   }, [editableCells, grid, userEdits, notes, n, isNotesMode]);
+
+  const clearCell = useCallback(() => {
+    if (lastClickedCell) {
+      const [i, j] = lastClickedCell;
+  
+      const newGrid = [...grid];
+      newGrid[i][j] = 0; 
+      setGrid(newGrid);
+
+      const updatedNotes = [...notes];
+      updatedNotes[i][j] = [];
+      setNotes(updatedNotes);
+
+      setLastClickedCell(null);
+    }
+  }, [lastClickedCell, grid, notes]);
 
 
 
@@ -248,19 +264,19 @@ function SudokuView() {
               )}
             </span>
           </button>
-          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+          <button onClick = {clearCell} className='button-style'>
             <FaEraser size="24px" />
             <span>{'Clear Field'}</span>
           </button>
-          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+          <button onClick = {clearCell} className='button-style'>
             <FaLightbulb size="24px" />
             <span>{'Hint'}</span>
           </button>
-          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+          <button onClick = {clearCell} className='button-style'>
             <FaAccessibleIcon size="24px" />
             <span>{'Solve Game'}</span>
           </button>
-          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+          <button onClick = {clearCell} className='button-style'>
             <FaSave size="24px" />
             <span>{'Save Game'}</span>
           </button>
