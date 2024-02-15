@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import './CSS/SudokuView.css';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
-import { FaPencilAlt, FaEraser, FaCheck, FaTimes } from 'react-icons/fa';
+import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb, FaSave } from 'react-icons/fa';
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -237,8 +237,8 @@ function SudokuView() {
             ))}
           </tbody>
         </table>
-        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '65%' }}>
-          <button onClick={() => setIsNotesMode(!isNotesMode)} style={{ padding: '5px', display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'none', background: 'none', color: 'white' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '45%' }}>
+          <button onClick={() => setIsNotesMode(!isNotesMode)} className='button-style'>
             <FaPencilAlt size="24px" />
             <span>
               {isNotesMode ? (
@@ -248,9 +248,21 @@ function SudokuView() {
               )}
             </span>
           </button>
-          <button onClick={() => setIsClear(!isClear)} style={{ padding: '5px', display: 'flex', flexDirection: 'column', alignItems: 'center', border: 'none', background: 'none', color: 'white' }}>
+          <button onClick={() => setIsClear(!isClear)} className='button-style'>
             <FaEraser size="24px" />
             <span>{'Clear Field'}</span>
+          </button>
+          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+            <FaLightbulb size="24px" />
+            <span>{'Hint'}</span>
+          </button>
+          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+            <FaAccessibleIcon size="24px" />
+            <span>{'Solve Game'}</span>
+          </button>
+          <button onClick={() => setIsClear(!isClear)} className='button-style'>
+            <FaSave size="24px" />
+            <span>{'Save Game'}</span>
           </button>
         </div>
       </div>
