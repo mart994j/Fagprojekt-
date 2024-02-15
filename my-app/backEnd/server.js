@@ -7,6 +7,48 @@ const port = 3000;
 app.use(cors());
 app.use(express.json());
 const leaderboard = [];
+const savedGames = [];
+
+
+app.post('/save', (req, res) => {
+  const { username, board, time } = req.body;
+  if (!username || !board || time == null) {
+    return res.status(400).json({ message: 'Username, board, and time are required' });
+  }
+
+  // Check if there's already a saved game for the user
+  const existingIndex = savedGames.findIndex(game => game.username === username);
+
+  if (existingIndex >= 0) {
+    // Update the existing saved game
+    savedGames[existingIndex] = { username, board, time: Date.now() };
+    console.log(`Game updated for user: ${username}`);
+  } else {
+    // Add a new saved game
+    savedGames.push({ username, board, time: Date.now() }); // Add a timestamp for uniqueness
+    console.log(`Game saved for user: ${username}`);
+  }
+
+  console.log('Current saved games:', savedGames);
+  res.json({ message: 'Game saved successfully' });
+});
+
+
+
+app.get('/load', (req, res) => {
+  console.log('Loading game:', savedGames);
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ message: 'Username is required' });
+  }
+  // Find the most recent saved game for the user
+  const game = [...savedGames].reverse().find(game => game.username === username);
+  if (!game) {
+    return res.status(404).json({ message: 'No saved game found for the user' });
+  }
+  console.log('Loaded game:', game);
+  res.json({ board: game.board, time: game.time });
+});
 
 app.get('/generate', (req, res) => {
   // Hent størrelsen fra query parameteret, eller brug en standardværdi hvis det ikke er angivet

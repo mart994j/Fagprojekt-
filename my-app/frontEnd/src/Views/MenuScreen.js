@@ -5,7 +5,7 @@ import './CSS/MenuScreen.css'; // Import CSS file
 
 function MenuScreen() {
   let navigate = useNavigate();
-  const { setUsername } = useUser();
+  const { username, setUsername } = useUser(); // Now getting username from context
   const [localUsername, setLocalUsername] = useState('');
   const [n, setN] = useState(9);
   const k = Math.sqrt(n);
@@ -41,12 +41,39 @@ function MenuScreen() {
       }
     );
   };
+
+  const handleLoadGame = () => {
+    // Use username from context for loading the game
+    fetch(`http://localhost:3000/load?username=${username}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Loaded game:', data);
+        navigate('/sudoku', { state: { n, load: data } });
+      })
+      .catch(error => {
+        console.error('Error loading game:', error);
+        alert('Ingen gemt spil fundet for brugeren.');
+      });
+  };
+  
   
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);
     // Juster stilen for at sikre ensartede grænser mellem regionerne
     return (
-      <div className="board-preview" style={{ gridTemplateColumns: `repeat(${n}, 1fr)`, gridTemplateRows: `repeat(${n}, 1fr)`, maxWidth: '90vw', maxHeight: '90vh' }}>
+      <div 
+        className="board-preview" 
+        style={{ 
+          gridTemplateColumns: `repeat(${n}, 1fr)`, 
+          gridTemplateRows: `repeat(${n}, 1fr)`, 
+          maxWidth: '90vw', 
+          maxHeight: '90vh' 
+        }}>
         {[...Array(n * n)].map((_, idx) => {
           // Beregner hvilken region hver celle tilhører
           const row = Math.floor(idx / n);
@@ -91,6 +118,7 @@ function MenuScreen() {
 
       <button onClick={handleLeaderBoard} type="button">Leaderboard</button>
       <button onClick={handleGeoMap} type="button" className="geomap-button">Geomap</button>
+      <button onClick={handleLoadGame} type="button" className="loadgame-button">Load Game</button>
 
       {/* Sudoku board size preview */}
       <BoardPreview k={k} n={n} />

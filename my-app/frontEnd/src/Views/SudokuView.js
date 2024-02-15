@@ -6,7 +6,6 @@ import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb,
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
 function SudokuView() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,13 +20,38 @@ function SudokuView() {
   const [editableCells, setEditableCells] = useState([]);
   const [timer, setTimer] = useState(0);
   const isTimerActiveRef = useRef(false);
-  const { username } = useContext(UserContext);
+  const { username,setUsername } = useContext(UserContext);
   const [isNotesMode, setIsNotesMode] = useState(false);
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
   const [lastClickedCell, setLastClickedCell] = useState(null);
 
 
+  const saveGame = useCallback(() => {
+    // Assuming username is available in your context, and board state is stored in grid
+    const gameData = {
+      username: username, // This needs to be fetched from context or state
+      board: grid,
+      time: timer, // Assuming timer state holds the current time
+    };
+    console.log('Saving game with data:', gameData);
+    fetch('http://localhost:3000/save', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(gameData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Game saved:', data);
+        // Handle UI feedback here, e.g., showing a success message
+      })
+      .catch(error => console.error('Error saving game:', error));
+  }, [username, grid, timer]);
+
+
   useEffect(() => {
+    setUsername(username);
     // Initialize or re-initialize notes when n changes
     setNotes(Array(n).fill().map(() => Array(n).fill([])));
   }, [n]); // Dependency on n
@@ -47,6 +71,9 @@ function SudokuView() {
       setIsTimerActive: isTimerActiveRef.current ? () => { } : startTimer,
     });
   }, [location.state?.n]);
+
+
+
 
   // Timer logik 
   const startTimer = () => {
@@ -276,7 +303,7 @@ function SudokuView() {
             <FaAccessibleIcon size="24px" />
             <span>{'Solve Game'}</span>
           </button>
-          <button onClick = {clearCell} className='button-style'>
+          <button onClick = {saveGame} className='button-style'>
             <FaSave size="24px" />
             <span>{'Save Game'}</span>
           </button>
