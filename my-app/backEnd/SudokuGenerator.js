@@ -1,10 +1,42 @@
+/*
+***Beskrivelsen af algoritmen er lavet af Chatgpt***
+
+Overordnet Beskrivelse
+Algoritmen genererer et Sudoku-bræt af en given størrelse ved først at oprette et tomt bræt og en 
+tilsvarende struktur for at holde styr på mulige tal (kandidater) for hver celle. 
+Herefter anvendes en kombination af rekursion og backtracking for intelligent at fylde brættet med tal, 
+idet der sikres, at Sudokuens regler overholdes. Algoritmen optimerer processen ved dynamisk at spore 
+ændringer i kandidater for at minimere unødvendig beregning og hukommelsesbrug.
+
+Kernekomponenter
+Initialisering af Bræt og Kandidater: Brættet initialiseres med nuller, og for hver celle 
+oprettes et sæt af kandidater, som repræsenterer mulige tal, der kan placeres i cellen.
+
+Intelligent Fyldning med Backtracking: Algoritmen vælger den celle med færrest kandidater for at minimere
+antallet af gæt. For hver valgt celle forsøges hvert muligt tal (kandidat) placeret under 
+overholdelse af Sudokuens regler. Hvis et tal er gyldigt, opdateres brættet og kandidaterne rekursivt. 
+Dette skridt inkluderer dynamisk sporing af ændringer i kandidater for at muliggøre effektiv backtracking.
+
+Dynamisk Kandidatsporing: Ved at placere et tal i en celle opdateres kandidatsættene for alle relaterede 
+celler (i samme række, kolonne og boks) in-place, og disse ændringer spores. 
+Hvis det bliver nødvendigt at backtracke, anvendes de sporede ændringer til at 
+genskabe den tidligere tilstand af kandidatsæt.
+
+
+Backtracking: Hvis en celle ikke kan fyldes med nogen gyldige tal 
+(dvs., alle kandidater er blevet afprøvet og afvist), backtrackes algoritmen ved at 
+nulstille cellen og gendanne kandidatsættets tidligere tilstand, hvorefter den forsøger
+alternativer for tidligere celler.
+
+*/
+
 class SudokuGenerator {
   // Generate a new Sudoku board of variable size
   static generateBoard(size = 9) {
 
     // Check if the size is valid
     let board = Array.from({ length: size }, () => Array(size).fill(0));
-    //en kandidat er et tal der kan stå i en celle
+    //en kandidat er et tal der kan stå i en celle dvs 
     let candidates = Array.from({ length: size }, () =>
       //array.from laver et array med en længde og en funktion der udfylder arrayet
       Array.from({ length: size }, () => new Set(Array.from({ length: size }, (_, index) => index + 1)))
