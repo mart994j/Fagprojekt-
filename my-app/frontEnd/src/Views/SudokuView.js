@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import './CSS/SudokuView.css';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
-import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb, FaSave } from 'react-icons/fa';
+import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb, FaSave, FaPause } from 'react-icons/fa';
+import { IoArrowBackCircleOutline } from "react-icons/io5";
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -245,7 +246,13 @@ function SudokuView() {
 
   // Modify the return statement in your SudokuView component
   return (
+
+    
     <div className="SudokuView">
+       <button onClick = {saveGame} style={{background: 'none', color: 'white', border: 'none', marginRight: '90%'}}>
+            <IoArrowBackCircleOutline size="35px" />
+            <span>{''}</span>
+          </button>
       <h1>Sudoku</h1>
       <div className="timer">Timer: {timer} sekunder</div>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '65px' }}>
@@ -280,7 +287,7 @@ function SudokuView() {
             ))}
           </tbody>
         </table>
-        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '45%' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '38%' }}>
           <button onClick={() => setIsNotesMode(!isNotesMode)} className='button-style'>
             <FaPencilAlt size="24px" />
             <span>
@@ -306,6 +313,10 @@ function SudokuView() {
           <button onClick = {saveGame} className='button-style'>
             <FaSave size="24px" />
             <span>{'Save Game'}</span>
+          </button>
+          <button onClick = {saveGame} className='button-style'>
+            <FaPause size="24px" />
+            <span>{'Pause game'}</span>
           </button>
         </div>
       </div>
