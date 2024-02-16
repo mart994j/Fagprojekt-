@@ -229,7 +229,9 @@ function SudokuView() {
     }
   }, [grid, isDataLoaded, checkSudoku]);
 
-
+const handleBack = () => {
+  navigate('/');
+}
 
 
   useEffect(() => {
@@ -249,7 +251,7 @@ function SudokuView() {
 
     
     <div className="SudokuView">
-       <button onClick = {saveGame} style={{background: 'none', color: 'white', border: 'none', marginRight: '90%'}}>
+       <button onClick = {handleBack} style={{background: 'none', color: 'white', border: 'none', marginRight: '90%'}}>
             <IoArrowBackCircleOutline size="35px" />
             <span>{''}</span>
           </button>
