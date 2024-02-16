@@ -1,113 +1,121 @@
 .menu-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #2f0f57;
-    color: #fff;
-  }
-  
-  .menu-screen h1 {
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-  }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #2f0f57;
+  color: #fff;
+}
 
-  .kn-inputs {
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Adjust the gap between inputs as needed */
-    position: absolute;
-    bottom: 20px; /* Adjust distance from bottom as needed */
-    width: 100%;
-  }
-  
-  .menu-screen {
-    position: relative; /* Needed to position .kn-inputs absolutely within */
-  }
-  
+.menu-screen h1 {
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+}
 
-  .menu-screen input[type="number"] {
-    margin-top: 10px;
-    padding: 10px;
-    font-size: 1rem;
-    width: 250px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .menu-screen form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .menu-screen input[type="text"] {
-    padding: 10px;
-    font-size: 1rem;
-    width: 250px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .menu-screen button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    width: 250px;
-  }
-  
-  .menu-screen button[type="submit"] {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .menu-screen button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  .menu-screen button[type="button"] {
-    margin-top: 20px;
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .menu-screen button[type="button"]:hover {
-    background-color: #218838;
-  }
+.kn-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 20px; /* Adjust the gap between inputs as needed */
+  position: absolute;
+  bottom: 20px; /* Adjust distance from bottom as needed */
+  width: 100%;
+}
 
-  .menu-screen .geomap-button[type = "button"]{
-    margin-top: 20px;
-    background-color: #a72828;
-    color: white;
-  }
-  .menu-screen .geomap-button[type = "button"]:hover{
-    background-color: #8a2121;
-  }
-  .board-preview {
-    display: grid;
-    gap: 2px; /* Adjust the gap between regions */
-    margin-top: 20px;
-    background-color: #514949;
-    overflow: auto; /* Enable overflow handling */
-    justify-content: center;
-    max-width: 80vw; /* Maximum width for the preview container */
-    max-height: 80vh; /* Maximum height for the preview container */
-  }
-  
-  .preview-region {
-    background-color: #ffffff;
-    display: grid;
-    gap: 1px; /* Smaller gap for cells within the same region */
-  }
-  
-  .preview-cell {
-    background-color: #baaaaa;
-    min-width: 10px; /* Minimum cell width, adjust as necessary */
-    min-height: 10px; /* Minimum cell height, adjust as necessary */
-    aspect-ratio: 1 / 1; /* Ensures cells are always square */
-  }
-  
+.menu-screen {
+  position: relative; /* Needed to position .kn-inputs absolutely within */
+}
+
+
+.menu-screen input[type="number"] {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.menu-screen form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-screen input[type="text"] {
+  padding: 10px;
+  font-size: 1rem;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.menu-screen button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  width: 250px;
+}
+
+.menu-screen button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.menu-screen button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.menu-screen button[type="button"] {
+  margin-top: 20px;
+  background-color: #28a745;
+  color: white;
+}
+
+.menu-screen button[type="button"]:hover {
+  background-color: #218838;
+}
+
+.menu-screen .geomap-button[type = "button"]{
+  margin-top: 20px;
+  background-color: #a72828;
+  color: white;
+}
+.menu-screen .geomap-button[type = "button"]:hover{
+  background-color: #8a2121;
+}
+
+.menu-screen .loadgame-button[type = "button"]{
+  margin-top: 20px;
+  background-color: #bc9e23;
+  color: white;
+}
+.menu-screen .loadgame-button[type = "button"]:hover{
+  background-color: #836901;
+}
+.board-preview {
+  display: grid;
+  gap: 2px; /* Adjust the gap between regions */
+  margin-top: 20px;
+  background-color: #514949;
+  overflow: auto; /* Enable overflow handling */
+  justify-content: center;
+  max-width: 80vw; /* Maximum width for the preview container */
+  max-height: 80vh; /* Maximum height for the preview container */
+}
+
+.preview-region {
+  background-color: #ffffff;
+  display: grid;
+  gap: 1px; /* Smaller gap for cells within the same region */
+}
+
+.preview-cell {
+  background-color: #baaaaa;
+  min-width: 10px; /* Minimum cell width, adjust as necessary */
+  min-height: 10px; /* Minimum cell height, adjust as necessary */
+  aspect-ratio: 1 / 1; /* Ensures cells are always square */
+}
