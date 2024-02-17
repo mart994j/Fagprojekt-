@@ -33,14 +33,13 @@ app.post('/save', (req, res) => {
   res.json({ message: 'Game saved successfully' });
 });
 
-
-
 app.get('/load', (req, res) => {
   console.log('Loading game:', savedGames);
   const { username } = req.query;
   if (!username) {
-    return res.status(400).json({ message: 'Username is required' });
+  return res.status(400).json({ message: 'Username is required' });
   }
+
   // Find the most recent saved game for the user
   const game = [...savedGames].reverse().find(game => game.username === username);
   if (!game) {
