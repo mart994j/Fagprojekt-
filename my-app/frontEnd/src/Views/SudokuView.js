@@ -56,22 +56,35 @@ function SudokuView() {
     // Initialize or re-initialize notes when n changes
     setNotes(Array(n).fill().map(() => Array(n).fill([])));
   }, [n]); // Dependency on n
-  //hej
+
+
   // Henter et nyt board fra serveren 
   useEffect(() => {
-    const n = location.state?.n ? location.state.n : 9; // Fallback til 9 som standard størrelse
-    setN(n);
-    fetchNewBoard({
-      n,
-      setGrid,
-      setEditableCells,
-      setUserEdits,
-      setValidity,
-      setIsDataLoaded,
-      setTimer,
-      setIsTimerActive: isTimerActiveRef.current ? () => { } : startTimer,
-    });
-  }, [location.state?.n]);
+    const { n: loadedN, load } = location.state ?? {};
+    const newN = loadedN || 9; // Use loaded n or default to 9
+    setN(newN);
+  
+    if (load) {
+      setGrid(load.board);
+      setTimer(load.time);
+      setIsDataLoaded(true);
+      // Assume all cells are editable for simplicity, or adjust as needed
+      setEditableCells(load.board.map(row => row.map(value => value === 0)));
+    } else {
+      // Fetch new board if no loaded game data is present
+      fetchNewBoard({
+        n: newN,
+        setGrid,
+        setEditableCells,
+        setUserEdits,
+        setValidity,
+        setIsDataLoaded,
+        setTimer,
+        setIsTimerActive: isTimerActiveRef.current ? () => {} : startTimer,
+      });
+    }
+  }, [location.state]);
+  
 
 
 
