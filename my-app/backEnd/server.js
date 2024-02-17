@@ -1,13 +1,30 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const { SudokuGenerator } = require('./SudokuGenerator');
 const app = express();
 const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(bodyParser.json());
+
 const leaderboard = [];
 const savedGames = [];
+const users = {
+  'gg': 'gg',
+}
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  if (users[username] && users[username] === password) {
+    // For simplicity, returning a dummy token
+    res.json({ token: 'dummy-jwt-token' });
+  } else {
+    res.status(401).json({ message: 'Invalid username or password' });
+  }
+});
 
 
 app.post('/save', (req, res) => {

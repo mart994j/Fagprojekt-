@@ -231,7 +231,7 @@ function SudokuView() {
       alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
       stopTimer();
       submitScore(username, timer);
-      navigate('/');
+      navigate('/menu');
 
     }
   }, [grid, isDataLoaded, timer, username, navigate, submitScore]);
@@ -243,7 +243,7 @@ function SudokuView() {
   }, [grid, isDataLoaded, checkSudoku]);
 
 const handleBack = () => {
-  navigate('/');
+  navigate('/menu');
 }
 
 

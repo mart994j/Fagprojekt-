@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import './CSS/LoginPage.css'; 
+import { useNavigate } from 'react-router-dom';
+
+function LoginPage({ onLogin }) {
+  let navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    const response = await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    if (response.ok) {
+      navigate('/menu'); 
+
+    } else {
+        const errorData = await response.json(); // Assuming the server responds with a JSON object containing an error message
+        setError(errorData.message); // Update the error state to display in the UI, if you still want to use this method
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2>Login</h2>
+        {error && <div className="login-error">{error}</div>}
+        <div className="input-group">
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div className="input-group">
+          <label htmlFor="password">Password</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="login-button">Log In</button>
+      </form>
+    </div>
+  );
+}
+
+export default LoginPage;

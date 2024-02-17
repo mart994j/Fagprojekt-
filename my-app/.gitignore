@@ -12,7 +12,7 @@ node_modules/
 /build
 
 # misc
-.pack
+*.pack
 .DS_Store
 .env.local
 .env.development.local

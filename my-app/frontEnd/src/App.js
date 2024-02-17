@@ -5,6 +5,7 @@ import SudokuView from './Views/SudokuView';
 import MenuScreen from './Views/MenuScreen';
 import LeaderBoardView from './Views/LeaderBoardView'; 
 import Geomap from './Views/GeomapView';
+import LoginPage from './Views/LoginPage';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -14,7 +15,8 @@ function App() {
     <UserContext.Provider value={{ username, setUsername }}>
       <Router>
         <Routes>
-          <Route path="/" element={<MenuScreen />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/menu" element={<MenuScreen />} />
           <Route path="/sudoku" element={<SudokuView />} />
           <Route path="/leaderboard" element={<LeaderBoardView/>} />
           <Route path="/geoMap" element={<Geomap />} />
