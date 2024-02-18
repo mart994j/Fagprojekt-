@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './CSS/LoginPage.css'; 
 import { useNavigate } from 'react-router-dom';
 
-function LoginPage({ onLogin }) {
+function LoginPage() {
   let navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -24,8 +24,8 @@ function LoginPage({ onLogin }) {
       navigate('/menu'); 
 
     } else {
-        const errorData = await response.json(); // Assuming the server responds with a JSON object containing an error message
-        setError(errorData.message); // Update the error state to display in the UI, if you still want to use this method
+        const errorData = await response.json(); 
+        setError(errorData.message);
     }
   };
 

@@ -6,6 +6,7 @@ import MenuScreen from './Views/MenuScreen';
 import LeaderBoardView from './Views/LeaderBoardView'; 
 import Geomap from './Views/GeomapView';
 import LoginPage from './Views/LoginPage';
+import RegisterPage from './Views/RegisterView';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -16,6 +17,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/menu" element={<MenuScreen />} />
           <Route path="/sudoku" element={<SudokuView />} />
           <Route path="/leaderboard" element={<LeaderBoardView/>} />

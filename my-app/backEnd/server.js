@@ -12,8 +12,18 @@ app.use(bodyParser.json());
 const leaderboard = [];
 const savedGames = [];
 const users = {
-  'gg': 'gg',
+  'admin': 'admin',
 }
+
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+  if (users[username]) {
+    return res.status(400).json({ message: 'Username already exists' });
+  }
+  users[username] = password;
+  res.json({ message: 'User registered successfully' });
+});
+
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
