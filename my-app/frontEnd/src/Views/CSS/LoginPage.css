@@ -54,4 +54,23 @@
     margin-bottom: 15px;
     text-align: center;
   }
+
+  .register-prompt {
+    margin-top: 15px;
+    margin-bottom: 20px; 
+    text-align: center;
+  }
+  
+
+.register-prompt button {
+  background: none;
+  color: #007bff;
+  border: none;
+  cursor: pointer;
+}
+
+.register-prompt button:hover {
+  text-decoration: underline;
+}
+
   

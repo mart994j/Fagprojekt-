@@ -32,30 +32,34 @@ function LoginPage({ onLogin }) {
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
-        <h2>Login</h2>
-        {error && <div className="login-error">{error}</div>}
-        <div className="input-group">
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group">
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="login-button">Log In</button>
-      </form>
+  <h2>Login</h2>
+  {error && <div className="login-error">{error}</div>}
+  <div className="input-group">
+    <label htmlFor="username">Username</label>
+    <input
+      id="username"
+      type="text"
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      required
+    />
+  </div>
+  <div className="input-group">
+    <label htmlFor="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+    />
+  </div>
+  <div className="register-prompt">
+    Not a user? <button onClick={() => navigate('/register')}>Register here</button>
+  </div>
+  <button type="submit" className="login-button">Log In</button>
+</form>
+
     </div>
   );
 }
