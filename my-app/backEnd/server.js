@@ -29,8 +29,7 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   if (users[username] && users[username] === password) {
-    // For simplicity, returning a dummy token
-    res.json({ token: 'dummy-jwt-token' });
+    res.json('Login successful');
   } else {
     res.status(401).json({ message: 'Invalid username or password' });
   }
