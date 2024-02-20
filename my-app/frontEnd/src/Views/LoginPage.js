@@ -55,8 +55,9 @@ function LoginPage() {
     />
   </div>
   <div className="register-prompt">
-    Not a user? <button onClick={() => navigate('/register')}>Register here</button>
+      Not a user? <button type="button" onClick={() => navigate('/register')}>Register here</button>
   </div>
+
   <button type="submit" className="login-button">Log In</button>
 </form>
 
