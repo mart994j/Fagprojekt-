@@ -2,8 +2,7 @@
     width: 100%;
     background-color: #1a0535; /* Choose your desired background color */
     display: flex;
-    justify-content: 300 vw; /* Distribute items evenly along the main axis */
-
+    justify-content: space-between; /* Distribute items evenly along the main axis */
     color: #fff; /* Choose your desired text color */
     padding: 10px 20px; /* Adjust padding as needed */
     position: fixed;
