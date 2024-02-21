@@ -63,6 +63,7 @@
 .menu-screen button[type="submit"] {
   background-color: #007bff;
   color: white;
+  margin: 10px;
 }
 
 .menu-screen button[type="submit"]:hover {
@@ -73,6 +74,7 @@
   margin-top: 20px;
   background-color: #28a745;
   color: white;
+  margin: 10px;
 }
 
 .menu-screen button[type="button"]:hover {
@@ -83,6 +85,7 @@
   margin-top: 20px;
   background-color: #a72828;
   color: white;
+  margin: 10px;
 }
 .menu-screen .geomap-button[type = "button"]:hover{
   background-color: #8a2121;
@@ -92,9 +95,20 @@
   margin-top: 20px;
   background-color: #bc9e23;
   color: white;
+  margin: 10px;
 }
 .menu-screen .loadgame-button[type = "button"]:hover{
   background-color: #836901;
+}
+
+.menu-screen .settings-button[type = "button"]{
+  margin-top: 20px;
+  background-color: #23b9bc;
+  color: white;
+  margin: 10px;
+}
+.menu-screen .settings-button[type = "button"]:hover{
+  background-color: #018378;
 }
 .board-preview {
   display: grid;

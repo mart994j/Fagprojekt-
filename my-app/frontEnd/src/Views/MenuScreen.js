@@ -116,9 +116,14 @@ function MenuScreen() {
         <button type="submit">Start Spil</button>
       </form>
 
+      <div style={{flexDirection: 'row'}}>
       <button onClick={handleLeaderBoard} type="button">Leaderboard</button>
       <button onClick={handleGeoMap} type="button" className="geomap-button">Geomap</button>
+      </div>
+      <div style={{flexDirection: 'row'}}>
       <button onClick={handleLoadGame} type="button" className="loadgame-button">Load Game</button>
+      <button onClick={handleSettings} type="button" className="settings-button">Settings</button>
+      </div>
 
       {/* Sudoku board size preview */}
       <BoardPreview k={k} n={n} />

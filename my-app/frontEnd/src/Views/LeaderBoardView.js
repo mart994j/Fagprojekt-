@@ -14,7 +14,7 @@ function LeaderBoardView() {
         console.error('Error fetching leaderboard:', error);
       });
   }, []); 
-//test
+
   return (
     <div style={{ 
       display: 'flex', 
