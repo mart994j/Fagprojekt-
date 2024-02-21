@@ -60,6 +60,10 @@ function MenuScreen() {
         alert('Ingen gemt spil fundet for brugeren.');
       });
   };
+
+  const handleSettings = () => {
+
+  }
   
   
   const BoardPreview = ({ n }) => {
