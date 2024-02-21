@@ -9,15 +9,28 @@
   padding: 20px; /* Add padding for better spacing */
 }
 
+
+/*Title*/
 .menu-screen h1 {
   font-size: 5vw; /* Use vw unit to make the font size responsive */
-  margin-bottom: 100px; /* Adjust margin with vw units */
+  margin-bottom: 9vw; /* Adjust margin with vw units */
+}
+
+.menu-screen t1 {
+  font-size: 1vw; /* Use vw unit to make the font size responsive */
 }
 
 .menu-screen form {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 
+.menu-screen form select {
+  margin-top: 10px; /* Adjust as needed */
+}
+
+
+/*Username*/
 .menu-screen input[type="text"], 
 .menu-screen button {
   padding: 10px 20px; /* Adjust padding for buttons and inputs */
@@ -25,6 +38,8 @@
   margin: 10px 0; /* Adjust margin with vw units */
 }
 
+
+/*Size of Sudoku*/
 .kn-inputs {
   display: flex;
   justify-content: center;
@@ -57,66 +72,6 @@
   width: 250px;
   border-radius: 5px;
   border: 1px solid #ccc;
-}
-
-.menu-screen button {
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  width: 250px;
-}
-
-.menu-screen button[type="submit"] {
-  background-color: #007bff;
-  color: white;
-  margin: 10px;
-}
-
-.menu-screen button[type="submit"]:hover {
-  background-color: #0056b3;
-}
-
-.menu-screen button[type="button"] {
-  margin-top: 20px;
-  background-color: #28a745;
-  color: white;
-  margin: 10px;
-}
-
-.menu-screen button[type="button"]:hover {
-  background-color: #218838;
-}
-
-.menu-screen .geomap-button[type = "button"]{
-  margin-top: 20px;
-  background-color: #a72828;
-  color: white;
-  margin: 10px;
-}
-.menu-screen .geomap-button[type = "button"]:hover{
-  background-color: #8a2121;
-}
-
-.menu-screen .loadgame-button[type = "button"]{
-  margin-top: 20px;
-  background-color: #bc9e23;
-  color: white;
-  margin: 10px;
-}
-.menu-screen .loadgame-button[type = "button"]:hover{
-  background-color: #836901;
-}
-
-.menu-screen .settings-button[type = "button"]{
-  margin-top: 20px;
-  background-color: #23b9bc;
-  color: white;
-  margin: 10px;
-}
-.menu-screen .settings-button[type = "button"]:hover{
-  background-color: #018378;
 }
 .board-preview {
   display: grid;

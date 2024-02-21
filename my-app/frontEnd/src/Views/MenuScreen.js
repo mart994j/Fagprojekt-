@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './CSS/MenuScreen.css'; // Import CSS file
 import './CSS/Bar.css';
+import './CSS/MenuButtons.css';
 
 function MenuScreen() {
   let navigate = useNavigate();
@@ -18,7 +19,7 @@ function MenuScreen() {
     // Tjekker om n er et perfekt kvadrat og k er et heltal
     if (Number.isInteger(k) && n > 0) {
       console.log('Success:', localUsername, k, n, diff);
-      navigate('/sudoku', { state: { n,diff }});
+      navigate('/sudoku', { state: { n, diff } });
     } else {
       alert('Ugyldig værdi for n. n skal være et perfekt kvadrat (f.eks., 9, 16, 25).');
       return;
@@ -45,8 +46,8 @@ function MenuScreen() {
   };
 
   const handleDiff = (event) => {
-  setDiff(Number(event.target.value));
-};
+    setDiff(Number(event.target.value));
+  };
 
   const handleLoadGame = () => {
     // Use username from context for loading the game
@@ -115,8 +116,15 @@ function MenuScreen() {
 
   return (
     <div className="menu-screen">
-      <h1>Velkommen til Sudoku!</h1>
+      <div class="bar">
+        <button onClick={handleLeaderBoard} type="button" style={{ display: 'block', margin: '5px 0' }}>Leaderboard</button>
+        <button onClick={handleGeoMap} type="button" className="geomap-button" style={{ display: 'block', margin: '5px 0' }}>Geomap</button>
+        <button onClick={handleLoadGame} type="button" className="loadgame-button" style={{ display: 'block', margin: '5px 0' }}>Load Game</button>
+        <button onClick={handleSettings} type="button" className="settings-button" style={{ display: 'block', margin: '5px 0' }}>Settings</button>
+      </div>
+
       <form onSubmit={handleStartGame}>
+        <h1>Velkommen til Sudoku!</h1>
         <input
           type="text"
           value={localUsername}
@@ -124,46 +132,32 @@ function MenuScreen() {
           placeholder="Indtast brugernavn"
           required
         />
-        <select value={diff} onChange={handleDiff} required>
-            <option value="">Vælg sværhedsgrad</option>
-            <option value="1">Let</option>
-            <option value="2">Medium</option>
-            <option value="3">Svær</option>
-         </select>
-
         <button type="submit">Start Spil</button>
+
+        <select value={diff} onChange={handleDiff} required>
+          <option value="">Vælg sværhedsgrad</option>
+          <option value="1">Let</option>
+          <option value="2">Medium</option>
+          <option value="3">Svær</option>
+        </select>
+
+        {/* Sudoku board size preview */}
+        <BoardPreview k={k} n={n} />
+        <t1>Vælg Størrelse på Sudoku</t1>
+
+        <div className="kn-inputs">
+          <input
+            type="number"
+            value={n}
+            onChange={(e) => setN(Number(e.target.value))}
+            placeholder="Vælg n (bræt størrelse)"
+            required
+          />
+        </div>
       </form>
 
-
-      <div class="bar">
-
-
-            <button onClick={handleLeaderBoard} type="button" style={{ display: 'block', margin: '5px 0' }}>Leaderboard</button>
-            <button onClick={handleGeoMap} type="button" className="geomap-button" style={{ display: 'block', margin: '5px 0' }}>Geomap</button>
-            <button onClick={handleLoadGame} type="button" className="loadgame-button" style={{ display: 'block', margin: '5px 0' }}>Load Game</button>
-        
-
-
-        <button onClick={handleSettings} type="button" className="settings-button" style={{ display: 'block', margin: '5px 0' }}>Settings</button>
-
-      </div>
-
-
-
-      {/* Sudoku board size preview */}
-      <BoardPreview k={k} n={n} />
-
-      <div className="kn-inputs">
-        <input
-          type="number"
-          value={n}
-          onChange={(e) => setN(Number(e.target.value))}
-          placeholder="Vælg n (bræt størrelse)"
-          required
-        />
-      </div>
     </div>
-    
+
   );
 
 }

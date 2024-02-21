@@ -1,5 +1,5 @@
 .bar {
-    width: 98%;
+    width: 100%;
     background-color: #1a0535; /* Choose your desired background color */
     display: flex;
     justify-content: space-around; /* Distribute items evenly along the main axis */
