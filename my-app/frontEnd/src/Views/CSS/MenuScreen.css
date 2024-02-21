@@ -1,16 +1,28 @@
 .menu-screen {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 96vh;
+  min-width: 96vh;
   background-color: #2f0f57;
   color: #fff;
+  padding: 20px; /* Add padding for better spacing */
 }
 
 .menu-screen h1 {
-  margin-bottom: 20px;
-  font-size: 2.5rem;
+  font-size: 5vw; /* Use vw unit to make the font size responsive */
+  margin-bottom: 100px; /* Adjust margin with vw units */
+}
+
+.menu-screen form {
+  text-align: center;
+}
+
+.menu-screen input[type="text"], 
+.menu-screen button {
+  padding: 10px 20px; /* Adjust padding for buttons and inputs */
+  font-size: 4vw; /* Use vw unit to make the font size responsive */
+  margin: 10px 0; /* Adjust margin with vw units */
 }
 
 .kn-inputs {
@@ -18,12 +30,8 @@
   justify-content: center;
   gap: 20px; /* Adjust the gap between inputs as needed */
   position: absolute;
-  bottom: 20px; /* Adjust distance from bottom as needed */
+  bottom: 4vw; /* Adjust distance from bottom as needed */
   width: 100%;
-}
-
-.menu-screen {
-  position: relative; /* Needed to position .kn-inputs absolutely within */
 }
 
 

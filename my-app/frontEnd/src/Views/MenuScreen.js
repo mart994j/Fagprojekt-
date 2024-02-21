@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './CSS/MenuScreen.css'; // Import CSS file
+import './CSS/Bar.css';
 
 function MenuScreen() {
   let navigate = useNavigate();
@@ -64,19 +65,20 @@ function MenuScreen() {
   const handleSettings = () => {
 
   }
-  
-  
+
+
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);
     // Juster stilen for at sikre ensartede grænser mellem regionerne
     return (
-      <div 
-        className="board-preview" 
-        style={{ 
-          gridTemplateColumns: `repeat(${n}, 1fr)`, 
-          gridTemplateRows: `repeat(${n}, 1fr)`, 
-          maxWidth: '90vw', 
-          maxHeight: '90vh' 
+      <div
+        className="board-preview"
+        style={{
+          gridTemplateColumns: `repeat(${n}, 1fr)`,
+          gridTemplateRows: `repeat(${n}, 1fr)`,
+          maxWidth: '90vw',
+          maxHeight: '90vh'
+
         }}>
         {[...Array(n * n)].map((_, idx) => {
           // Beregner hvilken region hver celle tilhører
@@ -104,10 +106,10 @@ function MenuScreen() {
     );
   };
 
-  
+
 
   return (
-    <div className="menu-screen"> 
+    <div className="menu-screen">
       <h1>Velkommen til Sudoku!</h1>
       <form onSubmit={handleStartGame}>
         <input
@@ -120,14 +122,21 @@ function MenuScreen() {
         <button type="submit">Start Spil</button>
       </form>
 
-      <div style={{flexDirection: 'row'}}>
-      <button onClick={handleLeaderBoard} type="button">Leaderboard</button>
-      <button onClick={handleGeoMap} type="button" className="geomap-button">Geomap</button>
+
+      <div class="bar">
+
+
+            <button onClick={handleLeaderBoard} type="button" style={{ display: 'block', margin: '5px 0' }}>Leaderboard</button>
+            <button onClick={handleGeoMap} type="button" className="geomap-button" style={{ display: 'block', margin: '5px 0' }}>Geomap</button>
+            <button onClick={handleLoadGame} type="button" className="loadgame-button" style={{ display: 'block', margin: '5px 0' }}>Load Game</button>
+        
+
+
+        <button onClick={handleSettings} type="button" className="settings-button" style={{ display: 'block', margin: '5px 0' }}>Settings</button>
+
       </div>
-      <div style={{flexDirection: 'row'}}>
-      <button onClick={handleLoadGame} type="button" className="loadgame-button">Load Game</button>
-      <button onClick={handleSettings} type="button" className="settings-button">Settings</button>
-      </div>
+
+
 
       {/* Sudoku board size preview */}
       <BoardPreview k={k} n={n} />
@@ -143,6 +152,7 @@ function MenuScreen() {
       </div>
     </div>
   );
+
 }
 
 export default MenuScreen;
