@@ -1,8 +1,8 @@
 .bar {
-    width: 100%;
+    width: 98%;
     background-color: #1a0535; /* Choose your desired background color */
     display: flex;
-    justify-content: space-between; /* Distribute items evenly along the main axis */
+    justify-content: space-around; /* Distribute items evenly along the main axis */
     color: #fff; /* Choose your desired text color */
     padding: 10px 20px; /* Adjust padding as needed */
     position: fixed;
