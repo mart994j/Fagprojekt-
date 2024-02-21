@@ -5,6 +5,7 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const [username, setUsername] = useState('');
   const [n, setN] = useState(9); // Standardværdi for n er sat til 9 for et 9x9 Sudoku bræt
+  const [diff, setDiff] = useState(10);
 
 
   const value = {
@@ -12,6 +13,8 @@ export const UserProvider = ({ children }) => {
     setUsername,
     n,
     setN,
+    diff,
+    setDiff
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
