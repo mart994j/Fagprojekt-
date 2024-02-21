@@ -1,7 +1,14 @@
 /*
 ***Beskrivelsen af algoritmen er lavet af Chatgpt***
 
-Overordnet Beskrivelse
+***KORT BESKRIVELSE AF ALGORITMEN***
+Vælger celler baseret på antallet af kandidater færrest først for at minimere gæt.
+Går tilbage til tidligere kandidat state ved backtracking, hvis der ikke er nogen gyldige kandidater. 
+istedet for at rulle tilbage til starten af algoritmen.
+Tjekker herefter sudoku regler for at sikre at nummeret kan stå i cellen.
+
+
+***LANG BESKRIVELSE AF ALGORITMEN***
 Algoritmen genererer et Sudoku-bræt af en given størrelse ved først at oprette et tomt bræt og en 
 tilsvarende struktur for at holde styr på mulige tal (kandidater) for hver celle. 
 Herefter anvendes en kombination af rekursion og backtracking for intelligent at fylde brættet med tal, 
@@ -27,6 +34,9 @@ Backtracking: Hvis en celle ikke kan fyldes med nogen gyldige tal
 (dvs., alle kandidater er blevet afprøvet og afvist), backtrackes algoritmen ved at 
 nulstille cellen og gendanne kandidatsættets tidligere tilstand, hvorefter den forsøger
 alternativer for tidligere celler.
+
+
+
 
 */
 
@@ -132,7 +142,6 @@ class SudokuGenerator {
     let changes = [];
     const boxSize = Math.sqrt(size);
     for (let i = 0; i < size; i++) {
-      // Row and Column
       if (candidates[row][i].delete(num)) changes.push([row, i, num]);
       if (candidates[i][col].delete(num)) changes.push([i, col, num]);
       //hvis der er ændringer i kandidaterne så tilføj ændringerne til changes
