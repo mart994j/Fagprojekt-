@@ -78,7 +78,22 @@ app.get('/load', (req, res) => {
 app.get('/generate', (req, res) => {
   // Hent størrelsen fra query parameteret, eller brug en standardværdi hvis det ikke er angivet
   const size = parseInt(req.query.size, 10) || 9; // Standard størrelse er 9x9 hvis ikke angivet
+  const diff = parseInt(req.query.difficulty, 10) || 2;
 
+  let numbersToRemove;
+  switch(diff) {
+    case 1: // Easy
+      numbersToRemove = 5;
+      break;
+    case 2: // Medium
+      numbersToRemove = 10;
+      break;
+    case 3: // Hard
+      numbersToRemove = 20;
+      break;
+    default:
+      numbersToRemove = 10; 
+  }
   // Tjek at størrelsen er gyldig (du kan tilføje yderligere validering baseret på dine behov)
   if (!Number.isInteger(Math.sqrt(size))) { // Tjekker om størrelsen er et kvadrattal
     return res.status(400).json({ message: 'Invalid board size' });
@@ -87,7 +102,7 @@ app.get('/generate', (req, res) => {
   // Antager at SudokuGenerator.generateBoard kan acceptere en størrelse parameter
   const board = SudokuGenerator.generateBoard(size);
   // Tilpas fjernelse af tal baseret på størrelsen, om nødvendigt
-  SudokuGenerator.removeNumbers(board, 1); // Denne linje skal måske tilpasses
+  SudokuGenerator.removeNumbers(board, numbersToRemove); // Denne linje skal måske tilpasses
   console.log('Generated board:', board);
   res.json({ board });
 });

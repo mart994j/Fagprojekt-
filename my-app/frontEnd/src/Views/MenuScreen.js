@@ -9,6 +9,7 @@ function MenuScreen() {
   const { username, setUsername } = useUser(); // Now getting username from context
   const [localUsername, setLocalUsername] = useState('');
   const [n, setN] = useState(9);
+  const [diff, setDiff] = useState(10);
   const k = Math.sqrt(n);
 
   const handleStartGame = (event) => {
@@ -16,8 +17,8 @@ function MenuScreen() {
     setUsername(localUsername);
     // Tjekker om n er et perfekt kvadrat og k er et heltal
     if (Number.isInteger(k) && n > 0) {
-      console.log('Success:', localUsername, k, n);
-      navigate('/sudoku', { state: { n } });
+      console.log('Success:', localUsername, k, n, diff);
+      navigate('/sudoku', { state: { n,diff }});
     } else {
       alert('Ugyldig værdi for n. n skal være et perfekt kvadrat (f.eks., 9, 16, 25).');
       return;
@@ -42,6 +43,10 @@ function MenuScreen() {
       }
     );
   };
+
+  const handleDiff = (event) => {
+  setDiff(Number(event.target.value));
+};
 
   const handleLoadGame = () => {
     // Use username from context for loading the game
@@ -119,6 +124,13 @@ function MenuScreen() {
           placeholder="Indtast brugernavn"
           required
         />
+        <select value={diff} onChange={handleDiff} required>
+            <option value="">Vælg sværhedsgrad</option>
+            <option value="1">Let</option>
+            <option value="2">Medium</option>
+            <option value="3">Svær</option>
+         </select>
+
         <button type="submit">Start Spil</button>
       </form>
 
@@ -151,6 +163,7 @@ function MenuScreen() {
         />
       </div>
     </div>
+    
   );
 
 }

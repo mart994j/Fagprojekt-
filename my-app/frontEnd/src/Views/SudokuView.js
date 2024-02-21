@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import './CSS/SudokuView.css';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
+import SudokuPause from '../Components/sudokuPause';
 import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb, FaSave, FaPause } from 'react-icons/fa';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import UserContext from '../UserContext';
@@ -16,6 +17,7 @@ function SudokuView() {
 
   const [validity, setValidity] = useState(Array(n).fill().map(() => Array(n).fill(true)));
   const [userEdits, setUserEdits] = useState(Array(n).fill().map(() => Array(n).fill(false)));
+  const [isPaused, setIsPaused] = useState(false);
 
   const [isDataLoaded, setIsDataLoaded] = useState(false);
   const [editableCells, setEditableCells] = useState([]);
@@ -246,6 +248,15 @@ const handleBack = () => {
   navigate('/menu');
 }
 
+const togglePause = () => {
+  setIsPaused(!isPaused);
+  if (isPaused) {
+    startTimer(); // This resumes the timer
+  } else {
+    stopTimer(); // This pauses the timer
+  }
+};
+
 
   useEffect(() => {
     return () => {
@@ -329,13 +340,15 @@ const handleBack = () => {
             <FaSave size="24px" />
             <span>{'Save Game'}</span>
           </button>
-          <button onClick = {saveGame} className='button-style'>
+          <button onClick = {togglePause} className='button-style'>
             <FaPause size="24px" />
             <span>{'Pause game'}</span>
           </button>
         </div>
+        <SudokuPause isPaused={isPaused} onContinue={togglePause} />
       </div>
     </div>
+    
   );
 
 }
