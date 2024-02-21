@@ -1,6 +1,7 @@
 let isFetching = false;
 
 export const fetchNewBoard = ({
+  diff,
   n, // Adding n as a parameter
   setGrid,
   setEditableCells,
@@ -14,8 +15,8 @@ export const fetchNewBoard = ({
   if (isFetching) return;
   isFetching = true;
 
-  // Update the URL to include the size n as a query parameter
-  fetch(`http://localhost:3000/generate?size=${n}`)
+  // Update the URL to include the size n as a query parameter and diff
+  fetch(`http://localhost:3000/generate?size=${n}&difficulty=${diff}`)
     .then(response => response.json())
     .then(data => {
       // Set grid based on fetched data
