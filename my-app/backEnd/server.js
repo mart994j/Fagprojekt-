@@ -80,7 +80,7 @@ app.get('/generate', (req, res) => {
   const size = parseInt(req.query.size, 10) || 9; // Standard størrelse er 9x9 hvis ikke angivet
 
   // Tjek at størrelsen er gyldig (du kan tilføje yderligere validering baseret på dine behov)
-  if (![9, 16, 25].includes(size)) { // Eksempel på validering for almindelige Sudoku størrelser
+  if (!Number.isInteger(Math.sqrt(size))) { // Tjekker om størrelsen er et kvadrattal
     return res.status(400).json({ message: 'Invalid board size' });
   }
   console.log('Generating board of size', size);
