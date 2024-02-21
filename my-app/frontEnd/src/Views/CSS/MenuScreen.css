@@ -13,11 +13,13 @@
 /*Title*/
 .menu-screen h1 {
   font-size: 5vw; /* Use vw unit to make the font size responsive */
-  margin-bottom: 9vw; /* Adjust margin with vw units */
+  margin-bottom: 8vw; /* Adjust margin with vw units */
 }
 
 .menu-screen t1 {
   font-size: 1vw; /* Use vw unit to make the font size responsive */
+  bottom: 10vw; /* Adjust distance from bottom as needed */
+
 }
 
 .menu-screen form {

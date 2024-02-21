@@ -143,6 +143,8 @@ function MenuScreen() {
 
         {/* Sudoku board size preview */}
         <BoardPreview k={k} n={n} />
+
+        
         <t1>Vælg Størrelse på Sudoku</t1>
 
         <div className="kn-inputs">
