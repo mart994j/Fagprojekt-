@@ -1,0 +1,40 @@
+.map-container {
+  position: relative;
+  background-color: #2f0f57; /* Statisk farve i stedet for billede */
+  width: 100%;
+  height: 100vh; /* Fylder hele viewport-højden */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.level-button {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #007bff;
+  color: #007bff;
+  font-size: 20px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.level-button:hover {
+  transform: scale(1.1);
+}
+
+/* Eksempel på individuel positionering for level 1 */
+.level-button-1 { top: 20px; left: 30px; }
+.level-button-2 { top: 250px; left: 300px; }
+.level-button-3 { top: 500px; left: 30px; }
+.level-button-4 { top: 600px; left: 400px; }
+.level-button-5 { top: 20px; left: 600px; }
+.level-button-6 { top: 20px; left: 900px; }
+.level-button-7 { top: 200px; left: 1200px; }
+.level-button-8 { top: 600px; left: 1300px; }
+.level-button-9 { top: 600px; left: 900px; }
+
+
+/* Gentag og tilpas for level-button-2 til level-button-10 */

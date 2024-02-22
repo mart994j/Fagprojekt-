@@ -72,6 +72,10 @@ function MenuScreen() {
 
   }
 
+  const handleSudokuMap = () => {
+    navigate('/sudokuMap');
+  }
+
 
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);
@@ -133,6 +137,7 @@ function MenuScreen() {
           required
         />
         <button type="submit">Start Spil</button>
+        <button onClick={handleSudokuMap} type="button">Sudoku Chronicles</button>
 
         <select value={diff} onChange={handleDiff} required>
           <option value="">Vælg sværhedsgrad</option>
