@@ -116,7 +116,7 @@ function MenuScreen() {
 
   return (
     <div className="menu-screen">
-      <div class="bar">
+      <div className="bar">
         <button onClick={handleLeaderBoard} type="button" style={{ display: 'block', margin: '5px 0' }}>Leaderboard</button>
         <button onClick={handleGeoMap} type="button" className="geomap-button" style={{ display: 'block', margin: '5px 0' }}>Geomap</button>
         <button onClick={handleLoadGame} type="button" className="loadgame-button" style={{ display: 'block', margin: '5px 0' }}>Load Game</button>
@@ -144,8 +144,7 @@ function MenuScreen() {
         {/* Sudoku board size preview */}
         <BoardPreview k={k} n={n} />
 
-        
-        <t1>Vælg Størrelse på Sudoku</t1>
+        <h3>Vælg Størrelse på Sudoku</h3>
 
         <div className="kn-inputs">
           <input
@@ -157,9 +156,7 @@ function MenuScreen() {
           />
         </div>
       </form>
-
     </div>
-
   );
 
 }

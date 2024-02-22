@@ -175,30 +175,38 @@ function SudokuView() {
     }
   }, [lastClickedCell, grid, notes]);
 
-
-
+  
 
   function getUserLocation(callback) {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          callback(latitude, longitude);
+          callback(latitude, longitude, false); 
         },
         (error) => {
           console.error("Geolocation error:", error);
-          callback(null, null); // Håndter fejl eller ingen tilladelse
+          // Using Copenhagen's coordinates as fallback
+          callback(55.6761, 12.5683, true); 
         }
       );
     } else {
       console.log("Geolocation is not supported by this browser.");
-      callback(null, null); // Håndter unsupported browser
+      callback(55.6761, 12.5683, true); 
     }
   }
+  
   const submitScore = useCallback((username, time) => {
-    getUserLocation((latitude, longitude) => {
+    getUserLocation((latitude, longitude, isFallback) => {
+      if (isFallback) {
+        // Handle fallback scenario, such as not displaying a marker
+        console.log('Fallback location used, not submitting location for score.');
+        return; // Exit the function early
+      }
+  
       const location = { lat: latitude, lng: longitude };
-      console.log({ username, time, location }); // Debugging
+      console.log({ username, time, location }); // For debugging
+  
       fetch('http://localhost:3000/submit', {
         method: 'POST',
         headers: {
@@ -213,11 +221,12 @@ function SudokuView() {
         .then(response => response.json())
         .then(data => {
           console.log('Score submitted:', data);
-          // Opdater UI eller state her baseret på svaret, hvis nødvendigt
+          // Update UI or state here based on the response, if necessary
         })
         .catch(error => console.error('Error submitting score:', error));
     });
   }, []);
+  
 
 
 
