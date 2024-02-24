@@ -6,19 +6,19 @@
   min-width: 96vh;
   background-color: #2f0f57;
   color: #fff;
-  padding: 20px; /* Add padding for better spacing */
+  padding: 20px; 
 }
 
 
 /*Title*/
 .menu-screen h1 {
-  font-size: 5vw; /* Use vw unit to make the font size responsive */
-  margin-bottom: 8vw; /* Adjust margin with vw units */
+  font-size: 5vw; 
+  margin-bottom: 8vw; 
 }
 
 .menu-screen t1 {
-  font-size: 1vw; /* Use vw unit to make the font size responsive */
-  bottom: 10vw; /* Adjust distance from bottom as needed */
+  font-size: 1vw; 
+  bottom: 10vw; 
 
 }
 
@@ -28,16 +28,16 @@
 }
 
 .menu-screen form select {
-  margin-top: 10px; /* Adjust as needed */
+  margin-top: 10px; 
 }
 
 
 /*Username*/
 .menu-screen input[type="text"], 
 .menu-screen button {
-  padding: 10px 20px; /* Adjust padding for buttons and inputs */
-  font-size: 4vw; /* Use vw unit to make the font size responsive */
-  margin: 10px 0; /* Adjust margin with vw units */
+  padding: 10px 20px;
+  font-size: 4vw; 
+  margin: 10px 0; 
 }
 
 
@@ -45,9 +45,9 @@
 .kn-inputs {
   display: flex;
   justify-content: center;
-  gap: 20px; /* Adjust the gap between inputs as needed */
+  gap: 20px;
   position: absolute;
-  bottom: 4vw; /* Adjust distance from bottom as needed */
+  bottom: 4vw; 
   width: 100%;
 }
 
@@ -77,24 +77,90 @@
 }
 .board-preview {
   display: grid;
-  gap: 2px; /* Adjust the gap between regions */
+  gap: 2px; 
   margin-top: 20px;
   background-color: #514949;
-  overflow: auto; /* Enable overflow handling */
+  overflow: auto; 
   justify-content: center;
-  max-width: 80vw; /* Maximum width for the preview container */
-  max-height: 80vh; /* Maximum height for the preview container */
+  max-width: 80vw; 
+  max-height: 80vh;
 }
 
 .preview-region {
   background-color: #ffffff;
   display: grid;
-  gap: 1px; /* Smaller gap for cells within the same region */
+  gap: 1px; 
 }
 
 .preview-cell {
   background-color: #baaaaa;
-  min-width: 10px; /* Minimum cell width, adjust as necessary */
-  min-height: 10px; /* Minimum cell height, adjust as necessary */
-  aspect-ratio: 1 / 1; /* Ensures cells are always square */
+  min-width: 10px; 
+  min-height: 10px; 
+  aspect-ratio: 1 / 1; 
 }
+
+
+
+.menu-screen {
+  position: relative; 
+}
+
+.icon-container {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  z-index: 1002; 
+}
+
+.sidebar-trigger {
+  cursor: pointer;
+  font-size: 32px; 
+  color: white; 
+  padding: 10px;
+}
+.sidebar-menu-content {
+  margin-top: 30px;
+  align-items: center;
+}
+
+.sidebar-menu {
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; 
+  height: 100%;
+  background-color: #2f0f57;
+  box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%) scale(0.9); 
+  transition: transform 0.4s ease, opacity 0.4s ease; 
+  opacity: 0;
+  z-index: 1001; 
+}
+.menu-screen .sidebar-menu.active {
+  transform: translateX(0) scale(1); 
+  opacity: 1;
+}
+
+.sidebar-menu button {
+  padding: 10px;
+  margin-bottom: 10px; 
+  font-size: 1rem;
+  background-color: #4e0ecc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.sidebar-menu button:hover {
+  background-color: #11101d;
+}
+
+
+
+
+

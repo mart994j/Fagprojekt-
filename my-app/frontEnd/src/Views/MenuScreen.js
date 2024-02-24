@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './CSS/MenuScreen.css'; // Import CSS file
-import './CSS/Bar.css';
 import './CSS/MenuButtons.css';
+import { IoIosMenu } from "react-icons/io";
+
 
 function MenuScreen() {
   let navigate = useNavigate();
@@ -11,6 +12,8 @@ function MenuScreen() {
   const [localUsername, setLocalUsername] = useState('');
   const [n, setN] = useState(9);
   const [diff, setDiff] = useState(10);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Updated for sidebar
+
   const k = Math.sqrt(n);
 
   const handleStartGame = (event) => {
@@ -116,16 +119,28 @@ function MenuScreen() {
     );
   };
 
+  const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated for sidebar
+
 
 
   return (
     <div className="menu-screen">
-      <div className="bar">
-        <button onClick={handleLeaderBoard} type="button" style={{ display: 'block', margin: '5px 0' }}>Leaderboard</button>
-        <button onClick={handleGeoMap} type="button" className="geomap-button" style={{ display: 'block', margin: '5px 0' }}>Geomap</button>
-        <button onClick={handleLoadGame} type="button" className="loadgame-button" style={{ display: 'block', margin: '5px 0' }}>Load Game</button>
-        <button onClick={handleSettings} type="button" className="settings-button" style={{ display: 'block', margin: '5px 0' }}>Settings</button>
+      <div className="icon-container">
+        <IoIosMenu onClick={toggleSidebar} className="sidebar-trigger" />
       </div>
+
+      <div className={`sidebar-menu ${isSidebarVisible ? 'active' : ''}`}>
+        <div className="sidebar-menu-content">
+          <button onClick={handleLeaderBoard}class="leaderboard-button" type="button">Leaderboard</button>
+          <button onClick={handleGeoMap} class="geomap-button" type="button">Geomap</button>
+          <button onClick={handleLoadGame} class="loadgame-button" type="button">Load Game</button>
+          <button onClick={handleSudokuMap} class="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
+
+        
+          <button onClick={handleSettings} class="settings-button" type="button">Settings</button>
+        </div>
+      </div>
+      
 
       <form onSubmit={handleStartGame}>
         <h1>Velkommen til Sudoku!</h1>
@@ -137,8 +152,6 @@ function MenuScreen() {
           required
         />
         <button type="submit">Start Spil</button>
-        <button onClick={handleSudokuMap} type="button">Sudoku Chronicles</button>
-
         <select value={diff} onChange={handleDiff} required>
           <option value="">Vælg sværhedsgrad</option>
           <option value="1">Let</option>

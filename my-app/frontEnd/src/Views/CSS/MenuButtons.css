@@ -60,3 +60,23 @@
 .menu-screen .settings-button[type="button"]:hover {
     background-color: #018378;
 }
+
+.menu-screen .SudokuChronicles-button[type="button"] {
+    margin-top: 20px;
+    background-color: #bc23b9;
+    color: white;
+    margin: 10px;
+}
+.menu-screen .SudokuChronicles-button[type="button"]:hover {
+    background-color: #830183;
+}
+
+.menu-screen .leaderboard-button[type="button"] {
+    margin-top: 20px;
+    background-color: #23bc49;
+    color: white;
+    margin: 10px;
+}
+.menu-screen .leaderboard-button[type="button"]:hover {
+    background-color: #1a8242;
+}
