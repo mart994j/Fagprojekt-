@@ -136,7 +136,8 @@ function MenuScreen() {
           <button onClick={handleLoadGame} class="loadgame-button" type="button">Load Game</button>
           <button onClick={handleSudokuMap} class="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
 
-        
+
+          {/* Tilføj nye knapper over settings knappen */}
           <button onClick={handleSettings} class="settings-button" type="button">Settings</button>
         </div>
       </div>
