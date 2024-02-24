@@ -126,7 +126,7 @@ function MenuScreen() {
   return (
     <div className="menu-screen">
       <div className="icon-container">
-        <IoIosMenu onClick={toggleSidebar} className="sidebar-trigger" />
+        <IoIosMenu onClick={toggleSidebar} className="sidebar-trigger" size={48} />
       </div>
 
       <div className={`sidebar-menu ${isSidebarVisible ? 'active' : ''}`}>
