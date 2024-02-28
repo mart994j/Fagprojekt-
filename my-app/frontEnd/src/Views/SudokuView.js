@@ -7,6 +7,7 @@ import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb,
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { markLevelCompleted } from '../markLevelCompleted';
 
 function SudokuView() {
   const location = useLocation();
@@ -226,9 +227,6 @@ function SudokuView() {
         .catch(error => console.error('Error submitting score:', error));
     });
   }, []);
-  
-
-
 
 
   // Tjekker om Sudoku er løst
@@ -242,6 +240,10 @@ function SudokuView() {
       alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
       stopTimer();
       submitScore(username, timer);
+
+      if (location.state?.fromChronicles) {
+        markLevelCompleted(location.state.level); // Tjekker også, at level information er tilgængelig
+      }
       navigate('/menu');
 
     }

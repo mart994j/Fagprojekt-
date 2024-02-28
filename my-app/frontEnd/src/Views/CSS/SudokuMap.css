@@ -37,4 +37,10 @@
 .level-button-9 { top: 600px; left: 900px; }
 
 
-/* Gentag og tilpas for level-button-2 til level-button-10 */
+.map-path-line.locked {
+  stroke: red; /* Ændre farven til rød for låste linjer */
+}
+
+.map-path-line.unlocked {
+  stroke: green; /* Ændre farven til grøn for ulåste linjer */
+}
