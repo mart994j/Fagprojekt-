@@ -8,8 +8,7 @@ import { IoIosMenu } from "react-icons/io";
 
 function MenuScreen() {
   let navigate = useNavigate();
-  const { username, setUsername } = useUser(); // Now getting username from context
-  const [localUsername, setLocalUsername] = useState('');
+  const { username} = useUser(); // Now getting username from context
   const [n, setN] = useState(9);
   const [diff, setDiff] = useState(10);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Updated for sidebar
@@ -18,10 +17,9 @@ function MenuScreen() {
 
   const handleStartGame = (event) => {
     event.preventDefault();
-    setUsername(localUsername);
     // Tjekker om n er et perfekt kvadrat og k er et heltal
     if (Number.isInteger(k) && n > 0) {
-      console.log('Success:', localUsername, k, n, diff);
+      console.log('Success:',username, k, n, diff);
       navigate('/sudoku', { state: { n, diff } });
     } else {
       alert('Ugyldig værdi for n. n skal være et perfekt kvadrat (f.eks., 9, 16, 25).');
@@ -131,27 +129,21 @@ function MenuScreen() {
 
       <div className={`sidebar-menu ${isSidebarVisible ? 'active' : ''}`}>
         <div className="sidebar-menu-content">
-          <button onClick={handleLeaderBoard}class="leaderboard-button" type="button">Leaderboard</button>
-          <button onClick={handleGeoMap} class="geomap-button" type="button">Geomap</button>
-          <button onClick={handleLoadGame} class="loadgame-button" type="button">Load Game</button>
-          <button onClick={handleSudokuMap} class="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
+          <button onClick={handleLeaderBoard}className="leaderboard-button" type="button">Leaderboard</button>
+          <button onClick={handleGeoMap} className="geomap-button" type="button">Geomap</button>
+          <button onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</button>
+          <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
 
 
           {/* Tilføj nye knapper over settings knappen */}
-          <button onClick={handleSettings} class="settings-button" type="button">Settings</button>
+          <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
         </div>
       </div>
       
 
       <form onSubmit={handleStartGame}>
         <h1>Velkommen til Sudoku!</h1>
-        <input
-          type="text"
-          value={localUsername}
-          onChange={(e) => setLocalUsername(e.target.value)}
-          placeholder="Indtast brugernavn"
-          required
-        />
+        
         <button type="submit">Start Spil</button>
         <select value={diff} onChange={handleDiff} required>
           <option value="">Vælg sværhedsgrad</option>

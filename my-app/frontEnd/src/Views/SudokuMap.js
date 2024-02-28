@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS/SudokuMap.css'; // Sørg for stien er korrekt
 
@@ -6,14 +6,35 @@ function SudokuMap() {
   const navigate = useNavigate();
   const levels = Array.from({ length: 10 }, (_, i) => i + 1); // Genererer 10 levels
 
-  const handleLevelSelect = (levelId) => {
+  const handleLevelSelect = (id) => {
     const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
-    if (completedLevels.includes(levelId - 1) || levelId === 1) { // Tillad level 1 altid
-      navigate(`/sudoku/${levelId}`);
+    
+    if (completedLevels.includes(id - 1) || id === 1) { // Tillad level 1 altid
+      // Definer n og diff baseret på level id
+      let n, diff;
+      switch(id) {
+        case 1:
+          n = 4; // antag et 4x4 bræt for niveau 1
+          diff = 1;
+          break;
+        case 2:
+          n = 4;
+          diff = 1
+          break;
+        // Tilføj flere cases som nødvendigt for de forskellige levels
+        default:
+          n = 9; // standard størrelse for et Sudoku bræt
+          diff = 1;
+          break;
+      }
+      
+      navigate('/sudoku', { state: { n, diff } }); // Naviger til spillesiden med de valgte værdier
     } else {
       alert("Level is locked. Complete previous levels to unlock.");
     }
   };
+  
+  
 
   return (
     <div className="map-container">

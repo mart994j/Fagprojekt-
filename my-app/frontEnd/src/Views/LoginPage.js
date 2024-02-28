@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './CSS/LoginPage.css'; 
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../UserContext';
 
 function LoginPage() {
   let navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { setUsername: setGlobalUsername } = useUser(); // Brug setUsername fra din UserContext
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +23,8 @@ function LoginPage() {
     });
 
     if (response.ok) {
+      setGlobalUsername(username); // Opdater kontekstens brugernavn efter en vellykket login
+      console.log('Login successful for', username);
       navigate('/menu'); 
 
     } else {
