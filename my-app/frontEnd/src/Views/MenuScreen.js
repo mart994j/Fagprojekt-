@@ -156,16 +156,21 @@ function MenuScreen() {
         <BoardPreview k={k} n={n} />
 
         <h3>Vælg Størrelse på Sudoku</h3>
-
         <div className="kn-inputs">
           <input
             type="number"
-            value={n}
-            onChange={(e) => setN(Number(e.target.value))}
+            value={Math.sqrt(n)}
+            onChange={(e) => {
+              const value = Math.pow(Number(e.target.value), 2);
+              if (value >= 9) {
+                setN(value);
+              }
+            }}
             placeholder="Vælg n (bræt størrelse)"
             required
           />
         </div>
+
       </form>
     </div>
   );
