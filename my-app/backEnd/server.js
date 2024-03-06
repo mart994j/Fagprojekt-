@@ -12,29 +12,27 @@ app.use(bodyParser.json());
 const leaderboard = [];
 const savedGames = [];
 const users = {
-  'admin': 'admin',
-}
+  'admin': { password: 'admin', completedLevels: [] }, // Changed to an object with password and completedLevels
+};
 
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
   if (users[username]) {
     return res.status(400).json({ message: 'Username already exists' });
   }
-  users[username] = password;
+  users[username] = { password, completedLevels: [] }; // Ensure each user has completedLevels initialized
   res.json({ message: 'User registered successfully' });
 });
 
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-
-  if (users[username] && users[username] === password) {
+  if (users[username] && users[username].password === password) { // Changed to access password correctly
     res.json('Login successful');
   } else {
     res.status(401).json({ message: 'Invalid username or password' });
   }
 });
-
 
 app.post('/save', (req, res) => {
   const { username, board, time } = req.body;
@@ -42,20 +40,12 @@ app.post('/save', (req, res) => {
     return res.status(400).json({ message: 'Username, board, and time are required' });
   }
 
-  // Check if there's already a saved game for the user
   const existingIndex = savedGames.findIndex(game => game.username === username);
-
   if (existingIndex >= 0) {
-    // Update the existing saved game
     savedGames[existingIndex] = { username, board, time: Date.now() };
-    console.log(`Game updated for user: ${username}`);
   } else {
-    // Add a new saved game
-    savedGames.push({ username, board, time: Date.now() }); // Add a timestamp for uniqueness
-    console.log(`Game saved for user: ${username}`);
+    savedGames.push({ username, board, time: Date.now() });
   }
-
-  console.log('Current saved games:', savedGames);
   res.json({ message: 'Game saved successfully' });
 });
 
@@ -125,3 +115,26 @@ app.get('/leaderboard', (req, res) => {
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
 });
+
+
+
+
+app.post('/levels/complete', (req, res) => {
+  const { username, level } = req.body;
+  if (!users[username]) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  if (!users[username].completedLevels.includes(level)) {
+    users[username].completedLevels.push(level);
+  }
+  res.json({ message: 'Level completed', completedLevels: users[username].completedLevels });
+});
+
+app.get('/levels/completed', (req, res) => {
+  const { username } = req.query;
+  if (!users[username]) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  res.json({ completedLevels: users[username].completedLevels });
+});
+
