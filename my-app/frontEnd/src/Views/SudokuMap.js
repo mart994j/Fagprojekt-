@@ -1,31 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CSS/SudokuMap.css'; 
+import './CSS/SudokuMap.css';
+import UserContext from '../UserContext';
 
 function SudokuMap() {
+  const { username } = useContext(UserContext);
+
+  console.log('SudokuMap component rendered with username:', username); // Debug username passed to component
+  
   const [lastCompletedLevel, setLastCompletedLevel] = useState(0);
+  const [levelsCompleted, setLevelsCompleted] = useState([]);
   const navigate = useNavigate();
   const levels = Array.from({ length: 10 }, (_, i) => i + 1); // Generates 10 levels
 
   useEffect(() => {
-    const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
-    if (completedLevels.length > 0) {
-      const highestLevelCompleted = Math.max(...completedLevels);
-      setLastCompletedLevel(highestLevelCompleted);
-      console.log('Setting lastCompletedLevel from localStorage:', highestLevelCompleted);
-    }
-  }, []); 
-  const handleLevelSelect = (id) => {
-    const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
-    console.log('Completed Levels:', completedLevels);
+    console.log('Effect running: Fetching completed levels for', username);
+    const fetchCompletedLevels = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/levels/completed?username=${username}`);
+        const data = await response.json();
+        if (response.ok) {
+          const completedLevels = data.completedLevels || [];
+          console.log('Completed levels fetched:', completedLevels);
+          setLevelsCompleted(completedLevels);
+          const highestLevelCompleted = Math.max(...completedLevels, 0);
+          console.log('Highest level completed:', highestLevelCompleted);
+          setLastCompletedLevel(highestLevelCompleted);
+        } else {
+          throw new Error(data.message || 'Error fetching completed levels');
+        }
+      } catch (error) {
+        console.error('Error in fetchCompletedLevels:', error);
+      }
+    };
 
-    if (completedLevels.includes(id - 1) || id === 1) { // Always allow level 1
+    if (username) {
+      fetchCompletedLevels();
+    }
+  }, [username]);
+
+  const handleLevelSelect = async (id) => {
+    console.log(`Level ${id} selected`, levelsCompleted);
+    
+    if (levelsCompleted.includes(id - 1) || id === 1) {
       let n, diff;
-      switch(id) {
+      switch (id) {
         case 1:
-          n = 4;
-          diff = 1;
-          break;
         case 2:
           n = 4;
           diff = 1;
@@ -36,14 +56,28 @@ function SudokuMap() {
           break;
       }
 
-      console.log('Level selected:', id);
-      console.log('Before update, lastCompletedLevel:', lastCompletedLevel);
-
-      if (id > lastCompletedLevel) {
-        setLastCompletedLevel(id);
-        completedLevels.push(id); // Add the newly completed level to the array
-        localStorage.setItem('completedLevels', JSON.stringify(completedLevels)); // Update localStorage
-        console.log('Updated lastCompletedLevel to:', id);
+      if (!levelsCompleted.includes(id)) {
+        console.log(`Attempting to complete level ${id} for user ${username}`);
+        try {
+          console.log('Sending request to complete level:', { username, level: id });
+          const response = await fetch('http://localhost:3000/levels/complete', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, level: id })
+          });
+          const data = await response.json();
+          if (response.ok) {
+            console.log(`Level ${id} completed successfully, updating state.`);
+            setLastCompletedLevel(id);
+            setLevelsCompleted(data.completedLevels);
+          } else {
+            throw new Error(data.message || 'Error updating completed levels');
+          }
+        } catch (error) {
+          console.error('Error in handleLevelSelect:', error);
+        }
       }
 
       navigate('/sudoku', { state: { n, diff, level: id, fromChronicles: true } });
