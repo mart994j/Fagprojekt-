@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './CSS/MenuScreen.css'; // Import CSS file
 import './CSS/MenuButtons.css';
+import './CSS/themes.css';
 import { IoIosMenu } from "react-icons/io";
 
 
@@ -142,9 +143,15 @@ function MenuScreen() {
       
 
       <form onSubmit={handleStartGame}>
+
+
         <h1>Velkommen til Sudoku!</h1>
         
         <button type="submit">Start Spil</button>
+
+        <button type="themeButton">Change Theme</button>
+
+
         <select value={diff} onChange={handleDiff} required>
           <option value="">Vælg sværhedsgrad</option>
           <option value="1">Let</option>
