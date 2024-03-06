@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CSS/SudokuMap.css'; // Ensure the path is correct
+import './CSS/SudokuMap.css'; 
 
 function SudokuMap() {
   const [lastCompletedLevel, setLastCompletedLevel] = useState(0);
@@ -8,15 +8,13 @@ function SudokuMap() {
   const levels = Array.from({ length: 10 }, (_, i) => i + 1); // Generates 10 levels
 
   useEffect(() => {
-    // This useEffect hook will run once when the component mounts
     const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
     if (completedLevels.length > 0) {
       const highestLevelCompleted = Math.max(...completedLevels);
       setLastCompletedLevel(highestLevelCompleted);
       console.log('Setting lastCompletedLevel from localStorage:', highestLevelCompleted);
     }
-  }, []); // Empty dependency array means this effect runs once on mount
-
+  }, []); 
   const handleLevelSelect = (id) => {
     const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
     console.log('Completed Levels:', completedLevels);
