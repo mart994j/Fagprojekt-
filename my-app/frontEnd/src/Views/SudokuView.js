@@ -50,6 +50,29 @@ function SudokuView() {
     isTimerActiveRef.current = false;
   }, []);
 
+  const updateStats = useCallback(() => {
+    const gameData = {
+        username: username, // This needs to be fetched from context or state
+        gamesPlayed: 1, // Assuming a game played
+        gamesWon: 1, // Assuming the player wins
+        bestTime: timer, // Capture the current timer
+        // Add other stats as necessary
+    };
+    console.log('Updating stats for:', username); // Add this to debug
+    fetch('http://localhost:3000/stats/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(gameData),
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Stats updated:', data);
+        })
+        .catch(error => console.error('Error updating stats:', error));
+}, [username, timer]);
+
 
   const saveGame = useCallback(() => {
     // Assuming username is available in your context, and board state is stored in grid
@@ -241,6 +264,7 @@ function SudokuView() {
       const winMessageElement = celebrateWin();
       stopTimer();
       submitScore(username, timer);
+      updateStats();
 
       if (location.state?.fromChronicles) {
         markLevelCompleted(location.state.level); // Tjekker også, at level information er tilgængelig

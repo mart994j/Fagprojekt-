@@ -12,8 +12,54 @@ app.use(bodyParser.json());
 const leaderboard = [];
 const savedGames = [];
 const users = {
-  'admin': { password: 'admin', completedLevels: [] }, // Changed to an object with password and completedLevels
+  'admin': { 
+    password: 'admin', 
+    completedLevels: [], 
+    stats: {
+      gamesPlayed: 0,
+      gamesWon: 0,
+      bestTime: Infinity, // Use Infinity for times initially since we want to minimize this
+      worstTime: 0,
+      averageTime: 0
+    }
+  },
 };
+
+
+// Update user statistics
+app.post('/stats/update', (req, res) => {
+  const { username, gamesPlayed, gamesWon, time } = req.body; // You already extract 'time' here correctly
+  console.log("Received username:", username); 
+  console.log("Available users:", Object.keys(users));
+
+  if (!users[username]) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  const userStats = users[username].stats;
+  userStats.gamesPlayed += gamesPlayed;
+  userStats.gamesWon += gamesWon;
+  userStats.bestTime = Math.min(userStats.bestTime === Infinity ? time : userStats.bestTime, time);
+  userStats.worstTime = Math.max(userStats.worstTime, time);
+  if (gamesWon > 0) {
+    userStats.averageTime = userStats.gamesWon === 1 ? time : ((userStats.averageTime * (userStats.gamesWon - 1) + time) / userStats.gamesWon);
+  }
+
+  res.json({ message: 'Statistics updated', stats: userStats });
+});
+
+
+// Retrieve user statistics
+app.get('/stats/:username', (req, res) => {
+  const { username } = req.params;
+  
+  if (!users[username]) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  res.json(users[username].stats);
+});
+
 
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
@@ -33,6 +79,8 @@ app.post('/login', (req, res) => {
     res.status(401).json({ message: 'Invalid username or password' });
   }
 });
+
+
 
 app.post('/save', (req, res) => {
   const { username, board, time } = req.body;
@@ -112,11 +160,6 @@ app.get('/leaderboard', (req, res) => {
   res.json(leaderboard);
 });
 
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server running on port ${port}`);
-});
-
-
 
 
 app.post('/levels/complete', (req, res) => {
@@ -136,5 +179,9 @@ app.get('/levels/completed', (req, res) => {
     return res.status(404).json({ message: 'User not found' });
   }
   res.json({ completedLevels: users[username].completedLevels });
+});
+
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
 });
 
