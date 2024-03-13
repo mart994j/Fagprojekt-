@@ -1,5 +1,5 @@
 import React from 'react';
-import './CSS/pauseModal.css'
+import './CSS/Component.css'
 
 const sudokuPause = ({ isPaused, onContinue }) => {
   if (!isPaused) return null;

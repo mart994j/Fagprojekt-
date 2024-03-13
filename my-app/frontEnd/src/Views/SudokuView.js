@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
 import './CSS/SudokuView.css';
+import celebrateWin from '../Components/WinAnimation.js';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
 import SudokuPause from '../Components/sudokuPause';
@@ -237,7 +238,7 @@ function SudokuView() {
     // Tjekker om brættet er fuldt udfyldt og gyldigt
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
-      alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
+      const winMessageElement = celebrateWin();
       stopTimer();
       submitScore(username, timer);
 
@@ -246,7 +247,12 @@ function SudokuView() {
         console.log('Level completed:', location.state.level);
         navigate('/sudokuMap');
       }
-      navigate('/menu');
+
+      setTimeout(() => {
+        document.body.removeChild(winMessageElement);
+        navigate('/menu');
+      }, 5000); 
+    
 
     }
   }, [grid, isDataLoaded, timer, username, navigate, submitScore]);
