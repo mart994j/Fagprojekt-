@@ -16,7 +16,7 @@ function celebrateWin() {
   winMessage.style.left = '50%';
   winMessage.style.top = '50%';
   winMessage.style.transform = 'translate(-50%, -50%)';
-  winMessage.style.fontSize = '2rem';
+  winMessage.style.fontSize = '3rem';
   winMessage.style.fontWeight = 'bold';
   winMessage.style.zIndex = '1000';
   winMessage.style.animation = 'rainbow-color 2s linear infinite';
