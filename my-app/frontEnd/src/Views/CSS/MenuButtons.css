@@ -46,6 +46,20 @@
     margin: 10px;
 }
 
+
+.menu-screen .statistics-button[type="button"] {
+    margin-top: 20px;
+    background-color: #145e49;
+    margin: 10px;
+}
+
+.menu-screen .statistics-button[type="button"]:hover {
+    background-color: #0c3b2d;
+}
+
+
+
+
 .menu-screen .loadgame-button[type="button"]:hover {
     background-color: #836901;
 }

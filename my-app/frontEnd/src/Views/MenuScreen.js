@@ -79,6 +79,11 @@ function MenuScreen() {
   }
 
 
+  const handleStatistics = () => {
+    navigate('/statistics');
+  }
+
+
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);
     // Juster stilen for at sikre ensartede grænser mellem regionerne
@@ -134,6 +139,8 @@ function MenuScreen() {
           <button onClick={handleGeoMap} className="geomap-button" type="button">Geomap</button>
           <button onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</button>
           <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
+          <button onClick={handleStatistics} className="statistics-button" type="button">Statistics</button>
+
           {/* Tilføj nye knapper over settings knappen */}
           <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
         </div>
