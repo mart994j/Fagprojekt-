@@ -162,8 +162,7 @@ class SudokuGenerator {
 
   static swapRows(board, size) {
     const subGridSize = Math.sqrt(size);
-    const numSwaps = 3; // Adjust this number to increase or decrease the number of swaps
-
+    const numSwaps = Math.sqrt(size); // Adjust this number to increase or decrease the number of swaps
     for (let band = 0; band < size; band += subGridSize) {
         for (let swap = 0; swap < numSwaps; swap++) {
             // Randomly select two rows within this band to swap
@@ -177,8 +176,7 @@ class SudokuGenerator {
 
 static swapColumns(board, size) {
     const subGridSize = Math.sqrt(size);
-    const numSwaps = 3; // Adjust this number to increase or decrease the number of swaps
-
+    const numSwaps = Math.sqrt(size); // Adjust this number to increase or decrease the number of swaps
     for (let band = 0; band < size; band += subGridSize) {
         for (let swap = 0; swap < numSwaps; swap++) {
             // Randomly select two columns within this band to swap
