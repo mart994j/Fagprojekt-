@@ -42,9 +42,9 @@ app.post('/save', (req, res) => {
 
   const existingIndex = savedGames.findIndex(game => game.username === username);
   if (existingIndex >= 0) {
-    savedGames[existingIndex] = { username, board, time: Date.now() };
+    savedGames[existingIndex] = { username, board, time};
   } else {
-    savedGames.push({ username, board, time: Date.now() });
+    savedGames.push({ username, board, time});
   }
   res.json({ message: 'Game saved successfully' });
 });
