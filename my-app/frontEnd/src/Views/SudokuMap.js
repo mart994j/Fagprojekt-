@@ -12,6 +12,17 @@ function SudokuMap() {
   const [levelsCompleted, setLevelsCompleted] = useState([]);
   const navigate = useNavigate();
   const levels = Array.from({ length: 10 }, (_, i) => i + 1); // Generates 10 levels
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (showErrorMessage) {
+      const timer = setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 1500); // Fade away after 2 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [showErrorMessage]);
 
   useEffect(() => {
     console.log('Effect running: Fetching completed levels for', username);
@@ -82,12 +93,14 @@ function SudokuMap() {
 
       navigate('/sudoku', { state: { n, diff, level: id, fromChronicles: true } });
     } else {
-      alert("Level is locked. Complete previous levels to unlock.");
+      setErrorMessage("Level is locked. Complete previous levels to unlock.");
+      setShowErrorMessage(true);
     }
   };
   
   return (
     <div className="map-container">
+      {showErrorMessage && <div className="errorMessage" style={{display: 'block'}}>{errorMessage}</div>}
       <svg className="map-path" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         {/* Line from Level 1 to Level 2 */}
         <line x1="80" y1="70" x2="350" y2="300" className={`map-path-line ${lastCompletedLevel >= 1 ? 'unlocked' : 'locked'}`} strokeWidth="5" />
