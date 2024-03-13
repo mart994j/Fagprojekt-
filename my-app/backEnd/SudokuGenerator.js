@@ -52,6 +52,8 @@ class SudokuGenerator {
       Array.from({ length: size }, () => new Set(Array.from({ length: size }, (_, index) => index + 1)))
     );
     if (this.fillBoard(board, size, candidates)) {
+      this.swapRows(board, size);
+      this.swapColumns(board, size);
       return board;
     }
   }
@@ -157,6 +159,43 @@ class SudokuGenerator {
     return trackChanges ? changes : null;
     //hvis trackChanges er true så returner changes ellers returner null
   }
+
+  static swapRows(board, size) {
+    const subGridSize = Math.sqrt(size);
+    const numSwaps = 3; // Adjust this number to increase or decrease the number of swaps
+
+    for (let band = 0; band < size; band += subGridSize) {
+        for (let swap = 0; swap < numSwaps; swap++) {
+            // Randomly select two rows within this band to swap
+            let row1 = band + Math.floor(Math.random() * subGridSize);
+            let row2 = band + Math.floor(Math.random() * subGridSize);
+            // Swap the rows
+            [board[row1], board[row2]] = [board[row2], board[row1]];
+        }
+    }
 }
+
+static swapColumns(board, size) {
+    const subGridSize = Math.sqrt(size);
+    const numSwaps = 3; // Adjust this number to increase or decrease the number of swaps
+
+    for (let band = 0; band < size; band += subGridSize) {
+        for (let swap = 0; swap < numSwaps; swap++) {
+            // Randomly select two columns within this band to swap
+            let col1 = band + Math.floor(Math.random() * subGridSize);
+            let col2 = band + Math.floor(Math.random() * subGridSize);
+            // Swap the columns
+            for (let row = 0; row < size; row++) {
+                [board[row][col1], board[row][col2]] = [board[row][col2], board[row][col1]];
+            }
+        }
+    }
+}
+
+
+}
+
+
+
 
 module.exports = { SudokuGenerator };

@@ -134,8 +134,6 @@ function MenuScreen() {
           <button onClick={handleGeoMap} className="geomap-button" type="button">Geomap</button>
           <button onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</button>
           <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
-
-
           {/* Tilføj nye knapper over settings knappen */}
           <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
         </div>
@@ -148,10 +146,6 @@ function MenuScreen() {
         <h1>Velkommen til Sudoku!</h1>
         
         <button type="submit">Start Spil</button>
-
-        <button type="themeButton">Change Theme</button>
-
-
         <select value={diff} onChange={handleDiff} required>
           <option value="">Vælg sværhedsgrad</option>
           <option value="1">Let</option>
