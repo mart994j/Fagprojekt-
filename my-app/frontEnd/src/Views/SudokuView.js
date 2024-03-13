@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
 import './CSS/SudokuView.css';
+import celebrateWin from '../Components/WinAnimation.js';
 import { isValidSudoku } from '../sudokuUtils';
 import { fetchNewBoard } from '../fetchNewBoard';
 import SudokuPause from '../Components/sudokuPause';
@@ -28,6 +29,26 @@ function SudokuView() {
   const [isNotesMode, setIsNotesMode] = useState(false);
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
   const [lastClickedCell, setLastClickedCell] = useState(null);
+
+  const startTimer = useCallback(() => {
+    if (!isTimerActiveRef.current) {
+      isTimerActiveRef.current = true;
+      setTimer(prevTimer => prevTimer); // Initialize timer without changing its state
+      const interval = setInterval(() => {
+        if (isTimerActiveRef.current) {
+          setTimer(prevTimer => prevTimer + 1);
+        }
+      }, 1000);
+      // Store the interval ID in the ref so it can be cleared later
+      isTimerActiveRef.current = interval;
+    }
+  }, []);
+  
+  const stopTimer = useCallback(() => {
+    // Clear the interval using the ID stored in the ref
+    clearInterval(isTimerActiveRef.current);
+    isTimerActiveRef.current = false;
+  }, []);
 
 
   const saveGame = useCallback(() => {
@@ -71,8 +92,10 @@ function SudokuView() {
       setGrid(load.board);
       setTimer(load.time);
       setIsDataLoaded(true);
-      // Assume all cells are editable for simplicity, or adjust as needed
       setEditableCells(load.board.map(row => row.map(value => value === 0)));
+      if (!isTimerActiveRef.current) {
+        startTimer(); // Only start the timer if it's not already running
+      }
     } else {
       // Fetch new board if no loaded game data is present
       fetchNewBoard({
@@ -86,30 +109,8 @@ function SudokuView() {
         setIsTimerActive: isTimerActiveRef.current ? () => {} : startTimer,
       });
     }
-  }, [location.state]);
+  }, [location.state, startTimer]);
   
-
-
-
-
-  // Timer logik 
-  const startTimer = () => {
-    if (!isTimerActiveRef.current) {
-      isTimerActiveRef.current = true;
-      const interval = setInterval(() => {
-        if (isTimerActiveRef.current) {
-          setTimer((prevTimer) => prevTimer + 1);
-        } else {
-          clearInterval(interval);
-        }
-      }, 1000);
-    }
-  };
-
-  // Stop timer-funktion
-  const stopTimer = () => {
-    isTimerActiveRef.current = false;
-  };
 
   // Håndterer input fra brugeren
   const handleInputChange = useCallback((event, i, j) => {
@@ -237,7 +238,7 @@ function SudokuView() {
     // Tjekker om brættet er fuldt udfyldt og gyldigt
     const isFullyFilled = grid.every(row => row.every(value => value !== 0));
     if (isValid && isFullyFilled) {
-      alert(`Congratulations! You've solved the Sudoku in ${timer} seconds!`);
+      const winMessageElement = celebrateWin();
       stopTimer();
       submitScore(username, timer);
 
@@ -246,7 +247,12 @@ function SudokuView() {
         console.log('Level completed:', location.state.level);
         navigate('/sudokuMap');
       }
-      navigate('/menu');
+
+      setTimeout(() => {
+        document.body.removeChild(winMessageElement);
+        navigate('/menu');
+      }, 5000); 
+    
 
     }
   }, [grid, isDataLoaded, timer, username, navigate, submitScore]);
