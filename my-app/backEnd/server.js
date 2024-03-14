@@ -31,7 +31,8 @@ app.post('/stats/update', (req, res) => {
   const { username, gamesPlayed, gamesWon, time } = req.body; // You already extract 'time' here correctly
   console.log("Received username:", username); 
   console.log("Available users:", Object.keys(users));
-
+  console.log("Received gamesPlayed:", gamesPlayed);
+  console.log("Received gamesWon:", gamesWon);
   if (!users[username]) {
     return res.status(404).json({ message: 'User not found' });
   }

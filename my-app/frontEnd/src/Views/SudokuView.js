@@ -55,7 +55,7 @@ function SudokuView() {
         username: username, // This needs to be fetched from context or state
         gamesPlayed: 1, // Assuming a game played
         gamesWon: 1, // Assuming the player wins
-        bestTime: timer, // Capture the current timer
+        time: timer, // Capture the current timer
         // Add other stats as necessary
     };
     console.log('Updating stats for:', username); // Add this to debug
@@ -264,6 +264,7 @@ function SudokuView() {
       const winMessageElement = celebrateWin();
       stopTimer();
       submitScore(username, timer);
+      setTimer(timer);
       updateStats();
 
       if (location.state?.fromChronicles) {
