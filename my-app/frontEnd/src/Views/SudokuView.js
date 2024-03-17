@@ -57,7 +57,7 @@ function SudokuView() {
       gamesPlayed: 1, // Only incrementing gamesPlayed here
     };
     console.log('Incrementing games played for:', username);
-    fetch('http://localhost:3000/stats/gamesPlayed', {
+    fetch('http://localhost:3001/stats/gamesPlayed', {
       method: 'POST', // Assuming POST, but could be PUT depending on your backend setup
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@ function SudokuView() {
         // Add other stats as necessary
     };
     console.log('Updating stats for:', username); // Add this to debug
-    fetch('http://localhost:3000/stats/update', {
+    fetch('http://localhost:3001/stats/update', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ function SudokuView() {
       time: timer, // Assuming timer state holds the current time
     };
     console.log('Saving game with data:', gameData);
-    fetch('http://localhost:3000/save', {
+    fetch('http://localhost:3001/save', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ function SudokuView() {
       const location = { lat: latitude, lng: longitude };
       console.log({ username, time, location }); // For debugging
   
-      fetch('http://localhost:3000/submit', {
+      fetch('http://localhost:3001/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

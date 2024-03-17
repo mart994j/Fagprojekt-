@@ -34,7 +34,7 @@ function StatisticsView() {
 
 
     useEffect(() => {
-        fetch(`http://localhost:3000/stats/${username}`)
+        fetch(`http://localhost:3001/stats/${username}`)
             .then(response => response.json())
             .then(data => {
                 setStats({

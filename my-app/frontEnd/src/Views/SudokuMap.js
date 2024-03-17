@@ -28,7 +28,7 @@ function SudokuMap() {
     console.log('Effect running: Fetching completed levels for', username);
     const fetchCompletedLevels = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/levels/completed?username=${username}`);
+        const response = await fetch(`http://localhost:3001/levels/completed?username=${username}`);
         const data = await response.json();
         if (response.ok) {
           const completedLevels = data.completedLevels || [];
@@ -71,7 +71,7 @@ function SudokuMap() {
         console.log(`Attempting to complete level ${id} for user ${username}`);
         try {
           console.log('Sending request to complete level:', { username, level: id });
-          const response = await fetch('http://localhost:3000/levels/complete', {
+          const response = await fetch('http://localhost:3001/levels/complete', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

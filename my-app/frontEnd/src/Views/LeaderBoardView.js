@@ -5,7 +5,7 @@ function LeaderBoardView() {
 
   useEffect(() => {
     // Fetch leaderboard data when the component mounts
-    fetch('http://localhost:3000/leaderboard')
+    fetch('http://localhost:3001/leaderboard')
       .then(response => response.json())
       .then(data => {
         setLeaderboard(data); 

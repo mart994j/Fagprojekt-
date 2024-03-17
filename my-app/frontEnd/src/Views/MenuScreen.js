@@ -53,7 +53,7 @@ function MenuScreen() {
 
   const handleLoadGame = () => {
     // Use username from context for loading the game
-    fetch(`http://localhost:3000/load?username=${username}`)
+    fetch(`http://localhost:3001/load?username=${username}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
