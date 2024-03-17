@@ -14,6 +14,16 @@ function StatisticsView() {
         return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
+    const formatPlayedGames = (gamesPlayed) => {
+        if(gamesPlayed===0){
+            return '0';
+        }else {
+            return gamesPlayed-1;
+        }
+    }
+
+
+
     const [stats, setStats] = useState({
         gamesPlayed: 0,
         gamesWon: 0,
@@ -28,7 +38,7 @@ function StatisticsView() {
             .then(response => response.json())
             .then(data => {
                 setStats({
-                    gamesPlayed: data.gamesPlayed,
+                    gamesPlayed: formatPlayedGames(data.gamesPlayed),
                     gamesWon: data.gamesWon,
                     bestTime: formatTime(data.bestTime === Infinity ? 0 : data.bestTime), // Handle the Infinity value
                     worstTime: formatTime(data.worstTime),

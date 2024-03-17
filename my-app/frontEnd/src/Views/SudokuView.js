@@ -50,10 +50,31 @@ function SudokuView() {
     isTimerActiveRef.current = false;
   }, []);
 
+
+  const incrementGamesPlayed = useCallback(() => {
+    const gameData = {
+      username: username,
+      gamesPlayed: 1, // Only incrementing gamesPlayed here
+    };
+    console.log('Incrementing games played for:', username);
+    fetch('http://localhost:3000/stats/gamesPlayed', {
+      method: 'POST', // Assuming POST, but could be PUT depending on your backend setup
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(gameData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Games played incremented:', data);
+    })
+    .catch(error => console.error('Error updating games played:', error));
+  }, [username]);
+
+
   const updateStats = useCallback(() => {
     const gameData = {
         username: username, // This needs to be fetched from context or state
-        gamesPlayed: 1, // Assuming a game played
         gamesWon: 1, // Assuming the player wins
         time: timer, // Capture the current timer
         // Add other stats as necessary
@@ -106,21 +127,25 @@ function SudokuView() {
 
 
   // Henter et nyt board fra serveren 
+  const hasIncremented = useRef(false); // Add this line
   useEffect(() => {
     const { n: loadedN, load } = location.state ?? {};
     const newN = loadedN || 9; // Use loaded n or default to 9
     setN(newN);
   
-    if (load) {
+    // If there's loaded game data and hasIncremented has not yet been set:
+    if (load && !hasIncremented.current) {
       setGrid(load.board);
       setTimer(load.time);
       setIsDataLoaded(true);
       setEditableCells(load.board.map(row => row.map(value => value === 0)));
+      incrementGamesPlayed(); // Increment games played for loaded game
+      hasIncremented.current = true;
       if (!isTimerActiveRef.current) {
         startTimer(); // Only start the timer if it's not already running
       }
-    } else {
-      // Fetch new board if no loaded game data is present
+    } else if (!load && !hasIncremented.current) {
+      // This condition checks if it's a fresh start of the game without loading an existing game
       fetchNewBoard({
         n: newN,
         setGrid,
@@ -131,8 +156,16 @@ function SudokuView() {
         setTimer,
         setIsTimerActive: isTimerActiveRef.current ? () => {} : startTimer,
       });
+      incrementGamesPlayed(); // Increment games played for new game
+      hasIncremented.current = true;
     }
-  }, [location.state, startTimer]);
+
+    // Cleanup function to reset hasIncremented when the component unmounts or before a new game starts
+    return () => {
+      hasIncremented.current = false;
+    };
+  }, [location.state, startTimer]); // Dependencies remain unchanged
+  
   
 
   // Håndterer input fra brugeren

@@ -24,33 +24,37 @@ const users = {
     }
   },
 };
+// Increment games played for a user
+app.post('/stats/gamesPlayed', (req, res) => {
+  const { username, gamesPlayed} = req.body;
+  if (!users[username]) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  const userStats = users[username].stats;
+  userStats.gamesPlayed += gamesPlayed;
+  
+  res.json({ message: 'Statistics updated', stats: userStats.gamesPlayed });
+});
 
 
 // Update user statistics
 app.post('/stats/update', (req, res) => {
-  const { username, gamesPlayed, gamesWon, time } = req.body; // You already extract 'time' here correctly
-  console.log("Received username:", username); 
-  console.log("Available users:", Object.keys(users));
-  console.log("Received gamesPlayed:", gamesPlayed);
-  console.log("Received gamesWon:", gamesWon);
+  const { username, gamesWon, time } = req.body;
   if (!users[username]) {
     return res.status(404).json({ message: 'User not found' });
   }
-
   const userStats = users[username].stats;
-  userStats.gamesPlayed += gamesPlayed;
   userStats.gamesWon += gamesWon;
   userStats.bestTime = Math.min(userStats.bestTime === Infinity ? time : userStats.bestTime, time);
   userStats.worstTime = Math.max(userStats.worstTime, time);
   if (gamesWon > 0) {
     userStats.averageTime = userStats.gamesWon === 1 ? time : ((userStats.averageTime * (userStats.gamesWon - 1) + time) / userStats.gamesWon);
   }
-
   res.json({ message: 'Statistics updated', stats: userStats });
 });
 
 
-// Retrieve user statistics
+// Retrieve user statistics to the StatisticsView
 app.get('/stats/:username', (req, res) => {
   const { username } = req.params;
   
