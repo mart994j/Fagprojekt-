@@ -5,6 +5,7 @@
   --geomap: #a72828;
   --loadgame: #bc9e23;
   --cronicles: #bc23b9;
+  --statistics: #0e4a72;
   --settings: #23b9bc;
 }
 
@@ -15,6 +16,7 @@
   --geomap: #a72828;
   --loadgame: #bc9e23;
   --cronicles: #bc23b9;
+  --statistics: #0e4a72;
   --settings: #23b9bc;
 }
 
@@ -25,16 +27,18 @@
   --geomap: #a72828;
   --loadgame: #bc9e23;
   --cronicles: #bc23b9;
+  --statistics: #0e4a72;
   --settings: #23b9bc;
 }
 
 .Green {
-  --background-color: #3b5ede;
-  --begin-game: #00ff3c;
-  --leaderboard: #28a745;
-  --geomap: #68a728;
-  --loadgame: #364b56;
-  --cronicles: #147b57;
-  --settings: #2b5c06;
+  --background-color: #066229;
+  --begin-game: #342987;
+  --leaderboard: #0e4a72;
+  --geomap: #d3ae0b;
+  --loadgame: #0146be;
+  --cronicles: #d1692e;
+  --statistics: #3b91ca;
+  --settings: #1b26a5f2;
 }
 

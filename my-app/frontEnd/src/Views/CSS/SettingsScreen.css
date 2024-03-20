@@ -7,27 +7,34 @@
     justify-content: center;
     align-items: center;
 }
-.statistics-screen h1 {
+.settings-screen h1 {
     margin-bottom: 20px;
     font-size: 2.5rem;
     text-align: center;
     margin-top: -330px;
   }
 
-.statistics-screen h2 {
+.settings-screen h2 {
     margin-bottom: 20px;
     font-size: 1.5rem;
+    color: black;
     text-align: center;
-    margin-top: -200px;
   }
-  
-.menu-screen button[type="submit"] {
+
+.square {
+    display: inline-block;
+    border-radius: 15px;
+    background-color: white;
+    padding: 30px; /* Adjust padding as needed */
+}
+
+.settings-screen button[type="button"] {
+    margin-top: 20px;
     background-color: var(--begin-game);
-    color: white;
     margin: 10px;
 }
 
-.StatisticsView {
+.SettingsView {
     color: white; /* Makes all text within white */
     text-align: left; /* Aligns the text to the left */
     width: 80%; /* Adjust this as needed */
@@ -35,6 +42,30 @@
     margin-right: auto;
 }
 
-.statistics-details {
+.settings-details {
     margin-left: 0; /* Aligns the statistics text to the left */
+}
+
+.split-container {
+    display: flex;
+    height: 100vh; /* Set the height of the container to full viewport height */
+}
+
+.left-pane {
+    flex: 1; /* Take up half of the available space */
+    background-color: #f0f0f0; /* Adjust background color as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-pane {
+    flex: 1; /* Take up half of the available space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-screen {
+    text-align: center;
 }

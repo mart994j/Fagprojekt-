@@ -8,7 +8,7 @@ function SettingsScreen() {
     const { username } = useContext(UserContext);
     const navigate = useNavigate();
 
-    const changeTheme = (theme) => {  
+    const changeTheme = (theme) => {
         const root = document.documentElement;
         const themes = ['Original', 'Theme', 'Green'];
         themes.forEach((t) => root.classList.remove(t));
@@ -17,13 +17,17 @@ function SettingsScreen() {
 
     return (
         <div className="map-container">
-            <div className="StatisticsView">
-                <div className="statistics-screen">
-                    <h1>Statistics</h1>
-                    <div className="square">
-                        <button onClick={() => changeTheme('Original')} className="settings-button" type="button">OG</button>
-                        <button onClick={() => changeTheme('Theme')} className="settings-button" type="button">Theme</button>
-                        <button onClick={() => changeTheme('Green')} className="settings-button" type="button">Green</button>
+            <div className="SettingsView">
+                <div className="settings-screen">
+                    <h1>Settings</h1>
+
+                    <div className="right-pane">
+                        <div className="square">
+                            <h2>Change Theme</h2>
+                            <button onClick={() => changeTheme('Original')} className="settings-button" type="submit">OG</button>
+                            <button onClick={() => changeTheme('Theme')} className="settings-button" type="submit">Theme</button>
+                            <button onClick={() => changeTheme('Green')} className="settings-button" type="submit">Green</button>
+                        </div>
                     </div>
                 </div>
             </div>
