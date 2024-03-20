@@ -71,18 +71,11 @@ function MenuScreen() {
   };
 
 
-  const changeTheme = (theme) => {  
-    const root = document.documentElement;
-    const themes = ['Green', 'Blue', 'Red', 'Yellow'];
-    themes.forEach((t) => root.classList.remove(t));
-    root.classList.add(theme);
-  }
 
 
-    
 
   const handleSettings = () => {
-    changeTheme("Theme");
+    navigate('/settings');
   }
 
   const handleSudokuMap = () => {
@@ -134,7 +127,7 @@ function MenuScreen() {
     );
   };
 
-  const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated for sidebar
+const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated for sidebar
 
 
 
@@ -151,9 +144,9 @@ function MenuScreen() {
           <button onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</button>
           <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
           <button onClick={handleStatistics} className="statistics-button" type="button">Statistics</button>
+          <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
 
           {/* Tilføj nye knapper over settings knappen */}
-          <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
         </div>
       </div>
       
