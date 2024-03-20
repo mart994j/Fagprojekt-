@@ -7,31 +7,47 @@
     justify-content: center;
     align-items: center;
 }
+
+.SettingsView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; /* Adjust this as needed */
+}
+
 .settings-screen h1 {
-    margin-bottom: 20px;
+    margin-bottom: 8vw; 
     font-size: 2.5rem;
     text-align: center;
-    margin-top: -330px;
   }
-
-.settings-screen h2 {
-    margin-bottom: 20px;
+  
+  .settings-screen h2 {
+    margin-bottom: 0px;
     font-size: 1.5rem;
-    color: black;
+    color: rgb(20, 19, 44);
     text-align: center;
   }
 
 .square {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     border-radius: 15px;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     padding: 30px; /* Adjust padding as needed */
 }
 
 .settings-screen button[type="button"] {
-    margin-top: 20px;
-    background-color: var(--begin-game);
-    margin: 10px;
+    margin-top: 20px; /* Adjust spacing between buttons */
+    background-color: var(--settings);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+}
+
+.settings-button[type="button"]:hover {
+    background-color: #018378;
 }
 
 .SettingsView {
@@ -40,30 +56,6 @@
     width: 80%; /* Adjust this as needed */
     margin-left: auto; /* This keeps the container centered */
     margin-right: auto;
-}
-
-.settings-details {
-    margin-left: 0; /* Aligns the statistics text to the left */
-}
-
-.split-container {
-    display: flex;
-    height: 100vh; /* Set the height of the container to full viewport height */
-}
-
-.left-pane {
-    flex: 1; /* Take up half of the available space */
-    background-color: #f0f0f0; /* Adjust background color as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.right-pane {
-    flex: 1; /* Take up half of the available space */
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .settings-screen {

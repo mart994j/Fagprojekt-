@@ -20,14 +20,11 @@ function SettingsScreen() {
             <div className="SettingsView">
                 <div className="settings-screen">
                     <h1>Settings</h1>
-
-                    <div className="right-pane">
-                        <div className="square">
-                            <h2>Change Theme</h2>
-                            <button onClick={() => changeTheme('Original')} className="settings-button" type="submit">OG</button>
-                            <button onClick={() => changeTheme('Theme')} className="settings-button" type="submit">Theme</button>
-                            <button onClick={() => changeTheme('Green')} className="settings-button" type="submit">Green</button>
-                        </div>
+                    <div className="square">
+                        <h2>Change Theme</h2>
+                        <button onClick={() => changeTheme('Original')} className="settings-button" type="button">OG</button>
+                        <button onClick={() => changeTheme('Theme')} className="settings-button" type="button">Theme</button>
+                        <button onClick={() => changeTheme('Green')} className="settings-button" type="button">Green</button>
                     </div>
                 </div>
             </div>
