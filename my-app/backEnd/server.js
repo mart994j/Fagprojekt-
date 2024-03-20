@@ -71,7 +71,7 @@ app.post('/register', (req, res) => {
   if (users[username]) {
     return res.status(400).json({ message: 'Username already exists' });
   }
-  users[username] = { password, completedLevels: [] }; // Ensure each user has completedLevels initialized
+  users[username] = { password, completedLevels: [], stats: { gamesPlayed: 0, gamesWon: 0, bestTime: Infinity, worstTime: 0, averageTime: 0 }};
   res.json({ message: 'User registered successfully' });
 });
 
@@ -122,19 +122,23 @@ app.get('/generate', (req, res) => {
   // Hent størrelsen fra query parameteret, eller brug en standardværdi hvis det ikke er angivet
   const size = parseInt(req.query.size, 10) || 9; // Standard størrelse er 9x9 hvis ikke angivet
   const diff = parseInt(req.query.difficulty, 10) || 2;
-
+  console.log('Difficulty:', diff);
   let numbersToRemove;
   switch(diff) {
     case 1: // Easy
+      console.log('Easy');
       numbersToRemove = 5;
       break;
     case 2: // Medium
+      console.log('Medium');
       numbersToRemove = 10;
       break;
     case 3: // Hard
+      console.log('Hard');
       numbersToRemove = 20;
       break;
     default:
+      console.log('Default');
       numbersToRemove = 10; 
   }
   // Tjek at størrelsen er gyldig (du kan tilføje yderligere validering baseret på dine behov)
@@ -145,6 +149,7 @@ app.get('/generate', (req, res) => {
   // Antager at SudokuGenerator.generateBoard kan acceptere en størrelse parameter
   const board = SudokuGenerator.generateBoard(size);
   // Tilpas fjernelse af tal baseret på størrelsen, om nødvendigt
+  console.log('Removing numbers:', numbersToRemove);
   SudokuGenerator.removeNumbers(board, numbersToRemove); // Denne linje skal måske tilpasses
   const hints = SudokuGenerator.getArrayHints();
   console.log('Generated board:', board);
@@ -159,6 +164,7 @@ app.get('/hints', (req, res) => {
     res.status(500).json({ message: 'Failed to get hints', error: error.message });
   }
 });
+
 
 
 

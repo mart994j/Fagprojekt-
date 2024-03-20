@@ -45,7 +45,7 @@ class SudokuGenerator {
   
  static hintArray = [];
   static generateBoard(size = 9) {
-
+    this.hintArray = [];
     // Check if the size is valid
     let board = Array.from({ length: size }, () => Array(size).fill(0));
     //en kandidat er et tal der kan stå i en celle dvs 
@@ -230,6 +230,11 @@ static swapColumns(board, size) {
             }
         }
     }
+}
+
+static getArrayHints(){
+
+  return this.hintArray;
 }
 
 

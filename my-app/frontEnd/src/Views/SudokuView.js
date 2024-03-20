@@ -14,10 +14,13 @@ function SudokuView() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const diff = location.state?.diff ?? 10;
+
   const [n, setN] = useState(9); // Initialiserer n med en standardværdi eller fallback værdi
   const [grid, setGrid] = useState([]);
 
-  const [hints, setHints] = useState(null);
+  const [hints, setHints] = useState([]);
+  const [hintsFetched, setHintsFetched] = useState(false);
 
   const [validity, setValidity] = useState(Array(n).fill().map(() => Array(n).fill(true)));
   const [userEdits, setUserEdits] = useState(Array(n).fill().map(() => Array(n).fill(false)));
@@ -31,7 +34,6 @@ function SudokuView() {
   const [isNotesMode, setIsNotesMode] = useState(false);
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
   const [lastClickedCell, setLastClickedCell] = useState(null);
-  let hintArray= useFetchHints();
 
 
   const startTimer = useCallback(() => {
@@ -122,6 +124,14 @@ function SudokuView() {
       .catch(error => console.error('Error saving game:', error));
   }, [username, grid, timer]);
 
+    
+  useEffect(() => {
+    if (hintsFetched) {
+      console.log('Hints fetched:', hints);
+      // Any other actions you want to perform after hints have been fetched and set
+    }
+  }, [hints, hintsFetched]);
+
 
   useEffect(() => {
     setUsername(username);
@@ -136,7 +146,6 @@ function SudokuView() {
     const { n: loadedN, load } = location.state ?? {};
     const newN = loadedN || 9; // Use loaded n or default to 9
     setN(newN);
-  
     // If there's loaded game data and hasIncremented has not yet been set:
     if (load && !hasIncremented.current) {
       setGrid(load.board);
@@ -151,6 +160,7 @@ function SudokuView() {
     } else if (!load && !hasIncremented.current) {
       // This condition checks if it's a fresh start of the game without loading an existing game
       fetchNewBoard({
+        diff,
         n: newN,
         setGrid,
         setEditableCells,
@@ -162,6 +172,9 @@ function SudokuView() {
       });
       incrementGamesPlayed(); // Increment games played for new game
       hasIncremented.current = true;
+      //fetchResetHints();
+      fetchHints();
+      console.log(hints);
     }
 
     // Cleanup function to reset hasIncremented when the component unmounts or before a new game starts
@@ -181,7 +194,6 @@ function SudokuView() {
     const value = event.target.value;
     console.log("Value from input:")
     console.log( value);
-
     if (isNotesMode) {
       // Handle note input
       const noteValue = parseInt(value, 10);
@@ -222,28 +234,32 @@ function SudokuView() {
     }
     
   }, [editableCells, grid, userEdits, notes, n, isNotesMode]);
-  
-  function useFetchHints() {
-    
-    useEffect(() => {
-        fetch('http://localhost:3000/hints') // Replace with your actual backend URL and port
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log('Hints:', data.hints);
-            setHints(data.hints);
-          })
-          .catch(error => {
-            console.error('There was a problem with your fetch operation:', error);
-          });
-    }, []); // Empty dependency array means this runs once on mount
 
-    return hints;
-}
+
+  function fetchHints() {
+    if (hintsFetched) {
+      console.log('Hints already fetched.');
+      return;
+    }
+
+    fetch('http://localhost:3001/hints')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Hints:', data.hints);
+        setHints(data.hints); // Schedule the hints state to update
+        setHintsFetched(true); // Schedule the hintsFetched state to update
+      })
+      .catch(error => {
+        console.error('There was a problem with your fetch operation:', error);
+      });
+  }
+  
+
   
 
   const clearCell = useCallback(() => {
@@ -266,7 +282,7 @@ function SudokuView() {
   const getHint = () => {
     const randomRow = Math.floor(Math.random() * n);
     const randomCol = Math.floor(Math.random() * n);
-    const number = hintArray[randomRow][randomCol];
+    const number = hints[randomRow][randomCol];
     
 return {row: randomRow, col: randomCol, hintNumber: number};
 
@@ -348,6 +364,7 @@ return {row: randomRow, col: randomCol, hintNumber: number};
       setTimeout(() => {
         document.body.removeChild(winMessageElement);
         navigate('/menu');
+
       }, 5000); 
     
 
@@ -361,7 +378,6 @@ return {row: randomRow, col: randomCol, hintNumber: number};
   }, [grid, isDataLoaded, checkSudoku]);
 
 const handleBack = () => {
-hintArray = null;
   navigate('/menu');
 }
 
@@ -389,8 +405,6 @@ const togglePause = () => {
 
   // Modify the return statement in your SudokuView component
   return (
-
-    
     <div className="SudokuView">
        <button onClick = {handleBack} style={{background: 'none', color: 'white', border: 'none', marginRight: '90%'}}>
             <IoArrowBackCircleOutline size="35px" />
