@@ -70,8 +70,19 @@ function MenuScreen() {
       });
   };
 
-  const handleSettings = () => {
 
+  const changeTheme = (theme) => {  
+    const root = document.documentElement;
+    const themes = ['Green', 'Blue', 'Red', 'Yellow'];
+    themes.forEach((t) => root.classList.remove(t));
+    root.classList.add(theme);
+  }
+
+
+    
+
+  const handleSettings = () => {
+    changeTheme("Theme");
   }
 
   const handleSudokuMap = () => {
@@ -82,7 +93,7 @@ function MenuScreen() {
   const handleStatistics = () => {
     navigate('/statistics');
   }
-
+ 
 
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);

@@ -1,26 +1,40 @@
 :root {
-    --background-color: #2f0f57;
-    --begin-game: #007bff;
-    --leaderboard: #28a745;
-    --geomap: #a72828;
-    --loadgame: #bc9e23;
-    --cronicles: #bc23b9;
-    --settings: #23b9bc;
-  }
-  
-  .Theme {
-    --background-color: #0f1f57;
-    --begin-game: #007bff;
-    --leaderboard: #28a745;
-    --geomap: #a72828;
-    --loadgame: #bc9e23;
-    --cronicles: #bc23b9;
-    --settings: #23b9bc;
-  }
-  
-  .Theme.dark {
-    /* Dark color scheme */
-    --primary-color: #343a40;
-    --secondary-color: #adb5bd;
-  }
-  
+  --background-color: #2f0f57;
+  --begin-game: #007bff;
+  --leaderboard: #28a745;
+  --geomap: #a72828;
+  --loadgame: #bc9e23;
+  --cronicles: #bc23b9;
+  --settings: #23b9bc;
+}
+
+.Original{
+  --background-color: #2f0f57;
+  --begin-game: #007bff;
+  --leaderboard: #28a745;
+  --geomap: #a72828;
+  --loadgame: #bc9e23;
+  --cronicles: #bc23b9;
+  --settings: #23b9bc;
+}
+
+.Theme {
+  --background-color: #0f1f57;
+  --begin-game: #007bff;
+  --leaderboard: #28a745;
+  --geomap: #a72828;
+  --loadgame: #bc9e23;
+  --cronicles: #bc23b9;
+  --settings: #23b9bc;
+}
+
+.Green {
+  --background-color: #3b5ede;
+  --begin-game: #00ff3c;
+  --leaderboard: #28a745;
+  --geomap: #68a728;
+  --loadgame: #364b56;
+  --cronicles: #147b57;
+  --settings: #2b5c06;
+}
+
