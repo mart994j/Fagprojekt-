@@ -93,9 +93,21 @@ app.get('/generate', (req, res) => {
   const board = SudokuGenerator.generateBoard(size);
   // Tilpas fjernelse af tal baseret på størrelsen, om nødvendigt
   SudokuGenerator.removeNumbers(board, numbersToRemove); // Denne linje skal måske tilpasses
+  const hints = SudokuGenerator.getArrayHints();
   console.log('Generated board:', board);
-  res.json({ board });
+  res.json({ board, hints });
 });
+
+app.get('/hints', (req, res) => {
+  try {
+    const hints = SudokuGenerator.getArrayHints();
+    res.json({ hints });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get hints', error: error.message });
+  }
+});
+
+
 
 app.post('/submit', (req, res) => {
   const { username, time, location } = req.body;
@@ -115,6 +127,7 @@ app.get('/leaderboard', (req, res) => {
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`);
 });
+
 
 
 

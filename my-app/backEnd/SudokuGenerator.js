@@ -42,6 +42,8 @@ alternativer for tidligere celler.
 
 class SudokuGenerator {
   // Generate a new Sudoku board of variable size
+  
+ static hintArray = [];
   static generateBoard(size = 9) {
 
     // Check if the size is valid
@@ -51,6 +53,8 @@ class SudokuGenerator {
       //array.from laver et array med en længde og en funktion der udfylder arrayet
       Array.from({ length: size }, () => new Set(Array.from({ length: size }, (_, index) => index + 1)))
     );
+    //this.fillBoxes(board, size);
+
     if (this.fillBoard(board, size, candidates)) {
       return board;
     }
@@ -85,6 +89,42 @@ class SudokuGenerator {
     return false; // Trigger backtrack
   }
 
+
+  static fillBoxes(board, size) {
+    const boxSize = Math.sqrt(size); // Calculate the size of the smaller boxes
+
+    // Iterate over diagonal boxes
+    for (let boxIndex = 0; boxIndex < size; boxIndex += boxSize + 1) {
+        // Generate numbers 1 to size
+        let numbers = Array.from({ length: size }, (_, i) => i + 1);
+
+        // Shuffle the numbers
+        for (let i = numbers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+        }
+
+        // Calculate the start row and column for the current box
+        const startRow = Math.floor(boxIndex / boxSize) * boxSize;
+        const startCol = (boxIndex % boxSize) * boxSize;
+
+        // Fill the current diagonal box with numbers
+        let index = 0;
+        for (let row = 0; row < boxSize; row++) {
+            for (let col = 0; col < boxSize; col++) {
+                board[startRow + row][startCol + col] = numbers[index++];
+            }
+        }
+    }
+
+    // Print the board
+    this.printSudokuBoard(board);
+}
+
+
+
+
+
   // Check if a number is validly placed
   static isValidPlacement(board, row, col, num, size) {
     const boxSize = Math.sqrt(size);
@@ -100,12 +140,14 @@ class SudokuGenerator {
 
   // Remove numbers from the board to create puzzles
   static removeNumbers(board, holes) {
+    
     let attempts = holes;
     const size = board.length;
     while (attempts > 0) {
       let row = Math.floor(Math.random() * size);
       let col = Math.floor(Math.random() * size);
       if (board[row][col] !== 0) {
+        this.hintArray.push([row,col,board[row][col]]);
         board[row][col] = 0;
         attempts--;
       }
@@ -157,6 +199,34 @@ class SudokuGenerator {
     return trackChanges ? changes : null;
     //hvis trackChanges er true så returner changes ellers returner null
   }
+
+  static printSudokuBoard(board) {
+    const size = board.length;
+    const boxSize = Math.sqrt(size);
+    let boardString = '';
+
+    for (let row = 0; row < size; row++) {
+        if (row % boxSize === 0 && row !== 0) {
+            // Print horizontal separator for boxes
+            boardString += '-'.repeat(size + boxSize - 1) + '\n';
+        }
+        for (let col = 0; col < size; col++) {
+            if (col % boxSize === 0 && col !== 0) {
+                // Print vertical separator for boxes
+                boardString += '|';
+            }
+            // Print the value and a space
+            boardString += board[row][col] + ' ';
+        }
+        boardString += '\n';
+    }
+
+    console.log(boardString);
+}
+static getArrayHints(){
+  return this.hintArray;
+}
+
 }
 
 module.exports = { SudokuGenerator };

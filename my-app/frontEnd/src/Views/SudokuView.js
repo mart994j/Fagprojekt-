@@ -17,6 +17,8 @@ function SudokuView() {
   const [n, setN] = useState(9); // Initialiserer n med en standardværdi eller fallback værdi
   const [grid, setGrid] = useState([]);
 
+  const [hints, setHints] = useState(null);
+
   const [validity, setValidity] = useState(Array(n).fill().map(() => Array(n).fill(true)));
   const [userEdits, setUserEdits] = useState(Array(n).fill().map(() => Array(n).fill(false)));
   const [isPaused, setIsPaused] = useState(false);
@@ -29,6 +31,8 @@ function SudokuView() {
   const [isNotesMode, setIsNotesMode] = useState(false);
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
   const [lastClickedCell, setLastClickedCell] = useState(null);
+  let hintArray= useFetchHints();
+
 
   const startTimer = useCallback(() => {
     if (!isTimerActiveRef.current) {
@@ -87,7 +91,6 @@ function SudokuView() {
     const { n: loadedN, load } = location.state ?? {};
     const newN = loadedN || 9; // Use loaded n or default to 9
     setN(newN);
-  
     if (load) {
       setGrid(load.board);
       setTimer(load.time);
@@ -119,6 +122,8 @@ function SudokuView() {
     }
     setLastClickedCell([i,j]);
     const value = event.target.value;
+    console.log("Value from input:")
+    console.log( value);
 
     if (isNotesMode) {
       // Handle note input
@@ -160,6 +165,29 @@ function SudokuView() {
     }
     
   }, [editableCells, grid, userEdits, notes, n, isNotesMode]);
+  
+  function useFetchHints() {
+    
+    useEffect(() => {
+        fetch('http://localhost:3000/hints') // Replace with your actual backend URL and port
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Hints:', data.hints);
+            setHints(data.hints);
+          })
+          .catch(error => {
+            console.error('There was a problem with your fetch operation:', error);
+          });
+    }, []); // Empty dependency array means this runs once on mount
+
+    return hints;
+}
+  
 
   const clearCell = useCallback(() => {
     if (lastClickedCell) {
@@ -176,6 +204,16 @@ function SudokuView() {
       setLastClickedCell(null);
     }
   }, [lastClickedCell, grid, notes]);
+
+
+  const getHint = () => {
+    const randomRow = Math.floor(Math.random() * n);
+    const randomCol = Math.floor(Math.random() * n);
+    const number = hintArray[randomRow][randomCol];
+    
+return {row: randomRow, col: randomCol, hintNumber: number};
+
+}
 
   
 
@@ -264,6 +302,7 @@ function SudokuView() {
   }, [grid, isDataLoaded, checkSudoku]);
 
 const handleBack = () => {
+hintArray = null;
   navigate('/menu');
 }
 
@@ -347,9 +386,10 @@ const togglePause = () => {
             <FaEraser size="24px" />
             <span>{'Clear Field'}</span>
           </button>
-          <button onClick = {clearCell} className='button-style'>
+          <button onClick = {getHint} className='button-style'>
             <FaLightbulb size="24px" />
             <span>{'Hint'}</span>
+
           </button>
           <button onClick = {clearCell} className='button-style'>
             <FaAccessibleIcon size="24px" />
