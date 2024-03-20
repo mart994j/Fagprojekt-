@@ -4,7 +4,7 @@
   align-items: center;
   min-height: 96vh;
   min-width: 96vh;
-  background-color: #2f0f57;
+  background-color: var(--background-color);
   color: #fff;
   padding: 20px; 
 }

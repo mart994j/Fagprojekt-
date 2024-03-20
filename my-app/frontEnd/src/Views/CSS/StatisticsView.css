@@ -1,0 +1,27 @@
+.map-container {
+    position: relative;
+    background-color: #2f0f57; /* Static color instead of image */
+    width: 100%;
+    height: 100vh; /* Fills the entire viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.statistics-screen h1 {
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-top: -200px;
+  }
+
+.StatisticsView {
+    color: white; /* Makes all text within white */
+    text-align: left; /* Aligns the text to the left */
+    width: 80%; /* Adjust this as needed */
+    margin-left: auto; /* This keeps the container centered */
+    margin-right: auto;
+}
+
+.statistics-details {
+    margin-left: 0; /* Aligns the statistics text to the left */
+}

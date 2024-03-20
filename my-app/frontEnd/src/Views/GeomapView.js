@@ -18,7 +18,7 @@ function Geomap() {
   });
 
   useEffect(() => {
-    fetch('http://localhost:3000/leaderboard')
+    fetch('http://localhost:3001/leaderboard')
       .then(response => response.json())
       .then(data => {
         setSolutions(data);

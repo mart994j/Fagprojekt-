@@ -1,0 +1,26 @@
+:root {
+    --background-color: #2f0f57;
+    --begin-game: #007bff;
+    --leaderboard: #28a745;
+    --geomap: #a72828;
+    --loadgame: #bc9e23;
+    --cronicles: #bc23b9;
+    --settings: #23b9bc;
+  }
+  
+  .Theme {
+    --background-color: #0f1f57;
+    --begin-game: #007bff;
+    --leaderboard: #28a745;
+    --geomap: #a72828;
+    --loadgame: #bc9e23;
+    --cronicles: #bc23b9;
+    --settings: #23b9bc;
+  }
+  
+  .Theme.dark {
+    /* Dark color scheme */
+    --primary-color: #343a40;
+    --secondary-color: #adb5bd;
+  }
+  

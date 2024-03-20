@@ -16,7 +16,7 @@ export const fetchNewBoard = ({
   isFetching = true;
 
   // Update the URL to include the size n as a query parameter and diff
-  fetch(`http://localhost:3000/generate?size=${n}&difficulty=${diff}`)
+  fetch(`http://localhost:3001/generate?size=${n}&difficulty=${diff}`)
     .then(response => response.json())
     .then(data => {
       // Set grid based on fetched data

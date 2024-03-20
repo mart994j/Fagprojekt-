@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './CSS/MenuScreen.css'; // Import CSS file
 import './CSS/MenuButtons.css';
+import './CSS/themes.css';
 import { IoIosMenu } from "react-icons/io";
 
 
@@ -52,7 +53,7 @@ function MenuScreen() {
 
   const handleLoadGame = () => {
     // Use username from context for loading the game
-    fetch(`http://localhost:3000/load?username=${username}`)
+    fetch(`http://localhost:3001/load?username=${username}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -75,6 +76,11 @@ function MenuScreen() {
 
   const handleSudokuMap = () => {
     navigate('/sudokuMap');
+  }
+
+
+  const handleStatistics = () => {
+    navigate('/statistics');
   }
 
 
@@ -133,7 +139,7 @@ function MenuScreen() {
           <button onClick={handleGeoMap} className="geomap-button" type="button">Geomap</button>
           <button onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</button>
           <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
-
+          <button onClick={handleStatistics} className="statistics-button" type="button">Statistics</button>
 
           {/* Tilføj nye knapper over settings knappen */}
           <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
@@ -142,6 +148,8 @@ function MenuScreen() {
       
 
       <form onSubmit={handleStartGame}>
+
+
         <h1>Velkommen til Sudoku!</h1>
         
         <button type="submit">Start Spil</button>

@@ -8,6 +8,7 @@ import Geomap from './Views/GeomapView';
 import LoginPage from './Views/LoginPage';
 import RegisterPage from './Views/RegisterView';
 import SudokuMap from './Views/SudokuMap';
+import StatisticsView from './Views/StatisticsView';
 
 function App() {
   const [username, setUsername] = useState('');
@@ -18,6 +19,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/statistics" element={<StatisticsView />} />
           <Route path="/sudokuMap" element={<SudokuMap />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/menu" element={<MenuScreen />} />
