@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext, useMemo} from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../UserContext';
 import './CSS/StatisticsView.css';
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'; // Changed from 'Doughnut'
 
 function StatisticsView() {
     const { username } = useContext(UserContext);
@@ -50,6 +51,14 @@ function StatisticsView() {
             });
     }, [username]);
 
+
+    const data = [
+        { name: 'Easy', value: 300  },
+        { name: 'Medium', value: 800},
+        { name: 'Hard', value: 400 },
+      ];
+      const COLORS = ['#FF6384', '#36A2EB', '#FFCE56'];
+
     return (
         <div className="map-container">
             <div className="StatisticsView">
@@ -64,6 +73,25 @@ function StatisticsView() {
                     <p>Worst time: {stats.worstTime}</p>
                     <p>Average time: {stats.averageTime}</p>
                 </div>
+            </div>
+            <div className="chart-container">
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={120}
+                    fill="#8884d8"
+                    dataKey="value"
+                    //label={(entry) => `${entry.name} (${entry.value})`}
+                  >
+                    {data.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
             </div>
         </div>
     );
