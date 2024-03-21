@@ -1,6 +1,6 @@
 
 .SudokuView {
-  background-color: #2f0f57; /* Mørk farve til baggrunden */
+  background-color: var(--background-color); /* Mørk farve til baggrunden */
   display: flex;
   flex-direction: column;
   justify-content: center;

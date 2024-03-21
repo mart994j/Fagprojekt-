@@ -1,0 +1,63 @@
+.map-container {
+    position: relative;
+    background-color: var(--background-color); /* Static color instead of image */
+    width: 100%;
+    height: 100vh; /* Fills the entire viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.SettingsView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%; /* Adjust this as needed */
+}
+
+.settings-screen h1 {
+    margin-bottom: 8vw; 
+    font-size: 2.5rem;
+    text-align: center;
+  }
+  
+  .settings-screen h2 {
+    margin-bottom: 0px;
+    font-size: 1.5rem;
+    color: rgb(20, 19, 44);
+    text-align: center;
+  }
+
+.square {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    background-color: rgb(255, 255, 255);
+    padding: 30px; /* Adjust padding as needed */
+}
+
+.settings-screen button[type="button"] {
+    margin-top: 20px; /* Adjust spacing between buttons */
+    background-color: var(--settings);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+}
+
+.settings-button[type="button"]:hover {
+    background-color: #018378;
+}
+
+.SettingsView {
+    color: white; /* Makes all text within white */
+    text-align: left; /* Aligns the text to the left */
+    width: 80%; /* Adjust this as needed */
+    margin-left: auto; /* This keeps the container centered */
+    margin-right: auto;
+}
+
+.settings-screen {
+    text-align: center;
+}

@@ -49,7 +49,7 @@
 
 .menu-screen .statistics-button[type="button"] {
     margin-top: 20px;
-    background-color: #145e49;
+    background-color: var(--statistics);
     margin: 10px;
 }
 
