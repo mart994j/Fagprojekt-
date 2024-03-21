@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext, useMemo} from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../UserContext';
 import './CSS/StatisticsView.css';
-import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'; // Changed from 'Doughnut'
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'; 
+//npm install recharts
 
 function StatisticsView() {
     const { username } = useContext(UserContext);
