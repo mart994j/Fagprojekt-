@@ -172,8 +172,8 @@ function SudokuView() {
       });
       incrementGamesPlayed(); // Increment games played for new game
       hasIncremented.current = true;
-      //fetchResetHints();
       fetchHints();
+      console.log('Hints called after:');
       console.log(hints);
     }
 
@@ -192,8 +192,7 @@ function SudokuView() {
     }
     setLastClickedCell([i,j]);
     const value = event.target.value;
-    console.log("Value from input:")
-    console.log( value);
+    removeHintAndUpdateState(i, j, value);
     if (isNotesMode) {
       // Handle note input
       const noteValue = parseInt(value, 10);
@@ -233,8 +232,30 @@ function SudokuView() {
       }
     }
     
-  }, [editableCells, grid, userEdits, notes, n, isNotesMode]);
+  }, [editableCells, grid, userEdits, notes, n, isNotesMode, hints, setHints]);
 
+  const applyHintToGrid = () => {
+    const hint = getHint();
+  
+    // Apply the hint to the grid
+    if (editableCells[hint.row][hint.col]) {
+      const newGrid = grid.map((row, rowIndex) =>
+        row.map((cell, cellIndex) =>
+          rowIndex === hint.row && cellIndex === hint.col ? hint.hintNumber : cell
+        )
+      );
+      
+      setGrid(newGrid); // Assuming setGrid updates your grid state
+      
+      // Optionally, clear notes for this cell and remove the hint
+      const updatedNotes = [...notes];
+      updatedNotes[hint.row][hint.col] = [];
+      setNotes(updatedNotes);
+      
+      removeHintAndUpdateState(hint.row, hint.col, String(hint.hintNumber));
+    }
+  };
+  
 
   function fetchHints() {
     if (hintsFetched) {
@@ -278,15 +299,20 @@ function SudokuView() {
     }
   }, [lastClickedCell, grid, notes]);
 
-
   const getHint = () => {
-    const randomRow = Math.floor(Math.random() * n);
-    const randomCol = Math.floor(Math.random() * n);
-    const number = hints[randomRow][randomCol];
+    if (hints.length === 0) {
+      return null; // or handle this case differently
+    }
     
-return {row: randomRow, col: randomCol, hintNumber: number};
-
-}
+    const randomIndex = Math.floor(Math.random() * hints.length);
+    const hint = hints[randomIndex];
+    console.log(`Hint: Row ${hint[0]}, Col ${hint[1]}, Number ${hint[2]}`);
+    return {
+      row: hint[0],
+      col: hint[1],
+      hintNumber: hint[2]
+    };
+  }
 
   
 
@@ -397,6 +423,22 @@ const togglePause = () => {
     };
   }, []);
 
+
+  function removeHintAndUpdateState(i, j, value) {
+  
+    // Filter the hints to exclude the matching hint
+    const newHints = hints.filter(hint =>
+      !(hint[0] === i && hint[1] === j && String(hint[2]) === value)
+    );
+  
+    console.log("New hints:", newHints);
+  
+    // Check if the hints array has changed, indicating a hint was removed
+    if (newHints.length !== hints.length) {
+      console.log("Value is hint");
+      setHints(newHints); // Update the hints state
+    }
+  }
   // Calculate the square root of n to determine subgrid size
   const subGridSize = Math.sqrt(n);
   const baseSize = 500; // Base size for the Sudoku board
@@ -459,7 +501,7 @@ const togglePause = () => {
             <FaEraser size="24px" />
             <span>{'Clear Field'}</span>
           </button>
-          <button onClick = {getHint} className='button-style'>
+          <button onClick = {applyHintToGrid} className='button-style'>
             <FaLightbulb size="24px" />
             <span>{'Hint'}</span>
 
