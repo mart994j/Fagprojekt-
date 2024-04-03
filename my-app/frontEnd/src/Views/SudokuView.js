@@ -2,14 +2,14 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import './CSS/SudokuView.css';
 import celebrateWin from '../Components/WinAnimation.js';
 import { isValidSudoku } from '../sudokuUtils';
-import { fetchNewBoard } from '../fetchNewBoard';
 import SudokuPause from '../Components/sudokuPause';
 import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb, FaSave, FaPause } from 'react-icons/fa';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { markLevelCompleted } from '../markLevelCompleted';
-
+import ApiService from '../Components/APIService';
+import { fetchNewBoard } from '../fetchNewBoard';
 function SudokuView() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,68 +58,30 @@ function SudokuView() {
 
 
   const incrementGamesPlayed = useCallback(() => {
-    const gameData = {
-      username: username,
-      gamesPlayed: 1, // Only incrementing gamesPlayed here
-    };
     console.log('Incrementing games played for:', username);
-    fetch('http://localhost:3001/stats/gamesPlayed', {
-      method: 'POST', // Assuming POST, but could be PUT depending on your backend setup
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(gameData),
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Games played incremented:', data);
-    })
-    .catch(error => console.error('Error updating games played:', error));
+    ApiService.incrementGamesPlayed(username)
+      .then(data => {
+        console.log('Games played incremented:', data);
+      })
+      .catch(error => console.error('Error updating games played:', error));
   }, [username]);
 
 
   const updateStats = useCallback(() => {
-    const gameData = {
-        username: username, 
-        gamesWon: 1, 
-        time: timer,
-        diff: diff,
-    };
-    console.log('Updating stats for:', username); 
-    fetch('http://localhost:3001/stats/update', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(gameData),
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Stats updated:', data);
-        })
-        .catch(error => console.error('Error updating stats:', error));
-}, [username, timer]);
+    console.log('Updating stats for:', username);
+    ApiService.updateStats(username, 1, timer, diff) 
+      .then(data => {
+        console.log('Stats updated:', data);
+      })
+      .catch(error => console.error('Error updating stats:', error));
+  }, [username, timer, diff]);
 
 
   const saveGame = useCallback(() => {
-    // Assuming username is available in your context, and board state is stored in grid
-    const gameData = {
-      username: username, // This needs to be fetched from context or state
-      board: grid,
-      time: timer, // Assuming timer state holds the current time
-    };
-    console.log('Saving game with data:', gameData);
-    fetch('http://localhost:3001/save', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(gameData),
-    })
-      .then(response => response.json())
+    console.log('Saving game with data:', { username, grid, timer });
+    ApiService.saveGame(username, grid, timer)
       .then(data => {
         console.log('Game saved:', data);
-        // Handle UI feedback here, e.g., showing a success message
       })
       .catch(error => console.error('Error saving game:', error));
   }, [username, grid, timer]);
@@ -128,7 +90,6 @@ function SudokuView() {
   useEffect(() => {
     if (hintsFetched) {
       console.log('Hints fetched:', hints);
-      // Any other actions you want to perform after hints have been fetched and set
     }
   }, [hints, hintsFetched]);
 
@@ -137,7 +98,7 @@ function SudokuView() {
     setUsername(username);
     // Initialize or re-initialize notes when n changes
     setNotes(Array(n).fill().map(() => Array(n).fill([])));
-  }, [n]); // Dependency on n
+  }, [n,setUsername,username]); // Dependency on n
 
 
   // Henter et nyt board fra serveren 
@@ -172,16 +133,13 @@ function SudokuView() {
       });
       incrementGamesPlayed(); // Increment games played for new game
       hasIncremented.current = true;
-      fetchHints();
-      console.log('Hints called after:');
+      ApiService.fetchHints();
       console.log(hints);
     }
-
-    // Cleanup function to reset hasIncremented when the component unmounts or before a new game starts
     return () => {
       hasIncremented.current = false;
     };
-  }, [location.state, startTimer]); // Dependencies remain unchanged
+  }, [location.state, startTimer,diff, ]);
   
   
 
@@ -245,9 +203,7 @@ function SudokuView() {
         )
       );
       
-      setGrid(newGrid); // Assuming setGrid updates your grid state
-      
-      // Optionally, clear notes for this cell and remove the hint
+      setGrid(newGrid);
       const updatedNotes = [...notes];
       updatedNotes[hint.row][hint.col] = [];
       setNotes(updatedNotes);
@@ -257,28 +213,19 @@ function SudokuView() {
   };
   
 
-  function fetchHints() {
-    if (hintsFetched) {
-      console.log('Hints already fetched.');
-      return;
+  useEffect(() => {
+    if (!hintsFetched) {
+      ApiService.fetchHints()
+        .then(hintsData => {
+          console.log('Hints:', hintsData);
+          setHints(hintsData);
+          setHintsFetched(true);
+        })
+        .catch(error => {
+          console.error('There was a problem with your fetch operation:', error);
+        });
     }
-
-    fetch('http://localhost:3001/hints')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Hints:', data.hints);
-        setHints(data.hints); // Schedule the hints state to update
-        setHintsFetched(true); // Schedule the hintsFetched state to update
-      })
-      .catch(error => {
-        console.error('There was a problem with your fetch operation:', error);
-      });
-  }
+  }, [hintsFetched])
   
 
   
@@ -426,14 +373,10 @@ const togglePause = () => {
 
 
   function removeHintAndUpdateState(i, j, value) {
-  
-    // Filter the hints to exclude the matching hint
-    const newHints = hints.filter(hint =>
+      const newHints = hints.filter(hint =>
       !(hint[0] === i && hint[1] === j && String(hint[2]) === value)
     );
-  
     console.log("New hints:", newHints);
-  
     // Check if the hints array has changed, indicating a hint was removed
     if (newHints.length !== hints.length) {
       console.log("Value is hint");
