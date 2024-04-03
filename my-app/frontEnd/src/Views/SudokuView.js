@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
 import './CSS/SudokuView.css';
 import celebrateWin from '../Components/WinAnimation.js';
-import { isValidSudoku } from '../sudokuUtils';
+import { isValidSudoku } from '../Utilities/sudokuUtils.js';
 import SudokuPause from '../Components/sudokuPause';
 import { FaPencilAlt, FaEraser, FaCheck, FaTimes, FaAccessibleIcon, FaLightbulb, FaSave, FaPause } from 'react-icons/fa';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import UserContext from '../UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { markLevelCompleted } from '../markLevelCompleted';
-import ApiService from '../Components/APIService';
-import { fetchNewBoard } from '../fetchNewBoard';
+import { markLevelCompleted } from '../Utilities/markLevelCompleted.js';
+import ApiService from '../Utilities/APIService.js';
+import { fetchNewBoard } from '../Utilities/fetchNewBoard.js';
 function SudokuView() {
   const location = useLocation();
   const navigate = useNavigate();

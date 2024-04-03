@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo} from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useContext} from 'react';
 import UserContext from '../UserContext';
 import './CSS/StatisticsView.css';
 import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'; 
@@ -7,7 +6,6 @@ import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 
 function StatisticsView() {
     const { username } = useContext(UserContext);
-    const navigate = useNavigate();
 
     const formatTime = (totalSeconds) => {
         if (!totalSeconds) return '0:00';
