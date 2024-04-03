@@ -32,6 +32,7 @@ function StatisticsView() {
         bestTime: '0:00',
         worstTime: '0:00',
         averageTime: '0:00',
+        difficultyWins: { Easy: 0, Medium: 0, Hard: 0 }, 
     });
 
 
@@ -45,6 +46,7 @@ function StatisticsView() {
                     bestTime: formatTime(data.bestTime === Infinity ? 0 : data.bestTime), // Handle the Infinity value
                     worstTime: formatTime(data.worstTime),
                     averageTime: formatTime(data.averageTime),
+                    difficultyWins: data.difficultyWins || { Easy: 0, Medium: 0, Hard: 0 }, 
                 });
             })
             .catch((error) => {
@@ -54,9 +56,9 @@ function StatisticsView() {
 
 
     const data = [
-        { name: 'Easy', value: 300  },
-        { name: 'Medium', value: 800},
-        { name: 'Hard', value: 400 },
+        { name: 'Easy', value: stats.difficultyWins.Easy  },
+        { name: 'Medium', value: stats.difficultyWins.Medium },
+        { name: 'Hard', value: stats.difficultyWins.Hard },
       ];
       const COLORS = ['#FF6384', '#36A2EB', '#FFCE56'];
 
@@ -84,7 +86,6 @@ function StatisticsView() {
                     outerRadius={120}
                     fill="#8884d8"
                     dataKey="value"
-                    //label={(entry) => `${entry.name} (${entry.value})`}
                   >
                     {data.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

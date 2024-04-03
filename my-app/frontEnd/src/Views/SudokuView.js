@@ -80,12 +80,12 @@ function SudokuView() {
 
   const updateStats = useCallback(() => {
     const gameData = {
-        username: username, // This needs to be fetched from context or state
-        gamesWon: 1, // Assuming the player wins
-        time: timer, // Capture the current timer
-        // Add other stats as necessary
+        username: username, 
+        gamesWon: 1, 
+        time: timer,
+        diff: diff,
     };
-    console.log('Updating stats for:', username); // Add this to debug
+    console.log('Updating stats for:', username); 
     fetch('http://localhost:3001/stats/update', {
         method: 'POST',
         headers: {
@@ -141,7 +141,7 @@ function SudokuView() {
 
 
   // Henter et nyt board fra serveren 
-  const hasIncremented = useRef(false); // Add this line
+  const hasIncremented = useRef(false); 
   useEffect(() => {
     const { n: loadedN, load } = location.state ?? {};
     const newN = loadedN || 9; // Use loaded n or default to 9
@@ -389,13 +389,14 @@ function SudokuView() {
 
       setTimeout(() => {
         document.body.removeChild(winMessageElement);
+        console.log(diff)
         navigate('/menu');
 
       }, 5000); 
     
 
     }
-  }, [grid, isDataLoaded, timer, username, navigate, submitScore]);
+  }, [grid, isDataLoaded, timer, username, navigate, submitScore,diff]);
 
   useEffect(() => {
     if (isDataLoaded) {
