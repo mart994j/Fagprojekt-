@@ -5,92 +5,50 @@ import UserContext from '../UserContext';
 
 function SudokuMap() {
   const { username } = useContext(UserContext);
-
   console.log('SudokuMap component rendered with username:', username); // Debug username passed to component
-  
   const [lastCompletedLevel, setLastCompletedLevel] = useState(0);
   const [levelsCompleted, setLevelsCompleted] = useState([]);
   const navigate = useNavigate();
   const levels = Array.from({ length: 10 }, (_, i) => i + 1); // Generates 10 levels
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
   useEffect(() => {
     if (showErrorMessage) {
       const timer = setTimeout(() => {
         setShowErrorMessage(false);
-      }, 1500); // Fade away after 2 seconds
+      }, 1500); // Hide the error message after 1.5 seconds
       return () => clearTimeout(timer);
     }
   }, [showErrorMessage]);
 
   useEffect(() => {
-    console.log('Effect running: Fetching completed levels for', username);
     const fetchCompletedLevels = async () => {
+      if (!username) return;
       try {
         const response = await fetch(`http://localhost:3001/levels/completed?username=${username}`);
+        if (!response.ok) throw new Error('Failed to fetch completed levels');
+        
         const data = await response.json();
-        if (response.ok) {
-          const completedLevels = data.completedLevels || [];
-          console.log('Completed levels fetched:', completedLevels);
-          setLevelsCompleted(completedLevels);
-          const highestLevelCompleted = Math.max(...completedLevels, 0);
-          console.log('Highest level completed:', highestLevelCompleted);
-          setLastCompletedLevel(highestLevelCompleted);
-        } else {
-          throw new Error(data.message || 'Error fetching completed levels');
-        }
+        setLevelsCompleted(data.completedLevels || []);
+        const highestLevelCompleted = Math.max(...data.completedLevels, 0);
+        setLastCompletedLevel(highestLevelCompleted);
       } catch (error) {
-        console.error('Error in fetchCompletedLevels:', error);
+        console.error('Error fetching completed levels:', error.message);
       }
     };
 
-    if (username) {
-      fetchCompletedLevels();
-    }
+    fetchCompletedLevels();
   }, [username]);
 
-  const handleLevelSelect = async (id) => {
-    console.log(`Level ${id} selected`, levelsCompleted);
+  const handleLevelSelect = (id) => {
+      let n, diff;
+    if (id === 1 || id === 2) {
+      n = 4; diff = 1;
+    } else {
+      n = 9; diff = id - 1; // Example adjustment, assuming difficulty increases with level
+    }
     
     if (levelsCompleted.includes(id - 1) || id === 1) {
-      let n, diff;
-      switch (id) {
-        case 1:
-        case 2:
-          n = 4;
-          diff = 1;
-          break;
-        default:
-          n = 9;
-          diff = 1;
-          break;
-      }
-
-      if (!levelsCompleted.includes(id)) {
-        console.log(`Attempting to complete level ${id} for user ${username}`);
-        try {
-          console.log('Sending request to complete level:', { username, level: id });
-          const response = await fetch('http://localhost:3001/levels/complete', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, level: id })
-          });
-          const data = await response.json();
-          if (response.ok) {
-            console.log(`Level ${id} completed successfully, updating state.`);
-            setLastCompletedLevel(id);
-            setLevelsCompleted(data.completedLevels);
-          } else {
-            throw new Error(data.message || 'Error updating completed levels');
-          }
-        } catch (error) {
-          console.error('Error in handleLevelSelect:', error);
-        }
-      }
-
       navigate('/sudoku', { state: { n, diff, level: id, fromChronicles: true } });
     } else {
       setErrorMessage("Level is locked. Complete previous levels to unlock.");

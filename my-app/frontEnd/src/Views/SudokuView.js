@@ -329,7 +329,7 @@ function SudokuView() {
       updateStats();
 
       if (location.state?.fromChronicles) {
-        markLevelCompleted(location.state.level); // Tjekker også, at level information er tilgængelig
+        markLevelCompleted(username,location.state.level); // Tjekker også, at level information er tilgængelig
         console.log('Level completed:', location.state.level);
         navigate('/sudokuMap');
       }
