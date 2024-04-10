@@ -8,6 +8,50 @@
     align-items: center;
 }
 
+.settings-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+.settings-content {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.settings-sections {
+    display: flex; /* This will align the sections side by side */
+    justify-content: space-around;
+}
+
+.settings-section {
+    margin: 0 10px; /* This provides space between the sections */
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    flex: 1; /* This makes the sections flexibly fill the available space */
+}
+
+.settings-option {
+    display: block;
+    margin: 10px 0;
+    font-size: 1.2rem;
+}
+
+.settings-option input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.settings-option input[type="range"] {
+    width: 100%;
+}
+
+
 .SettingsView {
     display: flex;
     justify-content: center;
@@ -28,14 +72,6 @@
     text-align: center;
   }
 
-.square {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 15px;
-    background-color: rgb(255, 255, 255);
-    padding: 30px; /* Adjust padding as needed */
-}
 
 .settings-screen button[type="button"] {
     margin-top: 20px; /* Adjust spacing between buttons */
