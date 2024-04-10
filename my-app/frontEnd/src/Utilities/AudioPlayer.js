@@ -1,10 +1,7 @@
-import clickSound from "../assets/clickSound.mp3";
-
-export const playSound = (soundFile) => {
-    if (soundFile) {
-      const sound = new Audio(clickSound);
-      sound.play();
-    }
+export const playSoundButton = (soundFile, volumeLevel) => {
+    const sound = new Audio(soundFile);
+    sound.volume = volumeLevel / 100; // Volume levels are from 0.0 to 1.0
+    sound.play();
   };
   
   export const playMusic = (musicFile, isMusicOn) => {

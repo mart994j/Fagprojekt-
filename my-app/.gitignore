@@ -11,6 +11,7 @@ my-app/frontEnd/node_modules/
 
 # production
 /build
+.cache/
 
 # misc
 *.pack
