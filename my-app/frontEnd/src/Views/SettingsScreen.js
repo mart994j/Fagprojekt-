@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './CSS/SettingsScreen.css';
 import './CSS/themes.css';
 import { useAudio } from '../Utilities/AudioContext'; // Import the audio context
+
+//import button sound
 import { playSoundButton } from '../Utilities/AudioPlayer';
 import buttonSound from '../assets/button.mp3';
+
+//import music
+import { playMusic } from '../Utilities/AudioPlayer';
 
 function SettingsScreen() {
     const { isMusicOn, toggleMusic, areSoundEffectsOn, toggleSoundEffects } = useAudio();
     const [volume, setVolume] = useState(100); // State for volume control
-    
    // Function to change the theme of the app 
     const changeTheme = (theme) => {
         const root = document.documentElement;
@@ -25,8 +29,12 @@ function SettingsScreen() {
         changeTheme(theme);
         if (areSoundEffectsOn) {
           playSoundButton(buttonSound, volume);
+          
         }
       };
+      useEffect(() => {
+        playMusic(isMusicOn, volume);
+    }, [isMusicOn, volume]);
 
     return (
         <div className="settings-container">
