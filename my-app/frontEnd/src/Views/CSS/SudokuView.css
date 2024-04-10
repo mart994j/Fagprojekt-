@@ -47,6 +47,7 @@
   color: white;
 }
 
+
 .App-link {
   color: #61dafb;
 }
@@ -59,6 +60,8 @@
     transform: rotate(360deg);
   }
 }
+
+
 
 input[readOnly] {
   outline: none; /* Removes the outline */
@@ -97,6 +100,10 @@ input {
 
 .invalid {
   background-color: rgba(255, 0, 0, 0.3); /* Light red background */
+}
+
+.temp-green {
+  background-color: rgba(0, 255, 0, 0.3); /* Light green background */
 }
 
 .invalid-input{
