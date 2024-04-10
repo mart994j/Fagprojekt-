@@ -35,6 +35,8 @@ function SudokuView() {
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
   const [lastClickedCell, setLastClickedCell] = useState(null);
 
+  const [tempGreenCells, setTempGreenCells] = useState({});
+
 
   const startTimer = useCallback(() => {
     if (!isTimerActiveRef.current) {
@@ -234,8 +236,35 @@ function SudokuView() {
     
   }, [editableCells, grid, userEdits, notes, n, isNotesMode, hints, setHints]);
 
+  const applySolveToGrid = () => {
+    if(hints.length === 0) {
+
+      return;
+    }
+    let newGrid = JSON.parse(JSON.stringify(grid));
+
+  // Apply each hint to the newGrid if the cell is editable
+  hints.forEach(hint => {
+    if (editableCells[hint[0]][hint[1]]) {
+      newGrid[hint[0]][hint[1]] = hint[2];
+      const updatedNotes = [...notes];
+      updatedNotes[hint[0]][hint[1]] = [];
+      setNotes(updatedNotes);
+    }
+  });
+
+  // Update the grid state with the new grid containing all the hints
+  setGrid(newGrid);
+  
+  setHints([]); // Clear the hints array
+  console.log('Hints cleared:', hints);
+  };
+
   const applyHintToGrid = () => {
+    
     const hint = getHint();
+  
+    if (!hint) return; // Exit if no hint is available
   
     // Apply the hint to the grid
     if (editableCells[hint.row][hint.col]) {
@@ -244,17 +273,37 @@ function SudokuView() {
           rowIndex === hint.row && cellIndex === hint.col ? hint.hintNumber : cell
         )
       );
-      
+  
       setGrid(newGrid); // Assuming setGrid updates your grid state
-      
+  
       // Optionally, clear notes for this cell and remove the hint
       const updatedNotes = [...notes];
       updatedNotes[hint.row][hint.col] = [];
       setNotes(updatedNotes);
-      
+  
+      const cellKey = `${hint.col}-${hint.row}`;
+      console.log(`Applying temp green to cell: ${cellKey}`);
+      setTempGreenCells(prev => {
+        console.log('Before update:', prev);
+        const newState = { ...prev, [cellKey]: true };
+        console.log('After update:', newState);
+        return newState;
+      });
+    
+      setTimeout(() => {
+        setTempGreenCells(prev => {
+          const newState = { ...prev };
+          delete newState[cellKey];
+          console.log(`Removing temp green from cell: ${cellKey}`, newState);
+          return newState;
+        });
+      }, 1000);
+  
+      // Assuming removeHintAndUpdateState updates the hints state
       removeHintAndUpdateState(hint.row, hint.col, String(hint.hintNumber));
     }
   };
+  
   
 
   function fetchHints() {
@@ -465,7 +514,8 @@ const togglePause = () => {
                     className={
                       `${!validity[i][j] ? 'invalid' : ''} ` +
                       `${(j + 1) % subGridSize === 0 && j + 1 !== n ? 'right-border' : ''} ` +
-                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}`
+                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}` +
+                      `${tempGreenCells[`${(8-i)}-${(8-j)}`] ? 'temp-green' : ''} ` // Add this line  
                     }
                     style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
                   >
@@ -506,7 +556,7 @@ const togglePause = () => {
             <span>{'Hint'}</span>
 
           </button>
-          <button onClick = {clearCell} className='button-style'>
+          <button onClick = {applySolveToGrid} className='button-style'>
             <FaAccessibleIcon size="24px" />
             <span>{'Solve Game'}</span>
           </button>
