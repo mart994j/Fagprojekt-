@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import UserContext from '../UserContext';
+import React, {  } from 'react';
 import './CSS/SettingsScreen.css';
 import './CSS/themes.css';
 
 function SettingsScreen() {
-    const { username } = useContext(UserContext);
-    const navigate = useNavigate();
-
     const changeTheme = (theme) => {
         const root = document.documentElement;
         const themes = ['Original', 'Theme', 'Green'];

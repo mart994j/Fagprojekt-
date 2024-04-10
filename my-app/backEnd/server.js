@@ -20,7 +20,8 @@ const users = {
       gamesWon: 0,
       bestTime: Infinity, // Use Infinity for times initially since we want to minimize this
       worstTime: 0,
-      averageTime: 0
+      averageTime: 0,
+      difficultyWins: { Easy: 0, Medium: 0, Hard: 0 },
     }
   },
 };
@@ -39,16 +40,34 @@ app.post('/stats/gamesPlayed', (req, res) => {
 
 // Update user statistics
 app.post('/stats/update', (req, res) => {
-  const { username, gamesWon, time } = req.body;
+  const { username, gamesWon, time,diff } = req.body;
+  console.log('Received diff:', diff); // Debugging
   if (!users[username]) {
     return res.status(404).json({ message: 'User not found' });
   }
+  const difficultyMapping = {
+    1: 'Easy',
+    2: 'Medium',
+    3: 'Hard',
+  };
+  const difficultyKey = difficultyMapping[diff]; 
+
+
+
+
   const userStats = users[username].stats;
   userStats.gamesWon += gamesWon;
   userStats.bestTime = Math.min(userStats.bestTime === Infinity ? time : userStats.bestTime, time);
   userStats.worstTime = Math.max(userStats.worstTime, time);
-  if (gamesWon > 0) {
+  if (gamesWon > 0 && difficultyKey && Number.isInteger(gamesWon)) { 
     userStats.averageTime = userStats.gamesWon === 1 ? time : ((userStats.averageTime * (userStats.gamesWon - 1) + time) / userStats.gamesWon);
+    if (userStats.difficultyWins.hasOwnProperty(difficultyKey)) {
+      userStats.difficultyWins[difficultyKey] += gamesWon;
+    } else {
+      console.log(`Difficulty key ${difficultyKey} not found in difficultyWins`);
+    }
+  } else {
+    console.log(`Invalid gamesWon value or difficultyKey: gamesWon=${gamesWon}, difficultyKey=${difficultyKey}`);
   }
   res.json({ message: 'Statistics updated', stats: userStats });
 });
@@ -71,7 +90,7 @@ app.post('/register', (req, res) => {
   if (users[username]) {
     return res.status(400).json({ message: 'Username already exists' });
   }
-  users[username] = { password, completedLevels: [], stats: { gamesPlayed: 0, gamesWon: 0, bestTime: Infinity, worstTime: 0, averageTime: 0 }};
+  users[username] = { password, completedLevels: [], stats: { gamesPlayed: 0, gamesWon: 0, bestTime: Infinity, worstTime: 0, averageTime: 0, difficultyWins: { Easy: 0, Medium: 0, Hard: 0 }}};
   res.json({ message: 'User registered successfully' });
 });
 
