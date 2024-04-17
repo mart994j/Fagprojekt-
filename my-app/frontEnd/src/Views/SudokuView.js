@@ -116,6 +116,10 @@ function SudokuView() {
       setIsDataLoaded(true);
       setEditableCells(load.board.map(row => row.map(value => value === 0)));
       incrementGamesPlayed(); // Increment games played for loaded game
+      console.log('Loaded game:', load);
+      console.log('Loaded board:', load.board);
+      console.log('Loaded size:', load.board.length);
+
       hasIncremented.current = true;
       if (!isTimerActiveRef.current) {
         startTimer(); // Only start the timer if it's not already running
@@ -462,7 +466,7 @@ const togglePause = () => {
                     }
                     style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
                   >
-                    {notes[i][j].length > 0 ? (
+                    {notes[i][j].length > 0 ? null (
                       <div className="notes" style={{ fontSize: '10px' }}>{notes[i][j].join(', ')}</div>
                     ) : null}
                     <input
