@@ -1,0 +1,108 @@
+.menu-screen button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 250px;
+}
+
+.menu-screen button[type="submit"] {
+    background-color: var(--begin-game);
+    color: white;
+    margin: 10px;
+}
+
+.menu-screen button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+.menu-screen button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--leaderboard);
+    color: white;
+    margin: 10px;
+}
+
+.menu-screen button[type="button"]:hover {
+    background-color: #218838;
+}
+
+.menu-screen .geomap-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--geomap);
+    color: white;
+    margin: 10px;
+}
+
+.menu-screen .geomap-button[type="button"]:hover {
+    background-color: #8a2121;
+}
+
+
+.menu-screen .tutorial-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--tutorial);
+    color: white;
+    margin: 10px;
+}
+
+.menu-screen .tutorial-button[type="button"]:hover {
+    background-color: #8a2121;
+}
+
+.menu-screen .loadgame-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--loadgame);
+    color: white;
+    margin: 10px;
+}
+
+
+.menu-screen .statistics-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--statistics);
+    margin: 10px;
+}
+
+.menu-screen .statistics-button[type="button"]:hover {
+    background-color: #0c3b2d;
+}
+
+
+
+
+.menu-screen .loadgame-button[type="button"]:hover {
+    background-color: #836901;
+}
+
+.menu-screen .settings-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--settings);
+    color: white;
+    margin: 10px;
+}
+
+.menu-screen .settings-button[type="button"]:hover {
+    background-color: #018378;
+}
+
+.menu-screen .SudokuChronicles-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--cronicles);
+    color: white;
+    margin: 10px;
+}
+.menu-screen .SudokuChronicles-button[type="button"]:hover {
+    background-color: #830183;
+}
+
+.menu-screen .leaderboard-button[type="button"] {
+    margin-top: 20px;
+    background-color: #23bc49;
+    color: white;
+    margin: 10px;
+}
+.menu-screen .leaderboard-button[type="button"]:hover {
+    background-color: #1a8242;
+}
