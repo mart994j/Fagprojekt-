@@ -10,6 +10,7 @@ import RegisterPage from './Views/RegisterView';
 import SudokuMap from './Views/SudokuMap';
 import StatisticsView from './Views/StatisticsView';
 import SettingsView from './Views/SettingsScreen';
+import Tutorial from './Views/Tutorial';
 function App() {
   const [username, setUsername] = useState('');
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/leaderboard" element={<LeaderBoardView/>} />
           <Route path="/geoMap" element={<Geomap />} />
           <Route path="/settings" element={<SettingsView />} />
+          <Route path="/tutorial" element={<Tutorial />} />
 
         </Routes>
       </Router>    
