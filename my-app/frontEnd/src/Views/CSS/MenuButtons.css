@@ -39,6 +39,18 @@
     background-color: #8a2121;
 }
 
+
+.menu-screen .tutorial-button[type="button"] {
+    margin-top: 20px;
+    background-color: var(--tutorial);
+    color: white;
+    margin: 10px;
+}
+
+.menu-screen .tutorial-button[type="button"]:hover {
+    background-color: #8a2121;
+}
+
 .menu-screen .loadgame-button[type="button"] {
     margin-top: 20px;
     background-color: var(--loadgame);

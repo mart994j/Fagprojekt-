@@ -32,6 +32,11 @@ function MenuScreen() {
     navigate('/leaderboard');
   };
 
+  const handleTutorial = () => {
+
+  navigate('/tutorial')
+  };
+
   const handleGeoMap = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -145,6 +150,7 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
           <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
           <button onClick={handleStatistics} className="statistics-button" type="button">Statistics</button>
           <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
+          <button onClick={handleTutorial} className="tutorial-button" type="button">Tutorial</button>
 
           {/* Tilføj nye knapper over settings knappen */}
         </div>
