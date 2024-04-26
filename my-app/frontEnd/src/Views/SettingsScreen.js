@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import './CSS/SettingsScreen.css';
 import './CSS/themes.css';
 import { useAudio } from '../Utilities/AudioContext'; // Import the audio context
-
+import CustomButton from '../Components/CustomButton';
 //import button sound
 import { playSoundButton } from '../Utilities/AudioPlayer';
 import buttonSound from '../assets/button.mp3';
@@ -43,9 +43,9 @@ function SettingsScreen() {
                 <div className="settings-sections">
                     <div className="settings-section">
                         <h2>Change Theme</h2>
-                        <button onClick={() => handleThemeButtonClick('Original')} className="settings-button" type="button">OG</button>
-                        <button onClick={() => handleThemeButtonClick('Theme')} className="settings-button" type="button">Theme</button>
-                        <button onClick={() => handleThemeButtonClick('Green')} className="settings-button" type="button">Green</button>
+                        <CustomButton onClick={() => handleThemeButtonClick('Original')} className="settings-button" type="button">OG</CustomButton>
+                        <CustomButton onClick={() => handleThemeButtonClick('Theme')} className="settings-button" type="button">Theme</CustomButton>
+                        <CustomButton onClick={() => handleThemeButtonClick('Green')} className="settings-button" type="button">Green</CustomButton>
                     </div>
                     <div className="settings-section">
                         <h2>Sound Controls</h2>

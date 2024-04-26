@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { markLevelCompleted } from '../Utilities/markLevelCompleted.js';
 import ApiService from '../Utilities/APIService.js';
 import { fetchNewBoard } from '../Utilities/fetchNewBoard.js';
+import CustomButton from '../Components/CustomButton.js';
 function SudokuView() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -444,10 +445,10 @@ const togglePause = () => {
   // Modify the return statement in your SudokuView component
   return (
     <div className="SudokuView">
-       <button onClick = {handleBack} style={{background: 'none', color: 'white', border: 'none', marginRight: '90%'}}>
+       <CustomButton onClick = {handleBack} style={{background: 'none', color: 'white', border: 'none', marginRight: '90%'}}>
             <IoArrowBackCircleOutline size="35px" />
             <span>{''}</span>
-          </button>
+          </CustomButton>
       <h1>Sudoku</h1>
       <div className="timer">Timer: {timer} sekunder</div>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '65px' }}>
@@ -484,7 +485,7 @@ const togglePause = () => {
           </tbody>
         </table>
         <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '38%' }}>
-          <button onClick={() => setIsNotesMode(!isNotesMode)} className='button-style'>
+          <CustomButton onClick={() => setIsNotesMode(!isNotesMode)} className='button-style'>
             <FaPencilAlt size="24px" />
             <span>
               {isNotesMode ? (
@@ -493,28 +494,28 @@ const togglePause = () => {
                 <>Notes: <span style={{ position: 'relative', top: '2px' }}><FaTimes size="10px" /></span></>
               )}
             </span>
-          </button>
-          <button onClick = {clearCell} className='button-style'>
+          </CustomButton>
+          <CustomButton onClick = {clearCell} className='button-style'>
             <FaEraser size="24px" />
             <span>{'Clear Field'}</span>
-          </button>
-          <button onClick = {applyHintToGrid} className='button-style'>
+          </CustomButton>
+          <CustomButton onClick = {applyHintToGrid} className='button-style'>
             <FaLightbulb size="24px" />
             <span>{'Hint'}</span>
 
-          </button>
-          <button onClick = {applySolveToGrid} className='button-style'>
+          </CustomButton>
+          <CustomButton onClick = {applySolveToGrid} className='button-style'>
             <FaAccessibleIcon size="24px" />
             <span>{'Solve Game'}</span>
-          </button>
-          <button onClick = {saveGame} className='button-style'>
+          </CustomButton>
+          <CustomButton onClick = {saveGame} className='button-style'>
             <FaSave size="24px" />
             <span>{'Save Game'}</span>
-          </button>
-          <button onClick = {togglePause} className='button-style'>
+          </CustomButton>
+          <CustomButton onClick = {togglePause} className='button-style'>
             <FaPause size="24px" />
             <span>{'Pause game'}</span>
-          </button>
+          </CustomButton>
         </div>
         <SudokuPause isPaused={isPaused} onContinue={togglePause} />
       </div>

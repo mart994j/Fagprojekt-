@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CustomButton from '../Components/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './CSS/MenuScreen.css'; // Import CSS file
@@ -144,13 +145,13 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
 
       <div className={`sidebar-menu ${isSidebarVisible ? 'active' : ''}`}>
         <div className="sidebar-menu-content">
-          <button onClick={handleLeaderBoard}className="leaderboard-button" type="button">Leaderboard</button>
-          <button onClick={handleGeoMap} className="geomap-button" type="button">Geomap</button>
-          <button onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</button>
-          <button onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</button>
-          <button onClick={handleStatistics} className="statistics-button" type="button">Statistics</button>
-          <button onClick={handleSettings} className="settings-button" type="button">Settings</button>
-          <button onClick={handleTutorial} className="tutorial-button" type="button">Tutorial</button>
+          <CustomButton onClick={handleLeaderBoard}className="leaderboard-button" type="button">Leaderboard</CustomButton>
+          <CustomButton onClick={handleGeoMap} className="geomap-button" type="button">Geomap</CustomButton>
+          <CustomButton onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</CustomButton>
+          <CustomButton onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</CustomButton>
+          <CustomButton onClick={handleStatistics} className="statistics-button" type="button">Statistics</CustomButton>
+          <CustomButton onClick={handleSettings} className="settings-button" type="button">Settings</CustomButton>
+          <CustomButton onClick={handleTutorial} className="tutorial-button" type="button">Tutorial</CustomButton>
 
           {/* Tilføj nye knapper over settings knappen */}
         </div>

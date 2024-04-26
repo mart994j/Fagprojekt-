@@ -7,6 +7,5 @@ const Button = ({ className, children, ...props }) => (
     </button>
 );
 
-const SoundButton = withSoundEffect(Button);
 
 export default SoundButton;

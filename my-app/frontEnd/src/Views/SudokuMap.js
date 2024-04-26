@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS/SudokuMap.css';
 import UserContext from '../UserContext';
+import CustomButton from '../Components/CustomButton';
 
 function SudokuMap() {
   const { username } = useContext(UserContext);
@@ -89,12 +90,12 @@ function SudokuMap() {
       </svg>
 
       {levels.map(level => (
-        <button
+        <CustomButton
           key={level}
           className={`level-button level-button-${level}`}
           onClick={() => handleLevelSelect(level)}>
           Level {level}
-        </button>
+        </CustomButton>
       ))}
     </div>
   );
