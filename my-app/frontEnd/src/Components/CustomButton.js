@@ -1,25 +1,22 @@
-// CustomButton.js
 import React from 'react';
+import { useAudio } from '../Utilities/AudioContext'; // Import the audio context
 import { playSoundButton1 } from '../Utilities/AudioPlayer';
-const CustomButton = ({ className, children, onClick, shouldPlaySound, volumeLevel, ...props }) => {
-    const handleClick = (e) => {
-        // Play the button sound only if sound effects are enabled
-        if (shouldPlaySound) {
-            playSoundButton1(true, volumeLevel);
-        }
 
-        // If there's an additional onClick handler passed to the component, execute it
+const CustomButton = ({ className, children, onClick, ...props }) => {
+    const { areSoundEffectsOn, volume } = useAudio(); // Use volume from context
+
+    const handleClick = (e) => {
+        if (areSoundEffectsOn) {
+            playSoundButton1(true, volume);
+            console.log("hej:",volume);
+        }
         if (onClick) {
             onClick(e);
         }
     };
 
     return (
-        <button
-            className={`custom-button ${className}`}
-            onClick={handleClick}
-            {...props}
-        >
+        <button className={`custom-button ${className}`} onClick={handleClick} {...props}>
             {children}
         </button>
     );

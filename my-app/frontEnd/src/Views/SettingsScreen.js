@@ -9,8 +9,7 @@ import CustomButton from '../Components/CustomButton';
 import { playMusic } from '../Utilities/AudioPlayer';
 
 function SettingsScreen() {
-    const { isMusicOn, toggleMusic, areSoundEffectsOn, toggleSoundEffects } = useAudio();
-    const [volume, setVolume] = useState(100); // State for volume control
+    const { isMusicOn, toggleMusic, areSoundEffectsOn, toggleSoundEffects, volume, setVolume } = useAudio();
     const volumeRef = useRef(volume);  // Using a ref to store the current volume
 
     useEffect(() => {
@@ -31,9 +30,11 @@ function SettingsScreen() {
         root.classList.add(theme);
     }
     const handleVolumeChange = (event) => {
-        setVolume(event.target.value);
-        console.log("vol2:",volume)
-    }
+        const newVolume = Number(event.target.value);  // Convert to number
+        setVolume(newVolume);  // Set global volume
+        console.log("vol2:", newVolume);
+    };
+    
 
     const handleThemeButtonClick = (theme) => {
         changeTheme(theme);
@@ -46,11 +47,11 @@ function SettingsScreen() {
                 <h1>Settings</h1>
                 <div className="settings-sections">
                     <div className="settings-section">
-                        <h2>Change Theme</h2>
-                        <CustomButton onClick={() => handleThemeButtonClick('Original')} className="settings-button" shouldPlaySound={areSoundEffectsOn} volumeLevel={volume} type="button">OG</CustomButton>
-                        <CustomButton onClick={() => handleThemeButtonClick('Theme')} className="settings-button" shouldPlaySound={areSoundEffectsOn} volumeLevel={volume} type="button">Theme</CustomButton>
-                        <CustomButton onClick={() => handleThemeButtonClick('Green')} className="settings-button" shouldPlaySound={areSoundEffectsOn} volumeLevel={volume} type="button">Green</CustomButton>
-                    </div>
+                            <h2>Change Theme</h2>
+                            <CustomButton onClick={() => handleThemeButtonClick('Original')} className="settings-button">OG</CustomButton>
+                            <CustomButton onClick={() => handleThemeButtonClick('Theme')} className="settings-button">Theme</CustomButton>
+                            <CustomButton onClick={() => handleThemeButtonClick('Green')} className="settings-button">Green</CustomButton>
+                        </div>
                     <div className="settings-section">
                         <h2>Sound Controls</h2>
                         <label className="settings-option">
