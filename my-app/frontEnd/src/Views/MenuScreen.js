@@ -163,7 +163,7 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
 
         <h1>Velkommen til Sudoku!</h1>
         
-        <button type="submit">Start Spil</button>
+        <CustomButton type="submit">Start Spil</CustomButton>
         <select value={diff} onChange={handleDiff} required>
           <option value="">Vælg sværhedsgrad</option>
           <option value="1">Let</option>

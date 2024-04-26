@@ -467,8 +467,8 @@ const togglePause = () => {
                     }
                     style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
                   >
-                    {notes[i][j].length > 0 ? null (
-                      <div className="notes" style={{ fontSize: '10px' }}>{notes[i][j].join(', ')}</div>
+                    {notes[i][j].length > 0 ? (
+                    <div className="notes" style={{ fontSize: '10px' }}>{notes[i][j].join(', ')}</div>
                     ) : null}
                     <input
                       type="text"
