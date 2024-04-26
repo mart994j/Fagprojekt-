@@ -58,6 +58,7 @@ class SudokuGenerator {
     if (this.fillBoard(board, size, candidates)) {
       this.swapRows(board, size);
       this.swapColumns(board, size);
+      this.flipRowsAndCols(board);
       return board;
     }
   }
@@ -231,6 +232,16 @@ static swapColumns(board, size) {
         }
     }
 }
+
+static flipRowsAndCols(board) {
+  // Create a new transposed matrix
+  let transposed = board[0].map((col, i) => board.map(row => row[i]));
+    for (let i = 0; i < board.length; i++) {
+      board[i] = transposed[i];
+  }
+}
+
+
 
 static getArrayHints(){
 
