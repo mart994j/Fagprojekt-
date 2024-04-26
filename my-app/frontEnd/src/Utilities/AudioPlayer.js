@@ -1,12 +1,13 @@
 // AudioPlayer.js
-import { playGlobalMusic, pauseGlobalMusic, setGlobalMusicVolume } from './GlobalAudioManager';
-import buttonSound from '../assets/button.mp3';
+import { playGlobalMusic, pauseGlobalMusic, setGlobalMusicVolume,playGlobalSounds,setGlobalSoundsVolume } from './GlobalAudioManager';
 
-export const playSoundButton = (soundFile, volumeLevel) => {
-  const sound = new Audio(soundFile);
-  sound.volume = volumeLevel / 100; // Volume levels are from 0.0 to 1.0
-  sound.play().catch(e => console.error("Failed to play sound:", e));
-};
+export const playSoundButton1 = (shouldPlay,volumeLevel) => {
+  setGlobalSoundsVolume(volumeLevel / 100);
+  if (shouldPlay){
+    setGlobalSoundsVolume(volumeLevel / 100);
+    playGlobalSounds();
+  }
+}
 
 export const playMusic = (shouldPlay, volumeLevel) => {
   setGlobalMusicVolume(volumeLevel / 100);

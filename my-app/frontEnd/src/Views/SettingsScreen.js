@@ -1,11 +1,9 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useRef } from 'react';
 import './CSS/SettingsScreen.css';
 import './CSS/themes.css';
 import { useAudio } from '../Utilities/AudioContext'; // Import the audio context
 import CustomButton from '../Components/CustomButton';
 //import button sound
-import { playSoundButton } from '../Utilities/AudioPlayer';
-import buttonSound from '../assets/button.mp3';
 
 //import music
 import { playMusic } from '../Utilities/AudioPlayer';
@@ -13,6 +11,18 @@ import { playMusic } from '../Utilities/AudioPlayer';
 function SettingsScreen() {
     const { isMusicOn, toggleMusic, areSoundEffectsOn, toggleSoundEffects } = useAudio();
     const [volume, setVolume] = useState(100); // State for volume control
+    const volumeRef = useRef(volume);  // Using a ref to store the current volume
+
+    useEffect(() => {
+        volumeRef.current = volume;
+        console.log("vol ref:",volumeRef.current);
+    }, [volume]);
+
+    useEffect(() => {
+        playMusic(isMusicOn, volume);
+        console.log("vol1:",volume)
+    }, [isMusicOn, volume]);
+
    // Function to change the theme of the app 
     const changeTheme = (theme) => {
         const root = document.documentElement;
@@ -21,20 +31,14 @@ function SettingsScreen() {
         root.classList.add(theme);
     }
     const handleVolumeChange = (event) => {
-        const newVolume = event.target.value;
-        setVolume(newVolume);
+        setVolume(event.target.value);
+        console.log("vol2:",volume)
     }
 
     const handleThemeButtonClick = (theme) => {
         changeTheme(theme);
-        if (areSoundEffectsOn) {
-          playSoundButton(buttonSound, volume);
-          
-        }
       };
-      useEffect(() => {
-        playMusic(isMusicOn, volume);
-    }, [isMusicOn, volume]);
+      
 
     return (
         <div className="settings-container">
@@ -43,9 +47,9 @@ function SettingsScreen() {
                 <div className="settings-sections">
                     <div className="settings-section">
                         <h2>Change Theme</h2>
-                        <CustomButton onClick={() => handleThemeButtonClick('Original')} className="settings-button" type="button">OG</CustomButton>
-                        <CustomButton onClick={() => handleThemeButtonClick('Theme')} className="settings-button" type="button">Theme</CustomButton>
-                        <CustomButton onClick={() => handleThemeButtonClick('Green')} className="settings-button" type="button">Green</CustomButton>
+                        <CustomButton onClick={() => handleThemeButtonClick('Original')} className="settings-button" shouldPlaySound={areSoundEffectsOn} volumeLevel={volume} type="button">OG</CustomButton>
+                        <CustomButton onClick={() => handleThemeButtonClick('Theme')} className="settings-button" shouldPlaySound={areSoundEffectsOn} volumeLevel={volume} type="button">Theme</CustomButton>
+                        <CustomButton onClick={() => handleThemeButtonClick('Green')} className="settings-button" shouldPlaySound={areSoundEffectsOn} volumeLevel={volume} type="button">Green</CustomButton>
                     </div>
                     <div className="settings-section">
                         <h2>Sound Controls</h2>
