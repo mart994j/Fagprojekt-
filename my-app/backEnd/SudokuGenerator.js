@@ -58,7 +58,6 @@ class SudokuGenerator {
     if (this.fillBoard(board, size, candidates)) {
       this.swapRows(board, size);
       this.swapColumns(board, size);
-      this.flipRowsAndCols(board);
       return board;
     }
   }
@@ -121,7 +120,7 @@ class SudokuGenerator {
     }
 
     // Print the board
-    this.printSudokuBoard(board);
+    //this.printSudokuBoard(board);
 }
 
 
@@ -141,18 +140,26 @@ class SudokuGenerator {
     return true;
   }
 
-  // Remove numbers from the board to create puzzles
+  //remove numbers so that the board is uniquely solvable
   static removeNumbers(board, holes) {
-    
     let attempts = holes;
     const size = board.length;
+    // Remove numbers from the board
     while (attempts > 0) {
       let row = Math.floor(Math.random() * size);
       let col = Math.floor(Math.random() * size);
       if (board[row][col] !== 0) {
+        // if the cell is not empty, remove the number
+        let backup = board[row][col];
         this.hintArray.push([row,col,board[row][col]]);
         board[row][col] = 0;
-        attempts--;
+        let copy = JSON.parse(JSON.stringify(board)); // Deep copy to test with solver
+        if (this.solveBoard(copy, size) != 1) {
+          // if the board is not solvable or has multiple solutions, revert the change
+          board[row][col] = backup;
+        } else {
+        attempts--; 
+        }
       }
     }
   }
@@ -235,11 +242,48 @@ static swapColumns(board, size) {
 
 static flipRowsAndCols(board) {
   // Create a new transposed matrix
-  let transposed = board[0].map((col, i) => board.map(row => row[i]));
-    for (let i = 0; i < board.length; i++) {
-      board[i] = transposed[i];
+  let transposed = board[0].map((_, i) => board.map(row => row[i]));
+
+  // Replace each row of the original board with the corresponding row from the transposed matrix
+  for (let i = 0; i < board.length; i++) {
+      board[i] = transposed[i].slice(); // slice() is used to ensure a copy of the array is made
   }
 }
+//helper function to check for unique solutions
+static solveBoard(board, size, limit = 2) {
+  let solutions = 0;
+  const solve = (board) => {
+      let [row, col] = this.findEmptyCell(board, size);
+      if (row === -1) {
+        //if the board is filled then increment solutions
+          solutions++;
+          return solutions < limit;
+      }
+
+      for (let num = 1; num <= size; num++) {
+          if (this.isValidPlacement(board, row, col, num, size)) {
+              board[row][col] = num;
+              if (!solve(board)) return false; 
+              board[row][col] = 0;
+          }
+      }
+      return true;
+  };
+
+  solve(board);
+  console.log("solutions",solutions)
+  return solutions;
+}
+
+static findEmptyCell(board, size) {
+  for (let row = 0; row < size; row++) {
+      for (let col = 0; col < size; col++) {
+          if (board[row][col] === 0) return [row, col];
+      }
+  }
+  return [-1, -1]; 
+}
+
 
 
 
