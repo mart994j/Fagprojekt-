@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import musicFile from '../assets/musicForAll.mp3';
 import buttonSound from '../assets/button.mp3';
-import { setGlobalMusicVolume, setGlobalSoundsVolume, playGlobalMusic, pauseGlobalMusic, playGlobalSounds } from './GlobalAudioManager';
+import { setGlobalMusicVolume, setGlobalSoundsVolume } from './GlobalAudioManager';
 
 const AudioContext = createContext();
 
@@ -26,7 +26,8 @@ export const AudioProvider = ({ children }) => {
   // Play or pause music depending on isMusicOn
   useEffect(() => {
     isMusicOn ? globalMusicPlayer.play() : globalMusicPlayer.pause();
-  }, [isMusicOn]);
+    globalMusicPlayer.volume = volume / 100;
+  }, [isMusicOn,volume]);
 
   // Toggle functions for music and sound effects
   const toggleMusic = () => setMusicOn(!isMusicOn);

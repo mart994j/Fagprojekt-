@@ -12,16 +12,7 @@ function SettingsScreen() {
     const { isMusicOn, toggleMusic, areSoundEffectsOn, toggleSoundEffects, volume, setVolume } = useAudio();
     const volumeRef = useRef(volume);  // Using a ref to store the current volume
 
-    useEffect(() => {
-        volumeRef.current = volume;
-        console.log("vol ref:",volumeRef.current);
-    }, [volume]);
-
-    useEffect(() => {
-        playMusic(isMusicOn, volume);
-        console.log("vol1:",volume)
-    }, [isMusicOn, volume]);
-
+    
    // Function to change the theme of the app 
     const changeTheme = (theme) => {
         const root = document.documentElement;
@@ -34,6 +25,17 @@ function SettingsScreen() {
         setVolume(newVolume);  // Set global volume
         console.log("vol2:", newVolume);
     };
+
+    useEffect(() => {
+        volumeRef.current = volume;
+        console.log("vol ref:",volumeRef.current);
+    }, [volume]);
+
+    useEffect(() => {
+        playMusic(isMusicOn, volume);
+        console.log("vol1:",volume)
+    }, [isMusicOn, volume]);
+
     
 
     const handleThemeButtonClick = (theme) => {
