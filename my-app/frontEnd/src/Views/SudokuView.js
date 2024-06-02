@@ -462,8 +462,7 @@ const togglePause = () => {
                     className={
                       `${!validity[i][j] ? 'invalid' : ''} ` +
                       `${(j + 1) % subGridSize === 0 && j + 1 !== n ? 'right-border' : ''} ` +
-                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}` +
-                      `${tempGreenCells[`${(8-i)}-${(8-j)}`] ? 'temp-green' : ''} ` // Add this line  
+                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}`
                     }
                     style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
                   >

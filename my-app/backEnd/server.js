@@ -52,9 +52,6 @@ app.post('/stats/update', (req, res) => {
   };
   const difficultyKey = difficultyMapping[diff]; 
 
-
-
-
   const userStats = users[username].stats;
   userStats.gamesWon += gamesWon;
   userStats.bestTime = Math.min(userStats.bestTime === Infinity ? time : userStats.bestTime, time);
