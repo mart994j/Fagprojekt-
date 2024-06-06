@@ -8,28 +8,31 @@ function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { setUsername: setGlobalUsername } = useUser(); // Brug setUsername fra din UserContext
+  const { setUsername: setGlobalUsername } = useUser();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
 
-    const response = await fetch('http://localhost:3001/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    // Retrieve user data from localStorage
+    const storedUser = localStorage.getItem(username);
 
-    if (response.ok) {
-      setGlobalUsername(username); // Opdater kontekstens brugernavn efter en vellykket login
-      console.log('Login successful for', username);
-      navigate('/menu'); 
-
+    if (storedUser) {
+      try {
+        const user = JSON.parse(storedUser);
+        if (user.password === password) {
+          // Password matches
+          setGlobalUsername(username); 
+          console.log('Login successful for', username);
+          navigate('/menu');
+        } else {
+          setError('Incorrect password');
+        }
+      } catch (e) {
+        setError('Stored user data is corrupted');
+      }
     } else {
-        const errorData = await response.json(); 
-        setError(errorData.message);
+      setError('Username not registered');
     }
   };
 
@@ -70,3 +73,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
