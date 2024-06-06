@@ -7,25 +7,21 @@ function RegisterPage() {
   const [password, setPassword] = useState(''); // State for password
   const navigate = useNavigate(); // Hook for navigation
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
-    // Attempt to register the user
-    const response = await fetch('http://localhost:3001/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (response.ok) {
-      // If registration is successful, navigate to the home page
-      navigate('/');
-    } else {
-      // If registration fails, alert the user
-      alert('Failed to register. Please try again.');
+    // Check if the username already exists in localStorage
+    if (localStorage.getItem(username)) {
+      alert('Username already exists. Please choose another one.');
+      return;
     }
+
+    // Store the user's credentials in localStorage
+    const user = { username, password };
+    localStorage.setItem(username, JSON.stringify(user));
+
+    // Navigate to the home page after successful registration
+    navigate('/');
   };
 
   // Render the registration form
