@@ -108,7 +108,7 @@ app.post('/login', (req, res) => {
 
 app.post('/save', (req, res) => {
   const { username, board, time } = req.body;
-  if (!username || !board || time == null) {
+  if (!username || !board || time == null ) {
     return res.status(400).json({ message: 'Username, board, and time are required' });
   }
 
@@ -121,13 +121,14 @@ app.post('/save', (req, res) => {
   res.json({ message: 'Game saved successfully' });
 });
 
+/*
 app.get('/load', (req, res) => {
   console.log('Loading game:', savedGames);
   const { username } = req.query;
   if (!username) {
   return res.status(400).json({ message: 'Username is required' });
   }
-
+  
   // Find the most recent saved game for the user
   const game = [...savedGames].reverse().find(game => game.username === username);
   if (!game) {
@@ -136,6 +137,22 @@ app.get('/load', (req, res) => {
   console.log('Loaded game:', game);
   res.json({ board: game.board, time: game.time });
 });
+*/
+
+app.get('/load', (req, res) => {
+  const { username } = req.query;
+  if (!username) {
+    return res.status(400).json({ message: 'Username is required' });
+  }
+
+  const userGames = savedGames.filter(game => game.username === username).slice(-10).reverse();
+  if (userGames.length === 0) {
+    return res.status(404).json({ message: 'No saved games found for the user' });
+  }
+  console.log("loading games complete")
+  res.json(userGames);
+});
+
 
 app.get('/generate', (req, res) => {
   // Hent størrelsen fra query parameteret, eller brug en standardværdi hvis det ikke er angivet
