@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CSS/RegisterScreen.css'; // Ensure this path matches the location of your CSS file
+
 function RegisterPage() {
   const [username, setUsername] = useState(''); // State for username
   const [password, setPassword] = useState(''); // State for password
   const navigate = useNavigate(); // Hook for navigation
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
-    // Attempt to register the user
-    const response = await fetch('http://localhost:3001/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-    if (response.ok) {
-      // If registration is successful, navigate to the home page
+    // Check if the username already exists in localStorage
+    if (localStorage.getItem(username)) {
+      alert('Username already exists. Please choose another one.');
+      return;
+    }
+
+    try {
+      // Store the user's credentials in localStorage
+      const user = { username, password };
+      localStorage.setItem(username, JSON.stringify(user));
+      
+      // Navigate to the home page after successful registration
       navigate('/');
-    } else {
-      // If registration fails, alert the user
+    } catch (error) {
+      console.error('Failed to save user data:', error);
       alert('Failed to register. Please try again.');
     }
   };
-  // Render the registration form
+
   return (
     <div className="register-container"> {/* Container with centering styling */}
       <form onSubmit={handleSubmit} className="register-form"> {/* Form with specific styling */}
