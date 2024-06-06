@@ -52,9 +52,6 @@ app.post('/stats/update', (req, res) => {
   };
   const difficultyKey = difficultyMapping[diff]; 
 
-
-
-
   const userStats = users[username].stats;
   userStats.gamesWon += gamesWon;
   userStats.bestTime = Math.min(userStats.bestTime === Infinity ? time : userStats.bestTime, time);
@@ -171,7 +168,7 @@ app.get('/generate', (req, res) => {
       break;
     case 3: // Hard
       console.log('Hard');
-      numbersToRemove = 20;
+      numbersToRemove = 72;
       break;
     default:
       console.log('Default');

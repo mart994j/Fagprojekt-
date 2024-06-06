@@ -157,6 +157,7 @@ class SudokuGenerator {
         if (this.solveBoard(copy, size) != 1) {
           // if the board is not solvable or has multiple solutions, revert the change
           board[row][col] = backup;
+          attempts--; 
         } else {
         attempts--; 
         }
