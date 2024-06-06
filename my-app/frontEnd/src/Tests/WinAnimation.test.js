@@ -1,4 +1,3 @@
-// src/Tests/celebrateWin.test.js
 import confetti from 'canvas-confetti';
 import celebrateWin from '../Components/WinAnimation';
 // Mock the confetti function
