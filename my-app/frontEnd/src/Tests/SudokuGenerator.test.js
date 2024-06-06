@@ -1,6 +1,6 @@
 //npm install --save-dev jest
 
-const { SudokuGenerator } = require('./SudokuGenerator');
+const { SudokuGenerator } = require('../../../backEnd/SudokuGenerator');
 
 describe('SudokuGenerator', () => {
 
