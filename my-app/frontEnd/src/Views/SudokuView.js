@@ -18,7 +18,7 @@ function SudokuView() {
 
   const diff = location.state?.diff ?? 10;
 
-  const [n, setN] = useState(9); 
+  const [n, setN] = useState(9);
   const [grid, setGrid] = useState([]);
 
   const [hints, setHints] = useState([]);
@@ -37,7 +37,7 @@ function SudokuView() {
   const [notes, setNotes] = useState(Array(n).fill().map(() => Array(n).fill([])));
   const [lastClickedCell, setLastClickedCell] = useState(null);
 
-  const [tempGreenCells, setTempGreenCells] = useState({});
+  const [flashingCell, setFlashingCell] = useState(null);
 
   const startTimer = useCallback(() => {
     if (!isTimerActiveRef.current) {
@@ -184,10 +184,12 @@ function SudokuView() {
       return;
     }
     let newGrid = JSON.parse(JSON.stringify(grid));
+    let newEditableCells = JSON.parse(JSON.stringify(editableCells));
 
     hints.forEach(hint => {
-      if (editableCells[hint[0]][hint[1]]) {
+      if (newEditableCells[hint[0]][hint[1]]) {
         newGrid[hint[0]][hint[1]] = hint[2];
+        newEditableCells[hint[0]][hint[1]] = false;
         const updatedNotes = [...notes];
         updatedNotes[hint[0]][hint[1]] = [];
         setNotes(updatedNotes);
@@ -195,6 +197,7 @@ function SudokuView() {
     });
 
     setGrid(newGrid);
+    setEditableCells(newEditableCells);
     setHints([]);
     console.log('Hints cleared:', hints);
   };
@@ -210,27 +213,22 @@ function SudokuView() {
         )
       );
 
+      const newEditableCells = editableCells.map((row, rowIndex) =>
+        row.map((cell, cellIndex) =>
+          rowIndex === hint.row && cellIndex === hint.col ? false : cell
+        )
+      );
+
       setGrid(newGrid);
+      setEditableCells(newEditableCells);
+
       const updatedNotes = [...notes];
       updatedNotes[hint.row][hint.col] = [];
       setNotes(updatedNotes);
 
-      const cellKey = `${hint.col}-${hint.row}`;
-      console.log(`Applying temp green to cell: ${cellKey}`);
-      setTempGreenCells(prev => {
-        console.log('Before update:', prev);
-        const newState = { ...prev, [cellKey]: true };
-        console.log('After update:', newState);
-        return newState;
-      });
-
+      setFlashingCell([hint.row, hint.col]);
       setTimeout(() => {
-        setTempGreenCells(prev => {
-          const newState = { ...prev };
-          delete newState[cellKey];
-          console.log(`Removing temp green from cell: ${cellKey}`, newState);
-          return newState;
-        });
+        setFlashingCell(null);
       }, 1000);
 
       removeHintAndUpdateState(hint.row, hint.col, String(hint.hintNumber));
@@ -414,7 +412,8 @@ function SudokuView() {
                     className={
                       `${!validity[i][j] ? 'invalid' : ''} ` +
                       `${(j + 1) % subGridSize === 0 && j + 1 !== n ? 'right-border' : ''} ` +
-                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}`
+                      `${(i + 1) % subGridSize === 0 && i + 1 !== n ? 'bottom-border' : ''}` +
+                      `${flashingCell && flashingCell[0] === i && flashingCell[1] === j ? ' flash' : ''}`
                     }
                     style={{ width: cellSize + 'px', height: cellSize + 'px', position: 'relative' }}
                     onClick={() => setLastClickedCell([i, j])}
