@@ -10,7 +10,6 @@ import Shepherd from 'shepherd.js';
 import 'shepherd.js/dist/css/shepherd.css';
 
 function SudokuView() {
-  const tourRef = useRef(null);
   const navigate = useNavigate();
   const n = 9;
   const initialGrid = [
@@ -25,6 +24,7 @@ function SudokuView() {
     [5, 4, 2, 9, 0, 7, 1, 0, 6]
   ];
   const [grid, setGrid] = useState(initialGrid);
+  const [gameSolved, setGameSolved] = useState(false);
   const [validity, setValidity] = useState(Array(n).fill().map(() => Array(n).fill(true)));
   const [userEdits, setUserEdits] = useState(Array(n).fill().map(() => Array(n).fill(false)));
   const [isPaused, setIsPaused] = useState(false);
@@ -233,195 +233,194 @@ function SudokuView() {
 
  
   useEffect(() => {
-      const tour = new Shepherd.Tour({
-        useModalOverlay: true,
-        defaultStepOptions: {
-          cancelIcon: {
-            enabled: true
-          },
-          classes: 'shadow-md bg-purple-dark',
-          scrollTo: { behavior: 'smooth', block: 'center' }
+    const tour = new Shepherd.Tour({
+      useModalOverlay: true,
+      defaultStepOptions: {
+        classes: 'shadow-md bg-purple-dark',
+        scrollTo: { behavior: 'smooth', block: 'center' }
+      }
+    });
+
+    tour.addStep({
+      id: 'step-1',
+      text: 'Try and put the correct number in the cell.',
+      attachTo: {
+        element: '#cell-0-3 input',
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Next',
+          action: () => {
+            const inputValue = document.querySelector('#input-0-3').value;
+            if (inputValue === '8' && inputValue !== '') {
+              tour.next();
+            } else {
+              alert('Please enter the number 8.');
+            }
+          }
         }
-      });
+      ]
+    });
 
-      tour.addStep({
-        id: 'step-1',
-        text: 'Try and put the correct number in the cell.',
-        attachTo: {
-          element: '#cell-0-3 input',
-          on: 'bottom'
+    tour.addStep({
+      id: 'step-2',
+      text: 'Put a wrong number (any number other than 9) and see what happens',
+      attachTo: {
+        element: '#cell-2-2 input',
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
         },
-        buttons: [
-          {
-            text: 'Next',
-            action: () => {
-              const inputValue = document.querySelector('#input-0-3').value;
-              if (inputValue === '8' && inputValue !== '') {
-                tour.next();
-              } else {
-                alert('Please enter the number 8.');
-              }
+        {
+          text: 'Next',
+          action: () => {
+            const inputValue = document.querySelector('#input-2-2').value;
+            if (inputValue !== '9' && inputValue !== '') {
+              tour.next();
+            } else {
+              alert('Please enter a number other than 9.');
             }
           }
-        ]
-      });
+        }
+      ]
+    });
 
-      tour.addStep({
-        id: 'step-2',
-        text: 'Put a wrong number (any number other than 9) and see what happens',
-        attachTo: {
-          element: '#cell-2-2 input',
-          on: 'bottom'
+    tour.addStep({
+      id: 'step-3',
+      text: 'Now you can see there are red squares around some numbers. This indicates that the number is wrong. Try to put in the number 9.',
+      attachTo: {
+        element: '#cell-2-2 input',
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
         },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Next',
-            action: () => {
-              const inputValue = document.querySelector('#input-2-2').value;
-              if (inputValue !== '9' && inputValue !== '') {
-                tour.next();
-              } else {
-                alert('Please enter a number other than 9.');
-              }
+        {
+          text: 'Next',
+          action: () => {
+            const inputValue = document.querySelector('#input-2-2').value;
+            if (inputValue === '9' && inputValue !== '') {
+              tour.next();
+            } else {
+              alert('Please enter the number 9.');
             }
           }
-        ]
-      });
+        }
+      ]
+    });
 
-      tour.addStep({
-        id: 'step-3',
-        text: 'Now you can see there are red squares around some numbers. This indicates that the number is wrong. Try to put in the number 9.',
-        attachTo: {
-          element: '#cell-2-2 input',
-          on: 'bottom'
+    tour.addStep({
+      id: 'step-4',
+      text: 'Use a hint on a cell.',
+      attachTo: {
+        element: '#hint-button', // Ensure this ID matches your hint button's ID
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
         },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Next',
-            action: () => {
-              const inputValue = document.querySelector('#input-2-2').value;
-              if (inputValue === '9' && inputValue !== '') {
-                tour.next();
-              } else {
-                alert('Please enter the number 9.');
-              }
-            }
-          }
-        ]
-      });
+        {
+          text: 'Next',
+          action: tour.next
+        }
+      ]
+    });
 
-      tour.addStep({
-        id: 'step-4',
-        text: 'Use a hint on a cell.',
-        attachTo: {
-          element: '#hint-button', // Ensure this ID matches your hint button's ID
-          on: 'bottom'
+    tour.addStep({
+      id: 'step-5',
+      text: 'Click on the notes button to toggle notes mode. In notes mode, you can enter multiple numbers in a cell and press it again to switch back.',
+      attachTo: {
+        element: '#notes-button', // Ensure this ID matches your notes button's ID
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
         },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Next',
-            action: tour.next
-          }
-        ]
-      });
+        {
+          text: 'Next',
+          action: tour.next
+        }
+      ]
+    });
 
-      tour.addStep({
-        id: 'step-5',
-        text: 'Click on the notes button to toggle notes mode. In notes mode, you can enter multiple numbers in a cell and press it again to switch back.',
-        attachTo: {
-          element: '#notes-button', // Ensure this ID matches your notes button's ID
-          on: 'bottom'
+    tour.addStep({
+      id: 'step-6',
+      text: 'Here in a real game you can press save to save the game and you will return to the menu.',
+      attachTo: {
+        element: '#save-game-button',
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
         },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Next',
-            action: tour.next
-          }
-        ]
-      });
+        {
+          text: 'Next',
+          action: tour.next
+        }
+      ]
+    });
 
-
-      tour.addStep({
-        id: 'step-6',
-        text: 'Here in a real game you can press save to save the game and you will return to the menu.',
-        attachTo: {
-          element: '#save-game-button',
-          on: 'bottom'
+    tour.addStep({
+      id: 'step-7',
+      text: 'This button pauses the game.',
+      attachTo: {
+        element: '#pause-game-button',
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
         },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Next',
-            action: tour.next
-          }
-        ]
+        {
+          text: 'Next',
+          action: tour.next
+        }
+      ]
+    });
+
+    tour.addStep({
+      id: 'step-8',
+      text: 'Solve the game.',
+      attachTo: {
+        element: '#solve-game-button',
+        on: 'bottom'
+      },
+      buttons: [
+        {
+          text: 'Back',
+          action: tour.back
+        }
+      ]
+    });
+
+    // Event listener to track if the game has been solved
+    const solveButton = document.getElementById('solve-game-button');
+    if (solveButton) {
+      solveButton.addEventListener('click', () => {
+        setGameSolved(true);
       });
+    }
 
-      tour.addStep({
-        id: 'step-7',
-        text: 'This button pauses the game.',
-        attachTo: {
-          element: '#pause-game-button',
-          on: 'bottom'
-        },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Next',
-            action: tour.next
-          }
-        ]
-      });
+    tour.start();
 
-      tour.addStep({
-        id: 'step-8',
-        text: 'Solve the game.',
-        attachTo: {
-          element: '#solve-game-button',
-          on: 'bottom'
-        },
-        buttons: [
-          {
-            text: 'Back',
-            action: tour.back
-          },
-          {
-            text: 'Finish',
-            action: tour.complete
-          }
-        ]
-      });
+    return () => {
+      // Clean up the tour instance on component unmount
+      tour.complete();
+    };
 
-      tour.start();
-
-      return () => {
-        // Clean up the tour instance on component unmount
-
-         tour.complete();
-      };
-    
   }, [isNotesMode]);
   
   
