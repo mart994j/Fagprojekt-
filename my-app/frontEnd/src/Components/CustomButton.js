@@ -1,9 +1,9 @@
 import React from 'react';
-import { useAudio } from '../Utilities/AudioContext'; // Import the audio context
+import { useAudio } from '../Utilities/AudioContext';
 import { playSoundButton1 } from '../Utilities/AudioPlayer';
 
 const CustomButton = ({ className, children, onClick, ...props }) => {
-    const { areSoundEffectsOn, volume } = useAudio(); // Use volume from context
+    const { areSoundEffectsOn, volume } = useAudio(); 
 
     const handleClick = (e) => {
         if (areSoundEffectsOn) {
