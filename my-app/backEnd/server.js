@@ -151,7 +151,7 @@ app.get('/generate', (req, res) => {
       break;
     case 3: // Hard
       console.log('Hard');
-      numbersToRemove = 20;
+      numbersToRemove = 72;
       break;
     default:
       console.log('Default');

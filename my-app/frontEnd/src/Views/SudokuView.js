@@ -22,6 +22,7 @@ function SudokuView() {
 
   const [hints, setHints] = useState([]);
   const [hintsFetched, setHintsFetched] = useState(false);
+  //const solutionsRef = useRef(0);
 
   const [validity, setValidity] = useState(Array(n).fill().map(() => Array(n).fill(true)));
   const [userEdits, setUserEdits] = useState(Array(n).fill().map(() => Array(n).fill(false)));
@@ -200,7 +201,7 @@ function SudokuView() {
   }, [editableCells, grid, userEdits, notes, n, isNotesMode, hints, setHints]);
 
   const applySolveToGrid = () => {
-    if(hints.length === 0) {
+    if(hints.length === 0 ) {
 
       return;
     }
@@ -425,17 +426,98 @@ const togglePause = () => {
   }, []);
 
 
-  function removeHintAndUpdateState(i, j, value) {
-      const newHints = hints.filter(hint =>
-      !(hint[0] === i && hint[1] === j && String(hint[2]) === value)
-    );
-    console.log("New hints:", newHints);
-    // Check if the hints array has changed, indicating a hint was removed
-    if (newHints.length !== hints.length) {
-      console.log("Value is hint");
-      setHints(newHints); // Update the hints state
+  //Har nok lige bruge for hjælp med det her
+//////////////////////////
+
+
+const findEmptyCell = (board, size) => { 
+  for (let row = 0; row < size; row++) {
+    for (let col = 0; col < size; col++) {
+        if (board[row][col] === 0) return [row, col];
+    }
+}
+return [-1, -1]; 
+ };
+const isValidPlacement = (board, row, col, num, size) => { 
+  const boxSize = Math.sqrt(size);
+  for (let i = 0; i < size; i++) {
+    const m = boxSize * Math.floor(row / boxSize) + Math.floor(i / boxSize);
+    const n = boxSize * Math.floor(col / boxSize) + i % boxSize;
+    if (board[row][i] === num || board[i][col] === num || board[m][n] === num) {
+      return false;
     }
   }
+  return true;
+};
+
+const solveBoardWithHints = (board, size, limit = 2) => {
+  let solutions = 0;
+  let allHints = new Set();
+
+  const solve = (board, collectedHints) => {
+    let [row, col] = findEmptyCell(board, size);
+    if (row === -1) {
+      // if the board is filled then increment solutions
+      solutions++;
+      for (let hint of collectedHints) {
+        allHints.add(hint.toString()); // Use string representation to avoid duplicates
+      }
+      return solutions < limit;
+    }
+
+    for (let num = 1; num <= size; num++) {
+      if (!isValidPlacement(board, row, col, num, size)) {
+        continue;
+      }
+      board[row][col] = num;
+      collectedHints.push([row, col, num]); // Collect the hint
+      if (!solve(board, collectedHints)) {
+        board[row][col] = 0;
+        collectedHints.pop(); // Remove the last hint if backtracking
+        return false;
+      }
+      board[row][col] = 0;
+      collectedHints.pop(); // Remove the last hint if backtracking
+    }
+    return true;
+  };
+
+  solve(board, []);
+
+  console.log("solutions", solutions);
+  
+  // Convert Set back to list of hints
+  let hintsList = Array.from(allHints).map(hint => hint.split(',').map(Number));
+
+  return { solutions, hints: hintsList };
+};
+
+const removeHintAndUpdateState = (i, j, value) => {
+  const newHints = hints.filter(hint =>
+    !(hint[0] === i && hint[1] === j && String(hint[2]) === value)
+  );
+  console.log("New hints:", newHints);
+
+  // Check if the hints array has changed, indicating a hint was removed
+  if (newHints.length !== hints.length) {
+    console.log("Value is hint");
+    setHints(newHints); // Update the hints state
+
+    // Clone the board to avoid modifying the original
+    let newBoard = JSON.parse(JSON.stringify(grid));
+    newBoard[i][j] = value; // Place the number on the board
+
+    // Check if the updated board still has a unique solution and get new hints
+    let result = solveBoardWithHints(newBoard, newBoard.length);
+    if (result.solutions !== 1) {
+      console.log("Board does not have a unique solution. Possible hints:", result.hints);
+      //setHints(result.hints); // Update the hints state with all possible hints
+    } else {
+      console.log("Board still has a unique solution after this move. New hints:", result.hints);
+      setHints(result.hints); // Update the hints state with new hints
+    }
+  }
+};
   // Calculate the square root of n to determine subgrid size
   const subGridSize = Math.sqrt(n);
   const baseSize = 500; // Base size for the Sudoku board
