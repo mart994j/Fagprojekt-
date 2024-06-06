@@ -7,56 +7,62 @@ function RegisterPage() {
   const [password, setPassword] = useState(''); // State for password
   const navigate = useNavigate(); // Hook for navigation
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
-    // Attempt to register the user
-    const response = await fetch('http://localhost:3001/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    // Check if the username already exists in localStorage
+    if (localStorage.getItem(username)) {
+      alert('Username already exists. Please choose another one.');
+      return;
+    }
 
-    if (response.ok) {
-      // If registration is successful, navigate to the home page
+    try {
+      // Store the user's credentials in localStorage
+      const user = { username, password };
+      localStorage.setItem(username, JSON.stringify(user));
+      
+      // Navigate to the home page after successful registration
       navigate('/');
-    } else {
-      // If registration fails, alert the user
+    } catch (error) {
+      console.error('Failed to save user data:', error);
       alert('Failed to register. Please try again.');
     }
   };
 
-  // Render the registration form
   return (
-    <div className="register-container"> {/* Container with centering styling */}
-      <form onSubmit={handleSubmit} className="register-form"> {/* Form with specific styling */}
-        <h2>Register</h2> {/* Title */}
-        <div className="input-group"> {/* Group for each input for consistent styling */}
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="input-group"> {/* Repeat input-group styling for password */}
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="register-button">Register</button> {/* Styled submit button */}
-      </form>
+    <div className="login-container">
+      <form onSubmit={handleSubmit} className="login-form">
+  <h2>Login</h2>
+  {error && <div className="login-error">{error}</div>}
+  <div className="input-group">
+    <label htmlFor="username">Username</label>
+    <input
+      id="username"
+      type="text"
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      required
+    />
+  </div>
+  <div className="input-group">
+    <label htmlFor="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+    />
+  </div>
+  <div className="register-prompt">
+      Not a user? <button type="button" onClick={() => navigate('/register')}>Register here</button>
+  </div>
+
+  <button type="submit" className="login-button">Log In</button>
+</form>
+
     </div>
   );
 }
 
-export default RegisterPage;
+export default LoginPage;

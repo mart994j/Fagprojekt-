@@ -14,6 +14,7 @@ function MenuScreen() {
   const [n, setN] = useState(9);
   const [diff, setDiff] = useState(10);
   const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Updated for sidebar
+  const [savedGames, setSavedGames] = useState([]);
 
   const k = Math.sqrt(n);
 
@@ -57,8 +58,7 @@ function MenuScreen() {
     setDiff(Number(event.target.value));
   };
 
-  const handleLoadGame = () => {
-    // Use username from context for loading the game
+  const handleLoadGames = () => {
     fetch(`http://localhost:3001/load?username=${username}`)
       .then(response => {
         if (!response.ok) {
@@ -67,14 +67,15 @@ function MenuScreen() {
         return response.json();
       })
       .then(data => {
-        console.log('Loaded game:', data);
-        navigate('/sudoku', { state: { n, load: data } });
+        setSavedGames(data);  // Set the saved games
+        console.log('Loaded games:', data);
       })
       .catch(error => {
-        console.error('Error loading game:', error);
-        alert('Ingen gemt spil fundet for brugeren.');
+        console.error('Error loading games:', error);
+        alert('No saved games found for the user.');
       });
   };
+  
 
 
 
@@ -147,7 +148,16 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
         <div className="sidebar-menu-content">
           <CustomButton onClick={handleLeaderBoard}className="leaderboard-button" type="button">Leaderboard</CustomButton>
           <CustomButton onClick={handleGeoMap} className="geomap-button" type="button">Geomap</CustomButton>
-          <CustomButton onClick={handleLoadGame} className="loadgame-button" type="button">Load Game</CustomButton>
+          <CustomButton onClick={handleLoadGames} className="loadgame-button" type="button">Load Game</CustomButton>
+          <div>
+            {savedGames.map((game, index) => (
+              <div key={index}>
+                <CustomButton onClick={() => navigate('/sudoku', { state: { n, load: game } })}>
+                  Saved game: {index + 1}
+                </CustomButton>
+              </div>
+            ))}
+          </div>
           <CustomButton onClick={handleSudokuMap} className="SudokuChronicles-button" type="button">Sudoku Chronicles</CustomButton>
           <CustomButton onClick={handleStatistics} className="statistics-button" type="button">Statistics</CustomButton>
           <CustomButton onClick={handleSettings} className="settings-button" type="button">Settings</CustomButton>
