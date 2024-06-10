@@ -191,9 +191,14 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
             value={Math.sqrt(n)}
             onChange={(e) => {
               const value = Math.pow(Number(e.target.value), 2);
-              if (value >= 9) {
+
+              // Size of board must be between 9 and 36
+              if (value >= 9 && value <= 36) {
                 setN(value);
+              } else if (value > 36) {
+                setN(49);
               }
+              
             }}
             placeholder="Vælg n (bræt størrelse)"
             required
