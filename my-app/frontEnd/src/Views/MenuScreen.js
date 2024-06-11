@@ -47,8 +47,8 @@ function MenuScreen() {
       },
       (error) => {
         console.error("Geolocation error:", error);
-        const defaultLat = 55.6761; // Example: Copenhagen's latitude
-        const defaultLng = 12.5683; // Example: Copenhagen's longitude
+        const defaultLat = 55.6761; 
+        const defaultLng = 12.5683; 
         navigate('/geomap', { state: { lat: defaultLat, lng: defaultLng } });
       }
     );
@@ -163,7 +163,6 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
           <CustomButton onClick={handleSettings} className="settings-button" type="button">Settings</CustomButton>
           <CustomButton onClick={handleTutorial} className="tutorial-button" type="button">Tutorial</CustomButton>
 
-          {/* Tilføj nye knapper over settings knappen */}
         </div>
       </div>
       
@@ -171,20 +170,20 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
       <form onSubmit={handleStartGame}>
 
 
-        <h1>Velkommen til Sudoku!</h1>
+        <h1>Welcome to Sudoku!</h1>
         
-        <CustomButton type="submit">Start Spil</CustomButton>
+        <CustomButton type="submit">Begin Game</CustomButton>
         <select value={diff} onChange={handleDiff} required>
-          <option value="">Vælg sværhedsgrad</option>
-          <option value="1">Let</option>
+          <option value="">Choose Difficulty</option>
+          <option value="1">Easy</option>
           <option value="2">Medium</option>
-          <option value="3">Svær</option>
+          <option value="3">Hard</option>
         </select>
 
         {/* Sudoku board size preview */}
         <BoardPreview k={k} n={n} />
 
-        <h3>Vælg Størrelse på Sudoku</h3>
+        <h3>Choose The Size of The Sudoku</h3>
         <div className="kn-inputs">
           <input
             type="number"
@@ -192,13 +191,13 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
             onChange={(e) => {
               const value = Math.pow(Number(e.target.value), 2);
 
-              // Size of board must be between 9 and 36
+              // Size of board must be between 9 and 36 (small squares)
               if (value >= 9 && value <= 36) {
                 setN(value);
               } else if (value > 36) {
                 setN(49);
               }
-              
+
             }}
             placeholder="Vælg n (bræt størrelse)"
             required

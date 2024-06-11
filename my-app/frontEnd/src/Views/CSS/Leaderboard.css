@@ -1,0 +1,25 @@
+.leaderboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--background-color);
+    color: #ffffff;
+  }
+  
+  .leaderboard-title {
+    margin-bottom: 20px;
+    font-size: 60px;
+    color: white;
+  }
+  
+  .leaderboard-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .leaderboard-list li {
+    margin: 5px 0;
+  }
+  

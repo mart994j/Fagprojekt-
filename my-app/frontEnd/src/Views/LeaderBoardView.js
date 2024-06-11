@@ -1,32 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import './CSS/Leaderboard.css';
+import './CSS/themes.css';
 
-function LeaderBoardView() {
-  const [leaderboard, setLeaderboard] = useState([]);
-
-  useEffect(() => {
-    // Fetch leaderboard data when the component mounts
-    fetch('http://localhost:3001/leaderboard')
-      .then(response => response.json())
-      .then(data => {
-        setLeaderboard(data); 
-      })
-      .catch(error => {
-        console.error('Error fetching leaderboard:', error);
-      });
-  }, []); 
-
+function Leaderboard({ leaderboard }) {
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      backgroundColor: '#2f0f57',
-      color: '#fff',
-    }}>
-      <h1 style={{ marginBottom: '20px', fontSize: '60px', color: 'white' }}>Leaderboard</h1>
-      <ul>
+    <div className="leaderboard-container">
+      <h1 className="leaderboard-title">Leaderboard</h1>
+      <ul className="leaderboard-list">
         {leaderboard.map((entry, index) => (
           <li key={index}>{entry.username} - {entry.time}s</li>
         ))}
@@ -35,4 +15,4 @@ function LeaderBoardView() {
   );
 }
 
-export default LeaderBoardView;
+export default Leaderboard;

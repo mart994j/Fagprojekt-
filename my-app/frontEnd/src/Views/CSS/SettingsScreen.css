@@ -1,8 +1,8 @@
 .map-container {
     position: relative;
-    background-color: var(--background-color); /* Static color instead of image */
+    background-color: var(--background-color);
     width: 100%;
-    height: 100vh; /* Fills the entire viewport height */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,16 +25,22 @@
 }
 
 .settings-sections {
-    display: flex; /* This will align the sections side by side */
+    display: flex; 
     justify-content: space-around;
 }
 
 .settings-section {
-    margin: 0 10px; /* This provides space between the sections */
+    margin: 0 10px; 
     padding: 20px;
     background-color: #f4f4f4;
     border-radius: 10px;
-    flex: 1; /* This makes the sections flexibly fill the available space */
+    flex: 1; 
+}
+
+.theme-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between the buttons */
 }
 
 .settings-option {
@@ -51,30 +57,28 @@
     width: 100%;
 }
 
-
 .SettingsView {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%; /* Adjust this as needed */
+    width: 50%; 
 }
 
 .settings-screen h1 {
     margin-bottom: 8vw; 
     font-size: 2.5rem;
     text-align: center;
-  }
-  
-  .settings-screen h2 {
+}
+
+.settings-screen h2 {
     margin-bottom: 0px;
     font-size: 1.5rem;
     color: rgb(20, 19, 44);
     text-align: center;
-  }
-
+}
 
 .settings-screen button[type="button"] {
-    margin-top: 20px; /* Adjust spacing between buttons */
+    margin-top: 20px;
     background-color: var(--settings);
     color: white;
     border: none;
@@ -87,10 +91,10 @@
 }
 
 .SettingsView {
-    color: white; /* Makes all text within white */
-    text-align: left; /* Aligns the text to the left */
-    width: 80%; /* Adjust this as needed */
-    margin-left: auto; /* This keeps the container centered */
+    color: white;
+    text-align: left;
+    width: 80%; 
+    margin-left: auto; 
     margin-right: auto;
 }
 

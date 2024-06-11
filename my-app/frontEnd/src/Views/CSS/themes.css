@@ -23,8 +23,8 @@
 }
 
 .Theme {
-  --background-color: #0f1f57;
-  --begin-game: #007bff;
+  --background-color: #4f0e2e;
+  --begin-game: #005ec9;
   --leaderboard: #28a745;
   --geomap: #a72828;
   --loadgame: #bc9e23;
@@ -35,8 +35,8 @@
 }
 
 .Green {
-  --background-color: #066229;
-  --begin-game: #342987;
+  --background-color: #08451f;
+  --begin-game: #372987;
   --leaderboard: #0e4a72;
   --geomap: #d3ae0b;
   --loadgame: #0146be;
