@@ -2,9 +2,29 @@ import React from 'react';
 import './CSS/Leaderboard.css';
 import './CSS/themes.css';
 
-function Leaderboard({ leaderboard }) {
+
+import {useNavigate } from 'react-router-dom';
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import CustomButton from '../Components/CustomButton.js';
+
+
+function Leaderboard({ leaderboard = [] }) {
+  const navigate = useNavigate();
+
+
+  const handleBack = () => {
+    navigate('/menu');
+  };
+
+
+
   return (
-    <div className="leaderboard-container">
+    <div className="leaderbord-view">
+      <CustomButton onClick={handleBack} style={{ background: 'none', color: 'white', border: 'none',position: 'absolute', marginRight: '90%' , marginTop: '-45%' }}>
+        <IoArrowBackCircleOutline size="35px" />
+        <span>{''}</span>
+      </CustomButton>
+
       <h1 className="leaderboard-title">Leaderboard</h1>
       <ul className="leaderboard-list">
         {leaderboard.map((entry, index) => (

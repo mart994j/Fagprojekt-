@@ -1,10 +1,16 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../UserContext';
 import './CSS/StatisticsView.css';
-import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts'; 
+import { PieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
 //npm install recharts
 
+import { useNavigate } from 'react-router-dom';
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import CustomButton from '../Components/CustomButton.js';
+
+
 function StatisticsView() {
+    const navigate = useNavigate();
     const { username } = useContext(UserContext);
 
     const formatTime = (totalSeconds) => {
@@ -15,13 +21,16 @@ function StatisticsView() {
     };
 
     const formatPlayedGames = (gamesPlayed) => {
-        if(gamesPlayed===0){
+        if (gamesPlayed === 0) {
             return '0';
-        }else {
-            return gamesPlayed-1;
+        } else {
+            return gamesPlayed - 1;
         }
     }
 
+    const handleBack = () => {
+        navigate('/menu');
+    };
 
 
     const [stats, setStats] = useState({
@@ -30,7 +39,7 @@ function StatisticsView() {
         bestTime: '0:00',
         worstTime: '0:00',
         averageTime: '0:00',
-        difficultyWins: { Easy: 0, Medium: 0, Hard: 0 }, 
+        difficultyWins: { Easy: 0, Medium: 0, Hard: 0 },
     });
 
 
@@ -44,7 +53,7 @@ function StatisticsView() {
                     bestTime: formatTime(data.bestTime === Infinity ? 0 : data.bestTime), // Handle the Infinity value
                     worstTime: formatTime(data.worstTime),
                     averageTime: formatTime(data.averageTime),
-                    difficultyWins: data.difficultyWins || { Easy: 0, Medium: 0, Hard: 0 }, 
+                    difficultyWins: data.difficultyWins || { Easy: 0, Medium: 0, Hard: 0 },
                 });
             })
             .catch((error) => {
@@ -54,14 +63,18 @@ function StatisticsView() {
 
 
     const data = [
-        { name: 'Easy', value: stats.difficultyWins.Easy  },
+        { name: 'Easy', value: stats.difficultyWins.Easy },
         { name: 'Medium', value: stats.difficultyWins.Medium },
         { name: 'Hard', value: stats.difficultyWins.Hard },
-      ];
-      const COLORS = ['#FF6384', '#36A2EB', '#FFCE56'];
+    ];
+    const COLORS = ['#FF6384', '#36A2EB', '#FFCE56'];
 
     return (
         <div className="map-container">
+            <CustomButton onClick={handleBack} style={{ background: 'none', color: 'white', border: 'none', position: 'absolute', marginRight: '90%', marginTop: '-45%' }}>
+                <IoArrowBackCircleOutline size="35px" />
+                <span>{''}</span>
+            </CustomButton>
             <div className="StatisticsView">
                 <div className="statistics-screen">
                     <h1>Statistics</h1>
@@ -77,25 +90,25 @@ function StatisticsView() {
             </div>
             <div className="chart-container">
                 <PieChart width={400} height={400}>
-                  <Pie
-                    data={data}
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={120}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {data.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                  <Legend />
+                    <Pie
+                        data={data}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={120}
+                        fill="#8884d8"
+                        dataKey="value"
+                    >
+                        {data.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
                 </PieChart>
             </div>
         </div>
     );
-    
+
 }
 
 export default StatisticsView;

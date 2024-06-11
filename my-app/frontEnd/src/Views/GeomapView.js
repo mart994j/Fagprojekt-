@@ -6,7 +6,13 @@ import { useLocation } from 'react-router-dom';
 import L from 'leaflet';
 import icon from '../assets/markerIcon.png'; 
 
+import {useNavigate } from 'react-router-dom';
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import CustomButton from '../Components/CustomButton.js';
+
+
 function Geomap() {
+  const navigate = useNavigate();
   const [solutions, setSolutions] = useState([]);
   const locationState = useLocation().state; // Tilgå state fra navigation
 
@@ -16,6 +22,11 @@ function Geomap() {
     iconAnchor: [12, 41],
     popupAnchor: [1, -34],
   });
+
+  const handleBack = () => {
+    navigate('/menu');
+  };
+
 
   useEffect(() => {
     fetch('http://localhost:3001/leaderboard')
@@ -30,6 +41,10 @@ function Geomap() {
 
   return (
     <div className="geomap-screen">
+        <CustomButton onClick={handleBack} style={{ background: 'none', color: 'white', border: 'none',position: 'absolute', marginRight: '90%' , marginTop: '-45%' }}>
+        <IoArrowBackCircleOutline size="35px" />
+        <span>{''}</span>
+      </CustomButton>
       <h1>Geomap</h1>
       <p>Her kan du se, hvor du har løst dine sudokuer henne</p>
       <MapContainer center={[center.lat, center.lng]} zoom={15} style={{ height: "60%", width: "80%" }}>

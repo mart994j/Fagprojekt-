@@ -5,12 +5,21 @@ import { useAudio } from '../Utilities/AudioContext'; // Import the audio contex
 import CustomButton from '../Components/CustomButton';
 //import button sound
 
+import { useNavigate } from 'react-router-dom';
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+
+
 //import music
 import { playMusic } from '../Utilities/AudioPlayer';
 
 function SettingsScreen() {
+    const navigate = useNavigate();
     const { isMusicOn, toggleMusic, areSoundEffectsOn, toggleSoundEffects, volume, setVolume } = useAudio();
     const volumeRef = useRef(volume);  // Using a ref to store the current volume
+
+    const handleBack = () => {
+        navigate('/menu');
+    }
 
 
     // Function to change the theme of the app 
@@ -44,8 +53,14 @@ function SettingsScreen() {
 
 
     return (
+
         <div className="settings-container">
+            <CustomButton onClick={handleBack} style={{ background: 'none', color: 'white', border: 'none', position: 'absolute', marginRight: '90%', marginTop: '-45%' }}>
+                <IoArrowBackCircleOutline size="35px" />
+                <span>{''}</span>
+            </CustomButton>
             <div className="settings-content">
+
                 <h1>Settings</h1>
                 <div className="settings-sections">
                     <div className="settings-section theme-buttons-container">

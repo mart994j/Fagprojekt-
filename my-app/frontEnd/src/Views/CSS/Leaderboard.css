@@ -1,12 +1,11 @@
-.leaderboard-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: var(--background-color);
-    color: #ffffff;
-  }
+.leaderbord-view {
+  background-color: var(--background-color); /* Mørk farve til baggrunden */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+}
   
   .leaderboard-title {
     margin-bottom: 20px;

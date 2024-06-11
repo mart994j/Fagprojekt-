@@ -400,7 +400,7 @@ function SudokuView() {
         <span>{''}</span>
       </CustomButton>
       <h1>Sudoku</h1>
-      <div className="timer">Timer: {timer} sekunder</div>
+      <div className="timer">Timer: {timer} seconds</div>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '65px' }}>
         <table className="center" style={{ width: baseSize + 'px', height: baseSize + 'px' }}>
           <tbody>
