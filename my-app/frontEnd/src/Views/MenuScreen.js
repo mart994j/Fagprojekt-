@@ -97,10 +97,7 @@ function MenuScreen() {
 
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);
-    console.log(regionSize);
-    if (regionSize>5) {
-      return 
-    } else {
+    // Juster stilen for at sikre ensartede grænser mellem regionerne
     return (
       <div
         className="board-preview"
@@ -135,7 +132,7 @@ function MenuScreen() {
         })}
       </div>
     );
-  }};
+  };
 
 const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated for sidebar
 
@@ -194,7 +191,7 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
             onChange={(e) => {
               const value = Math.pow(Number(e.target.value), 2);
 
-              // Size of board must be between 9 and 36 (small squares)
+              // Size of board must be between 9 and 49 (small squares)
               if (value >= 9 && value <= 36) {
                 setN(value);
               } else if (value > 36) {
