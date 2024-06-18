@@ -97,7 +97,10 @@ function MenuScreen() {
 
   const BoardPreview = ({ n }) => {
     const regionSize = Math.sqrt(n);
-    // Juster stilen for at sikre ensartede grænser mellem regionerne
+    console.log(regionSize);
+    if (regionSize>5) {
+      return 
+    } else {
     return (
       <div
         className="board-preview"
@@ -132,7 +135,7 @@ function MenuScreen() {
         })}
       </div>
     );
-  };
+  }};
 
 const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated for sidebar
 

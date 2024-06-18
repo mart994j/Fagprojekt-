@@ -5,7 +5,6 @@ import './CSS/Geomap.css';
 import { useLocation } from 'react-router-dom';
 import L from 'leaflet';
 import icon from '../assets/markerIcon.png'; 
-
 import {useNavigate } from 'react-router-dom';
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import CustomButton from '../Components/CustomButton.js';
