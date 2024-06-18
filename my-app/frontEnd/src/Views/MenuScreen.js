@@ -192,10 +192,10 @@ const toggleSidebar = () => setIsSidebarVisible(!isSidebarVisible); // Updated f
               const value = Math.pow(Number(e.target.value), 2);
 
               // Size of board must be between 9 and 49 (small squares)
-              if (value >= 9 && value <= 36) {
+              if (value >= 9 && value <= 25) {
                 setN(value);
-              } else if (value > 36) {
-                setN(49);
+              } else if (value > 25) {
+                setN(36);
               }
 
             }}
