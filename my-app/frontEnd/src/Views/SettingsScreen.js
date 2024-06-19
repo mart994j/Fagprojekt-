@@ -55,7 +55,7 @@ function SettingsScreen() {
     return (
 
         <div className="settings-container">
-            <CustomButton onClick={handleBack} style={{ background: 'none', color: 'white', border: 'none', position: 'absolute', marginRight: '90%', marginTop: '-45%' }}>
+            <CustomButton onClick={handleBack} style={{ background: 'none', color: 'white', border: 'none', position: 'absolute', marginRight: '90%', marginTop: '-45%' }} data-testid="back">
                 <IoArrowBackCircleOutline size="35px" />
                 <span>{''}</span>
             </CustomButton>
