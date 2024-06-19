@@ -118,6 +118,7 @@ input {
   z-index: 2; /* Below the input field */
   padding: 5px; /* Add padding to prevent text from touching borders */
   box-sizing: border-box; 
+  pointer-events: none;
 }
 
 .right-border {
