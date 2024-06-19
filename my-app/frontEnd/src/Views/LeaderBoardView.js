@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import './CSS/Leaderboard.css';
 import './CSS/themes.css';
 
@@ -8,7 +9,21 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import CustomButton from '../Components/CustomButton.js';
 
 
-function Leaderboard({ leaderboard = [] }) {
+
+function Leaderboard() {
+  const [leaderboard, setLeaderboard] = useState([]);
+
+  useEffect(() => {
+    // Fetch leaderboard data when the component mounts
+    fetch('http://localhost:3001/leaderboard')
+      .then(response => response.json())
+      .then(data => {
+        setLeaderboard(data); 
+      })
+      .catch(error => {
+        console.error('Error fetching leaderboard:', error);
+      });
+  }, []); 
   const navigate = useNavigate();
 
 
