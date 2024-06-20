@@ -1,8 +1,10 @@
 # Fagprojekt-
 
-
-kør server ved: naviger ind i backend mappen -> node server.js i konsol
-
-kør frontend ved: naviger ind i frontend mappen -> npm start i konsol
-
-AIzaSyDciRrRmBl9mb-k6mm9vg68k7hJwoIt1TQ
+To run this project:
+1. Download the project
+2. Open two terminals
+3. in the first terminal navigate into my-app\backEnd
+4. Type in the terminal: node server.js
+5. in the second terminal navigate into my-app\frontEnd
+6. Type in the terminal: npm start
+7. Then a window should open and you can now register and play
