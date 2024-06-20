@@ -3,6 +3,7 @@ import './CSS/LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 
+
 function LoginPage() {
   let navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -10,29 +11,31 @@ function LoginPage() {
   const [error, setError] = useState('');
   const { setUsername: setGlobalUsername } = useUser();
 
-  const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Retrieve user data from localStorage
-    const storedUser = localStorage.getItem(username);
+    try {
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (storedUser) {
-      try {
-        const user = JSON.parse(storedUser);
-        if (user.password === password) {
-          // Password matches
-          setGlobalUsername(username); 
-          console.log('Login successful for', username);
-          navigate('/menu');
-        } else {
-          setError('Incorrect password');
-        }
-      } catch (e) {
-        setError('Stored user data is corrupted');
+      if (response.ok) {
+        const data = await response.json();
+        setGlobalUsername(username);
+        console.log('Login successful for', username);
+        navigate('/menu');
+      } else if (response.status === 401) {
+        setError('Incorrect username or password');
+      } else {
+        setError('An error occurred during login');
       }
-    } else {
-      setError('Username not registered');
+    } catch (err) {
+      setError('An error occurred during login');
     }
   };
 

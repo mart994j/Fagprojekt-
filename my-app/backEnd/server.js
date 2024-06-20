@@ -87,7 +87,18 @@ app.post('/register', (req, res) => {
   if (users[username]) {
     return res.status(400).json({ message: 'Username already exists' });
   }
-  users[username] = { password, completedLevels: [], stats: { gamesPlayed: 0, gamesWon: 0, bestTime: Infinity, worstTime: 0, averageTime: 0, difficultyWins: { Easy: 0, Medium: 0, Hard: 0 }}};
+  users[username] = { 
+    password, 
+    completedLevels: [], 
+    stats: { 
+      gamesPlayed: 0, 
+      gamesWon: 0, 
+      bestTime: Infinity, 
+      worstTime: 0, 
+      averageTime: 0, 
+      difficultyWins: { Easy: 0, Medium: 0, Hard: 0 } 
+    }
+  };
   res.json({ message: 'User registered successfully' });
 });
 
@@ -213,6 +224,7 @@ app.post('/submit', (req, res) => {
 });
 
 app.get('/leaderboard', (req, res) => {
+  console.log('Fetching leaderboard:', leaderboard); // Debug log
   res.json(leaderboard);
 });
 

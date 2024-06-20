@@ -57,4 +57,10 @@
     margin-bottom: 15px;
     text-align: center;
   }
+
+  .error-message {
+    color: red;
+    margin-top: 10px;
+  }
+  
   
