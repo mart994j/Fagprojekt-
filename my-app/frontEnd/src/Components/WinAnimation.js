@@ -1,3 +1,5 @@
+// Sebastian
+
 import confetti from 'canvas-confetti';
 import './CSS/Component.css'
 

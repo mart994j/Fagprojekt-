@@ -1,3 +1,4 @@
+//Sebastian
 export const isValidSudoku = (grid) => {
   const size = grid.length; // Dynamisk bestem størrelsen af brættet
   const boxSize = Math.sqrt(size); // Beregn størrelsen af en enkelt box

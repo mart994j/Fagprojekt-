@@ -1,3 +1,4 @@
+//Hannah 50% - Martin 50%
 import React, { useState, useEffect, useRef } from 'react';
 import './CSS/SettingsScreen.css';
 import './CSS/themes.css';

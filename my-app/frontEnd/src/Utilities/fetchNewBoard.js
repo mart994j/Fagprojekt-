@@ -1,3 +1,4 @@
+//Marcus
 let isFetching = false;
 
 export const fetchNewBoard = ({
