@@ -1,5 +1,16 @@
 # Fagprojekt-
 
+To install before running the program:
+
+npm install
+
+npm install canvas-confetti
+
+npm install shepherd.js
+
+
+
+
 To run this project:
 1. Download the project
 2. Open two terminals
